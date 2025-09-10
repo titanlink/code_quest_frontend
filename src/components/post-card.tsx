@@ -6,11 +6,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Calendar, Heart, MessageCircle, Eye } from "lucide-react"
 import type { Post } from "@/lib/types"
 
-interface PostCardProps {
+interface Props {
   post: Post
 }
 
-export function PostCard({ post }: PostCardProps) {
+export function PostCard({ post }: Props) {
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
       <CardHeader className="p-0">

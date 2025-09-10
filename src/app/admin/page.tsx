@@ -1,5 +1,9 @@
-import { AdminDashboard } from "@/components"
+// import { AdminDashboard } from "@/components"
+
+import { AdminDashBoard } from "@/components";
+
 
 export default function AdminPage() {
-  return <AdminDashboard />
+  // return <AdminDashboard />
+  return <AdminDashBoard />
 }

@@ -1,0 +1,70 @@
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui'
+import { FileText, Users, MessageSquare, Eye, TrendingUp } from 'lucide-react'
+import React from 'react'
+
+
+interface Props {
+  publishedPosts: number;
+  totalPosts: number;
+  draftPosts: number;
+  totalUsers: number;
+  totalComments: number;
+  totalViews: number;
+}
+
+const StatsCards = ({publishedPosts, totalPosts, draftPosts, totalUsers, totalComments, totalViews}: Props) => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
+          <FileText className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{totalPosts}</div>
+          <p className="text-xs text-muted-foreground">
+            {publishedPosts} publicados, {draftPosts} borradores
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Usuarios</CardTitle>
+          <Users className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{totalUsers}</div>
+          <p className="text-xs text-muted-foreground">Usuarios registrados</p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Comentarios</CardTitle>
+          <MessageSquare className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{totalComments}</div>
+          <p className="text-xs text-muted-foreground">Comentarios totales</p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Visualizaciones</CardTitle>
+          <Eye className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{totalViews.toLocaleString()}</div>
+          <p className="text-xs text-muted-foreground">
+            <TrendingUp className="inline h-3 w-3 mr-1" />
+            +12% este mes
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+export default StatsCards
