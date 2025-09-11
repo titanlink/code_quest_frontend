@@ -3,7 +3,7 @@
 import { CategoryDatasourceGQL, CategoryRepositoryImpl } from "../infrastructure";
 
 
-export async function allCategoryAction({page = 1, limit = 50}) : Promise<any> {
+export async function allCategoryAction({page = 0, limit = 50}) : Promise<any> {
   const datasource = new CategoryDatasourceGQL();
   const repo = new CategoryRepositoryImpl(datasource);
 

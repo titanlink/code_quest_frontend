@@ -7,24 +7,26 @@ import { allCategoryGQL, createCategoryGQL, findCategoryGQL, updateCategoryGQL }
 export class CategoryDatasourceGQL implements CategoryDatasource {
   
 
-  async all(page = 1, limit = 50): Promise<any> {
-    return mockCategories
-    // try {
-    //   const peti = await makeClientGraphql();
+  async all(page = 0, limit = 50): Promise<any> {
+    // return mockCategories
+    try {
+      const peti = await makeClientGraphql();
 
-    //   const { data } = await peti.query<any>({
-    //     query: allCategoryGQL,
-    //     fetchPolicy: "no-cache",
-    //     variables: {
-    //       limit: limit,
-    //     },
-    //   });
+      const { data } = await peti.query<any>({
+        query: allCategoryGQL,
+        fetchPolicy: "no-cache",
+        variables: {
+          limit: page,
+          offset: limit
+        },
+      });
 
-    //   return CategoryMapper.fromJsonList(data["allCategory"]);
-    // } catch (e) {
-    //   console.error(`Error => ${e}`);
-    //   return [];
-    // }
+      console.log("🚀 ~ CategoryDatasourceGQL ~ all ~ data:", data)
+      return CategoryMapper.fromJsonList(data["allCategory"]);
+    } catch (e) {
+      console.error(`Error => ${e}`);
+      return [];
+    }
   }
   async findById(id: string): Promise<any> {
     // return mockCategories[0]

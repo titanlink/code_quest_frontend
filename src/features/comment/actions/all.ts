@@ -3,7 +3,7 @@
 import { CommentDatasourceGQL, CommentRepositoryImpl } from "../infrastructure";
 
 
-export async function allCommentAction({page = 1, limit = 50}) : Promise<any> {
+export async function allCommentAction({page = 0, limit = 50}) : Promise<any> {
   const datasource = new CommentDatasourceGQL();
   const repo = new CommentRepositoryImpl(datasource);
 

@@ -3,7 +3,7 @@
 import { IPost, PostDatasourceGQL, PostRepositoryImpl  } from "..";
 
 
-export async function allPostAction({page = 1, limit = 50}) : Promise<IPost[]> {
+export async function allPostAction({page = 0, limit = 50}) : Promise<IPost[]> {
   const datasource = new PostDatasourceGQL();
   const repo = new PostRepositoryImpl(datasource);
 

@@ -6,7 +6,7 @@ import { PostDatasource, IPost } from "../..";
 export class PostDatasourceGQL implements PostDatasource {
   
 
-  async all(page = 1, limit = 50): Promise<any> {
+  async all(page = 0, limit = 50): Promise<any> {
     return mockPosts
   }
   async findById(id: string): Promise<any> {

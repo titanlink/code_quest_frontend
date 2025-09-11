@@ -1,18 +1,20 @@
 import { gql } from "@apollo/client";
 
 export const allCategoryGQL = gql`
-  query allCategories($limit: Int, $page: Int) {
-    allCategory(limit: $limit, page: $page) {
+  query allCategories($limit: Int, $offset: Int) {
+    allCategory(limit: $limit, offset: $offset) {
       id
       name
       description
+      color
+      slug
     }
   }
 `;
 
 export const findCategoryGQL = gql`
-  query findCategory($limit: Int, $page: Int) {
-    findCategory(limit: $limit, page: $page) {
+  query findCategory($limit: Int, $offset: Int) {
+    findCategory(limit: $limit, offset: $offset) {
       id
       name
       description
@@ -21,8 +23,8 @@ export const findCategoryGQL = gql`
 `;
 
 export const createCategoryGQL = gql`
-  query createCategory($limit: Int, $page: Int) {
-    createCategory(limit: $limit, page: $page) {
+  query createCategory($limit: Int, $offset: Int) {
+    createCategory(limit: $limit, offset: $offset) {
       id
       name
       description
@@ -31,8 +33,8 @@ export const createCategoryGQL = gql`
 `;
 
 export const updateCategoryGQL = gql`
-  query updateCategory($limit: Int, $page: Int) {
-    updateCategory(limit: $limit, page: $page) {
+  query updateCategory($limit: Int, $offset: Int) {
+    updateCategory(limit: $limit, offset: $offset) {
       id
       name
       description
