@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { LogOut, Settings, User } from "lucide-react"
+import { AnimatedThemeToggler } from "."
 
 export function Navbar() {
   const { user, logout } = useAuth()
@@ -31,6 +32,8 @@ export function Navbar() {
                   <Link href="/admin">Panel Admin</Link>
                 </Button>
               )}
+
+              <AnimatedThemeToggler />
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

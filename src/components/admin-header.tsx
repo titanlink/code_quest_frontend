@@ -35,12 +35,13 @@ export function AdminHeader() {
             </Link>
           </Button>
 
-          <AnimatedThemeToggler />
 
           <Button variant="ghost" size="sm">
             <Bell className="h-4 w-4" />
           </Button>
 
+          <AnimatedThemeToggler />
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
