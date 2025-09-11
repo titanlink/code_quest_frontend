@@ -1,4 +1,4 @@
-import { CategoryDatasource, CategoryRepository } from "../../domain";
+import { CategoryDatasource, CategoryRepository } from "../..";
 
 
 

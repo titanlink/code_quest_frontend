@@ -1,4 +1,4 @@
-import { UserDatasource, UserRepository } from "../../domain";
+import { UserDatasource, UserRepository } from "../..";
 
 
 

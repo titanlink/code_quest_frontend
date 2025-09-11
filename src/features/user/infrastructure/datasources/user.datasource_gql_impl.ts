@@ -1,5 +1,5 @@
 import { mockUsers } from "@/lib/mock-data";
-import { UserDatasource, IUser } from "../../domain";
+import { UserDatasource, IUser } from "../..";
 
 
 

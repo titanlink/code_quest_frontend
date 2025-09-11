@@ -1,4 +1,4 @@
-import { CommentDatasource, CommentRepository } from "../../domain";
+import { CommentDatasource, CommentRepository } from "../..";
 
 
 
