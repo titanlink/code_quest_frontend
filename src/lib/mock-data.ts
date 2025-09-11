@@ -64,7 +64,7 @@ El nuevo bundler de Vercel que es hasta 10x más rápido que Webpack.
 ## Conclusión
 Next.js 15 es una actualización increíble que todo desarrollador debería probar.`,
     excerpt: "Descubre las nuevas características de Next.js 15 y cómo pueden mejorar tu desarrollo web.",
-    coverImage: "/nextjs-development-code.jpg",
+    coverImage: "/admin-avatar.png",
     authorId: "1",
     author: mockUsers[0],
     categoryId: "1",
@@ -134,7 +134,7 @@ El archivo tsconfig.json es el corazón de la configuración de TypeScript.
 - Configurar paths para imports
 - Usar interfaces para definir tipos`,
     excerpt: "Guía completa para configurar TypeScript en tu proyecto desde cero.",
-    coverImage: "/typescript-code-configuration.jpg",
+    coverImage: "/diverse-user-avatars.png",
     authorId: "1",
     author: mockUsers[0],
     categoryId: "3",

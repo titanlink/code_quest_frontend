@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge } from '@/components'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@radix-ui/react-dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal, Shield, UserCheck, UserX } from 'lucide-react'
 import React from 'react'
 import { IUser } from '../..'

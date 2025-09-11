@@ -8,3 +8,4 @@ export * from './navbar'
 export * from './post-card'
 
 export * from './SearchFilters'
+export * from './AdminFeatureHeader'

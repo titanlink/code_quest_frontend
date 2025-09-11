@@ -1,9 +1,10 @@
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge } from '@/components'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@radix-ui/react-dropdown-menu'
-import { MoreHorizontal, Link, Eye, Edit, Trash2 } from 'lucide-react'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { MoreHorizontal, Edit, Trash2, Eye } from "lucide-react"
 import React from 'react'
 import { IPost } from '../..'
+import Link from 'next/link'
 
 interface Props {
   filteredPosts:IPost[],
