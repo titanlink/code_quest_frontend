@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Bell, Settings, LogOut, Home } from "lucide-react"
 import Link from "next/link"
+import { AnimatedThemeToggler } from "."
 
 export function AdminHeader() {
   const { user, logout } = useAuth()
@@ -21,7 +22,7 @@ export function AdminHeader() {
       <div className="flex h-16 items-center justify-between px-6">
         <div className="flex items-center gap-4">
           <Link href="/" className="text-xl font-bold text-primary">
-            Blog Moderno
+            DevCaribe
           </Link>
           <span className="text-sm text-muted-foreground">Panel de Administración</span>
         </div>
@@ -33,6 +34,8 @@ export function AdminHeader() {
               Ver sitio
             </Link>
           </Button>
+
+          <AnimatedThemeToggler />
 
           <Button variant="ghost" size="sm">
             <Bell className="h-4 w-4" />
