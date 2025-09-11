@@ -7,9 +7,9 @@ import RecentComments from './RecentComments'
 import { allCommentAction, allPostAction, allUserAction, IPost } from '@/features'
 
 export const AdminDashBoard = async () => {
-    const posts  = await allPostAction({ page: 1, limit: 100});
-    const users  = await allUserAction({ page: 1, limit: 100});
-    const comments  = await allCommentAction({ page: 1, limit: 100});
+    const posts  = await allPostAction({ page: 0, limit: 100});
+    const users  = await allUserAction({ page: 0, limit: 100});
+    const comments  = await allCommentAction({ page: 0, limit: 100});
 
     const totalPosts = posts.length
     const publishedPosts = posts.filter((p) => p?.published).length

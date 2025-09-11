@@ -13,7 +13,7 @@ import {
 
 export const useUserStore = create<UsersState>()((set, get) => ({
   isGridView: true,
-  page: 1,
+  page: 0,
   limit: 50,
   total: 0,
   items: [],
@@ -27,7 +27,7 @@ export const useUserStore = create<UsersState>()((set, get) => ({
   setLimit(limit?: number){ set({limit: limit ?? 50}) },
 
 
-  getData: async(page: number = 1, limit: number = 50) => {
+  getData: async(page: number = 0, limit: number = 50) => {
     try {
       set({ isLoading: true });
       const resp  = await allUserAction({ page, limit});

@@ -16,12 +16,11 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
         query: allCategoryGQL,
         fetchPolicy: "no-cache",
         variables: {
-          limit: page,
-          offset: limit
+          limit: limit,
+          offset: page
         },
       });
 
-      console.log("🚀 ~ CategoryDatasourceGQL ~ all ~ data:", data)
       return CategoryMapper.fromJsonList(data["allCategory"]);
     } catch (e) {
       console.error(`Error => ${e}`);
