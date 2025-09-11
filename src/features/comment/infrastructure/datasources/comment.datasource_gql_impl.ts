@@ -9,7 +9,7 @@ export class CommentDatasourceGQL implements CommentDatasource {
   async all(page = 1, limit = 50): Promise<any> {
     return mockComments
   }
-  async findById(id: number): Promise<any> {
+  async findById(id: string): Promise<any> {
     return mockComments[0]
   }
 
@@ -21,7 +21,7 @@ export class CommentDatasourceGQL implements CommentDatasource {
     return mockComments[0]
   }
 
-  async delete(id: number): Promise<any> {
+  async delete(id: string): Promise<any> {
     return mockComments[0]
   }
 

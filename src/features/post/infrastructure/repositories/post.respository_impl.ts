@@ -1,4 +1,4 @@
-import { IPost, PostDatasource, PostRepository } from "../..";
+import { PostDatasource, PostRepository } from "../..";
 
 
 
@@ -8,7 +8,7 @@ export class PostRepositoryImpl extends PostRepository {
     super();
   }
   
-  async findById(id: number): Promise<IPost[]> {
+  async findById(id: string): Promise<any> {
     return this.datasource.findById(id);
   }
   async create(entity: any): Promise<any> {
@@ -20,7 +20,7 @@ export class PostRepositoryImpl extends PostRepository {
   async all(page: number, limit: number): Promise<any> {
     return this.datasource.all(page, limit);
   }
-  async delete(id: number): Promise<any> {
+  async delete(id: string): Promise<any> {
     return this.datasource.delete(id);
   }
 }

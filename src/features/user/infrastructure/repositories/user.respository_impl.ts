@@ -8,7 +8,7 @@ export class UserRepositoryImpl extends UserRepository {
     super();
   }
   
-  async findById(id: number): Promise<any> {
+  async findById(id: string): Promise<any> {
     return this.datasource.findById(id);
   }
   async create(entity: any): Promise<any> {
@@ -20,7 +20,7 @@ export class UserRepositoryImpl extends UserRepository {
   async all(page: number, limit: number): Promise<any> {
     return this.datasource.all(page, limit);
   }
-  async delete(id: number): Promise<any> {
+  async delete(id: string): Promise<any> {
     return this.datasource.delete(id);
   }
   

@@ -3,7 +3,7 @@
 import { CommentDatasourceGQL, CommentRepositoryImpl } from "../infrastructure";
 
 
-export async function deleteCommentAction(id: number) : Promise<any> {
+export async function deleteCommentAction(id: string) : Promise<any> {
   // throw new Error("serverAction => deleteCommentAction -> NOT IMPLEMENT")
   const datasource = new CommentDatasourceGQL();
   const repo = new CommentRepositoryImpl(datasource);

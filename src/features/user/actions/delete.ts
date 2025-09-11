@@ -3,7 +3,7 @@
 import { UserDatasourceGQL, UserRepositoryImpl } from "../infrastructure";
 
 
-export async function deleteUserAction(id: number) : Promise<any> {
+export async function deleteUserAction(id: string) : Promise<any> {
   // throw new Error("serverAction => deleteUserAction -> NOT IMPLEMENT")
   const datasource = new UserDatasourceGQL();
   const repo = new UserRepositoryImpl(datasource);

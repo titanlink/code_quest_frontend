@@ -9,7 +9,7 @@ export class PostDatasourceGQL implements PostDatasource {
   async all(page = 1, limit = 50): Promise<IPost[]> {
     return mockPosts
   }
-  async findById(id: number): Promise<any> {
+  async findById(id: string): Promise<any> {
     return mockPosts[0]
   }
 
@@ -21,7 +21,7 @@ export class PostDatasourceGQL implements PostDatasource {
     return mockPosts[0]
   }
 
-  async delete(id: number): Promise<any> {
+  async delete(id: string): Promise<any> {
     return mockPosts[0]
   }
 

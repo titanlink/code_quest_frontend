@@ -3,7 +3,7 @@
 import { PostDatasourceGQL, PostRepositoryImpl } from "../infrastructure";
 
 
-export async function deletePostAction(id: number) : Promise<any> {
+export async function deletePostAction(id: string) : Promise<any> {
   // throw new Error("serverAction => deletePostAction -> NOT IMPLEMENT")
   const datasource = new PostDatasourceGQL();
   const repo = new PostRepositoryImpl(datasource);

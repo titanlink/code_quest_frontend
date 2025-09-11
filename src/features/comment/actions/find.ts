@@ -3,7 +3,7 @@
 import { CommentDatasourceGQL, CommentRepositoryImpl } from "../infrastructure";
 
 
-export async function findCommentAction(id: number) {
+export async function findCommentAction(id: string) {
   const datasource = new CommentDatasourceGQL();
   const repo = new CommentRepositoryImpl(datasource);
   try {

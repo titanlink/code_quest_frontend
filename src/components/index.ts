@@ -10,3 +10,4 @@ export * from './post-card'
 
 export * from './SearchFilters'
 export * from './AdminFeatureHeader'
+export * from './LoadingPage'
