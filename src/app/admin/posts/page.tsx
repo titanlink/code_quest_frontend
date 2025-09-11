@@ -10,7 +10,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Plus, Search, MoreHorizontal, Edit, Trash2, Eye } from "lucide-react"
 import { mockPosts } from "@/lib/mock-data"
-import { PostsTable, SearchFilters } from "@/features"
+import { PostsTable } from "@/features"
+import { SearchFilters } from "@/components"
 
 export default function AdminPostsPage() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -43,7 +44,7 @@ export default function AdminPostsPage() {
       </div>
 
       {/* Search and Filters */}
-      <SearchFilters searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <SearchFilters placeholder="Buscar posts..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
       {/* Posts Table */}
       <PostsTable filteredPosts={filteredPosts} handleDeletePost={handleDeletePost} />

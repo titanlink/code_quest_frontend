@@ -6,3 +6,5 @@ export * from './admin-sidebar'
 export * from './featured-post'
 export * from './navbar'
 export * from './post-card'
+
+export * from './SearchFilters'
