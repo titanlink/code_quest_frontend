@@ -1,13 +1,17 @@
 "use client"
 
-import { useState } from "react"
-import { mockUsers } from "@/lib/mock-data"
-import { UsersTable } from "@/features"
-import { SearchFilters } from "@/components"
+import { useEffect, useState } from "react"
+import { UsersTable, useUserStore } from "@/features"
+import { LoadingPage, SearchFilters } from "@/components"
 
 export default function AdminUsersPage() {
   const [searchTerm, setSearchTerm] = useState("")
-  const [users, setUsers] = useState(mockUsers)
+  const getUsers = useUserStore((state) => state.getData);
+  const users = useUserStore((state) => state.items);
+
+  const page: number = useUserStore( (state) => state.page ?? 1  );
+  const limit: number = useUserStore( (state) => state.limit ?? 50  );
+  const isLoading = useUserStore((state) => state.isLoading);
 
   const filteredUsers = users.filter(
     (user) =>
@@ -15,10 +19,18 @@ export default function AdminUsersPage() {
       user.email.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
+  const handleDeleteUser = (userId: string) => {
+    // setUsers(users.filter((p) => p.id !== userId))
+  }
+
+  useEffect(() => {
+      getUsers(page, limit);
+  }, [page, limit, getUsers]);
+
   const handleToggleRole = (userId: string) => {
-    setUsers(
-      users.map((user) => (user.id === userId ? { ...user, role: user.role === "admin" ? "user" : "admin" } : user)),
-    )
+    // setUsers(
+    //   users.map((user) => (user.id === userId ? { ...user, role: user.role === "admin" ? "user" : "admin" } : user)),
+    // )
   }
 
   return (
@@ -29,11 +41,17 @@ export default function AdminUsersPage() {
         <p className="text-muted-foreground">Gestiona los usuarios registrados en el blog</p>
       </div>
 
-      {/* Search */}
-      <SearchFilters placeholder="Buscar usuarios..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      { isLoading ? ( 
+          <LoadingPage /> 
+        ) : (
+          <>
+            {/* Search */}
+            <SearchFilters placeholder="Buscar usuarios..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-      {/* Users Table */}
-      <UsersTable filteredUsers={filteredUsers} handleToggleRole={handleToggleRole} />
+            {/* Users Table */}
+            <UsersTable filteredUsers={filteredUsers} handleToggleRole={handleToggleRole} />
+          </>
+        ) }
     </div>
   )
 }

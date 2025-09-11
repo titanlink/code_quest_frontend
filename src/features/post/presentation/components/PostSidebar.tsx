@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Calendar, MapPin, LinkIcon, Twitter, Github } from "lucide-react"
 import type { Post } from "@/lib/types"
+import { CustomCard } from "@/components"
 
 interface PostSidebarProps {
   post: Post
@@ -15,7 +16,7 @@ export function PostSidebar({ post }: PostSidebarProps) {
   return (
     <div className="space-y-6">
       {/* Author Card */}
-      <Card>
+      <CustomCard>
         <CardHeader>
           <CardTitle className="text-lg">Sobre el autor</CardTitle>
         </CardHeader>
@@ -43,10 +44,10 @@ export function PostSidebar({ post }: PostSidebarProps) {
               <Calendar className="h-4 w-4" />
               <span>Miembro desde {post.author.createdAt.getFullYear()}</span>
             </div>
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
               <span>España</span>
-            </div>
+            </div> */}
           </div>
 
           <Separator />
@@ -64,10 +65,10 @@ export function PostSidebar({ post }: PostSidebarProps) {
             </Button>
           </div>
         </CardContent>
-      </Card>
+      </CustomCard>
 
       {/* Table of Contents */}
-      <Card>
+      <CustomCard>
         <CardHeader>
           <CardTitle className="text-lg">Contenido</CardTitle>
         </CardHeader>
@@ -99,12 +100,13 @@ export function PostSidebar({ post }: PostSidebarProps) {
             </a>
           </nav>
         </CardContent>
-      </Card>
+      </CustomCard>
+      
 
       {/* Newsletter Signup */}
-      <Card className="bg-primary/5">
+      <CustomCard className="bg-primary/5">
         <CardHeader>
-          <CardTitle className="text-lg">Mantente actualizado</CardTitle>
+          <CardTitle className="text-lg pb-2">Mantente actualizado</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground">
@@ -121,7 +123,7 @@ export function PostSidebar({ post }: PostSidebarProps) {
             </Button>
           </div>
         </CardContent>
-      </Card>
+      </CustomCard>
     </div>
   )
 }

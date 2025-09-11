@@ -1,4 +1,4 @@
-import { ICategory } from "../../domain";
+import { ICategory } from "../..";
 
 
 

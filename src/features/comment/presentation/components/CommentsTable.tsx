@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge } from '@/components'
+import { Card, CardHeader, CardTitle, CardContent, Button, Badge, CustomCard } from '@/components'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal, Trash2 } from "lucide-react"
@@ -12,7 +12,7 @@ interface Props {
 
 export const CommentsTable = ({filteredComments, handleDeleteComment}: Props) => {
   return (
-    <Card>
+    <CustomCard>
       <CardHeader>
         <CardTitle>Todos los Comments ({filteredComments.length})</CardTitle>
       </CardHeader>
@@ -59,6 +59,6 @@ export const CommentsTable = ({filteredComments, handleDeleteComment}: Props) =>
           </TableBody>
         </Table>
       </CardContent>
-    </Card>
+    </CustomCard>
   )
 }

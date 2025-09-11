@@ -8,7 +8,7 @@ export async function findUserAction(id: string) {
   const repo = new UserRepositoryImpl(datasource);
   try {
     const response = await repo.findById(id);
-    return { success: true, asset: response.data };
+    return response
   } catch (e) {
     console.error("Error en findUserAction:", e);
     return { success: false, error: "No se pudo obtener el asset" };

@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge } from '@/components'
+import { Card, CardHeader, CardTitle, CardContent, Button, Badge, CustomCard } from '@/components'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -13,7 +13,7 @@ interface Props {
 
 export const UsersTable = ({filteredUsers, handleToggleRole}: Props) => {
   return (
-    <Card>
+    <CustomCard>
       <CardHeader>
         <CardTitle>Todos los Usuarios ({filteredUsers.length})</CardTitle>
       </CardHeader>
@@ -84,6 +84,6 @@ export const UsersTable = ({filteredUsers, handleToggleRole}: Props) => {
           </TableBody>
         </Table>
       </CardContent>
-    </Card>
+    </CustomCard>
   )
 }

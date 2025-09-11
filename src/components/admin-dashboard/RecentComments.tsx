@@ -2,13 +2,14 @@ import { Avatar, AvatarFallback, AvatarImage, Button, Card, CardContent, CardDes
 import { IPost } from '@/features'
 import { Link } from 'lucide-react'
 import React from 'react'
+import { CustomCard } from '..'
 
 interface Props {
   recentComments: IPost[]
 }
 const RecentComments = ({recentComments}: Props) => {
   return (
-    <Card>
+    <CustomCard>
       <CardHeader>
         <CardTitle>Comentarios Recientes</CardTitle>
         <CardDescription>Los últimos comentarios de usuarios</CardDescription>
@@ -33,7 +34,7 @@ const RecentComments = ({recentComments}: Props) => {
           <Link href="/admin/comments">Ver todos los comentarios</Link>
         </Button>
       </CardContent>
-    </Card>
+    </CustomCard>
   )
 }
 

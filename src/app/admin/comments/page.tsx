@@ -1,16 +1,21 @@
 "use client"
 
-import { useState } from "react"
-import Link from "next/link"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { mockComments } from "@/lib/mock-data"
-import { CommentsTable } from "@/features"
-import { SearchFilters } from "@/components"
-import { Plus } from "lucide-react"
+import { CommentsTable, useCommentStore } from "@/features"
+import { LoadingPage, SearchFilters } from "@/components"
 
 export default function AdminCommentsPage() {
   const [searchTerm, setSearchTerm] = useState("")
-  const [comments, setComments] = useState(mockComments)
+  // const [comments, setComments] = useState(mockComments)
+
+  const getComments = useCommentStore((state) => state.getData);
+  const comments = useCommentStore((state) => state.items);
+
+  const page: number = useCommentStore( (state) => state.page ?? 1  );
+  const limit: number = useCommentStore( (state) => state.limit ?? 50  );
+  const isLoading = useCommentStore((state) => state.isLoading);
 
   const filteredComments = comments.filter(
     (comment) =>
@@ -19,8 +24,12 @@ export default function AdminCommentsPage() {
   )
 
   const handleDeleteComment = (commentId: string) => {
-    setComments(comments.filter((p) => p.id !== commentId))
+    // setComments(comments.filter((p) => p.id !== commentId))
   }
+
+  useEffect(() => {
+      getComments(page, limit);
+  }, [page, limit, getComments]);
 
   return (
     <div className="space-y-6">
@@ -32,11 +41,18 @@ export default function AdminCommentsPage() {
         </div>
       </div>
 
-      {/* Search and Filters */}
-      <SearchFilters placeholder="Buscar comments..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-      {/* Comments Table */}
-      <CommentsTable filteredComments={filteredComments} handleDeleteComment={handleDeleteComment} />
+      { isLoading ? ( 
+        <LoadingPage /> 
+      ) : (
+        <>
+          {/* Search and Filters */}
+          <SearchFilters placeholder="Buscar comments..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
+          {/* Posts Table */}
+          <CommentsTable filteredComments={filteredComments} handleDeleteComment={handleDeleteComment} />
+        </>
+      ) }
     </div>
   )
 }

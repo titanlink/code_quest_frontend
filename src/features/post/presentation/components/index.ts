@@ -1,5 +1,6 @@
 export * from './PostContent'
 export * from './PostGrid'
+export * from './PostForm'
 export * from './PostSidebar'
 export * from './PostsTable'
 export * from './RelatedPosts'

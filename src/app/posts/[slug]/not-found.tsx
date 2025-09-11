@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, FileX } from "lucide-react"
+import { InteractiveGridPattern } from "@/components"
+import { cn } from "@/lib"
 
 export default function NotFound() {
   return (

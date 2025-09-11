@@ -1,18 +1,24 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Calendar, Heart, MessageCircle, Eye } from "lucide-react"
-import type { Post } from "@/lib/types"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  Badge,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CustomCard,
+} from "."
+import { IPost } from "@/features"
 
 interface Props {
-  post: Post
+  post: IPost
 }
 
 export function PostCard({ post }: Props) {
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+    <CustomCard>
       <CardHeader className="p-0">
         <Link href={`/posts/${post.slug}`}>
           <div className="relative aspect-video overflow-hidden">
@@ -72,6 +78,6 @@ export function PostCard({ post }: Props) {
           </div>
         </div>
       </CardFooter>
-    </Card>
+    </CustomCard>
   )
 }

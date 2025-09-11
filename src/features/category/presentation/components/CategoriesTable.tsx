@@ -1,9 +1,10 @@
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge } from '@/components'
+import { Card, CardHeader, CardTitle, CardContent, Button, Badge, ConfirmDelete, CustomCard } from '@/components'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Edit, Eye, Link, MoreHorizontal, Trash2 } from "lucide-react"
+import { Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react"
 import React from 'react'
 import { ICategory } from '../..'
+import Link from 'next/link'
 
 interface Props {
   filteredCategories:ICategory[],
@@ -12,7 +13,7 @@ interface Props {
 
 export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Props) => {
   return (
-    <Card>
+    <CustomCard>
       <CardHeader>
         <CardTitle>Todos los Categorys ({filteredCategories.length})</CardTitle>
       </CardHeader>
@@ -59,10 +60,10 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Prop
                           Editar
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteCategory(category.id)}>
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        Eliminar
-                      </DropdownMenuItem>
+                        <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteCategory(category.id)}>
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Eliminar
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
@@ -71,6 +72,6 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Prop
           </TableBody>
         </Table>
       </CardContent>
-    </Card>
+    </CustomCard>
   )
 }

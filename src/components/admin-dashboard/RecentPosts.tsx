@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, Badge } from '@/components/ui'
+import { CustomCard, CardHeader, CardTitle, CardDescription, CardContent, Button, Badge } from '@/components'
 import { IPost } from '@/features'
 import { Eye, Link } from 'lucide-react'
 import React from 'react'
@@ -10,7 +10,7 @@ interface Props {
 
 const RecentPosts = ({recentPosts}: Props) => {
   return (
-    <Card>
+    <CustomCard>
       <CardHeader>
         <CardTitle>Posts Recientes</CardTitle>
         <CardDescription>Los últimos artículos publicados</CardDescription>
@@ -37,7 +37,7 @@ const RecentPosts = ({recentPosts}: Props) => {
           <Link href="/admin/posts">Ver todos los posts</Link>
         </Button>
       </CardContent>
-    </Card>
+    </CustomCard>
   )
 }
 

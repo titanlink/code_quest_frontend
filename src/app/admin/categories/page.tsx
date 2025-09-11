@@ -35,32 +35,29 @@ export default function AdminCategoriesPage() {
 
 
   return (
-    <>
-      
-        <div className="space-y-6">
-          {/* Header */}
-          <AdminFeatureHeader title="Categorias" subTitle="Gestiona todos los artículos del blog" >
-            <Button asChild>
-              <Link href="/admin/categories/new">
-                <Plus className="mr-2 h-4 w-4" />
-                Nueva Categoria
-              </Link>
-            </Button>
-          </AdminFeatureHeader>
+    <div className="space-y-6">
+      {/* Header */}
+      <AdminFeatureHeader title="Categorias" subTitle="Gestiona todos los artículos del blog" >
+        <Button asChild>
+          <Link href="/admin/categories/new">
+            <Plus className="mr-2 h-4 w-4" />
+            Nueva Categoria
+          </Link>
+        </Button>
+      </AdminFeatureHeader>
 
 
-          {/* Categories Table */}
-          {isLoading ? (
-            <LoadingPage />
-          ) :  (
-            <>
-              {/* Search and Filters */}
-              <SearchFilters placeholder="Buscar categories..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-              <CategoriesTable filteredCategories={filteredCategories} handleDeleteCategory={handleDeleteCategorie} />
-              {/* <pre><b>{JSON.stringify(categories, null, 2) } </b> </pre>  */}
-            </>
-          )}
-        </div>
-    </>
+      {/* Categories Table */}
+      {isLoading ? (
+        <LoadingPage />
+      ) :  (
+        <>
+          {/* Search and Filters */}
+          <SearchFilters placeholder="Buscar categories..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <CategoriesTable filteredCategories={filteredCategories} handleDeleteCategory={handleDeleteCategorie} />
+          {/* <pre><b>{JSON.stringify(categories, null, 2) } </b> </pre>  */}
+        </>
+      )}
+    </div>
   )
 }

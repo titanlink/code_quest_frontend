@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle, Input } from '@/components'
+import { Card, CardContent, CardHeader, CardTitle, CustomCard, Input } from '@/components'
 import { Search } from 'lucide-react'
 import React, { SetStateAction } from 'react'
 
@@ -9,7 +9,7 @@ interface Props {
 }
 export const SearchFilters = ({placeholder, searchTerm, setSearchTerm}:Props) => {
   return (
-    <Card>
+    <CustomCard>
       <CardHeader>
         <CardTitle>Filtros</CardTitle>
       </CardHeader>
@@ -26,6 +26,6 @@ export const SearchFilters = ({placeholder, searchTerm, setSearchTerm}:Props) =>
           </div>
         </div>
       </CardContent>
-    </Card>
+    </CustomCard>
   )
 }
