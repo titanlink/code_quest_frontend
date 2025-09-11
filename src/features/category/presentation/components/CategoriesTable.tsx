@@ -24,9 +24,8 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Prop
               <TableHead>Nombre</TableHead>
               <TableHead>Descripción</TableHead>
               <TableHead>Slug</TableHead>
-              <TableHead>Estado</TableHead>
+              <TableHead>Color</TableHead>
               <TableHead>Fecha</TableHead>
-              <TableHead>Estadísticas</TableHead>
               <TableHead className="w-[70px]">Acciones</TableHead>
             </TableRow>
           </TableHeader>
@@ -36,10 +35,13 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Prop
                 <TableCell>
                   <div className="space-y-1">
                     <p className="font-medium">{category.name}</p>
-                    <p className="text-sm text-muted-foreground line-clamp-1">{category.description}</p>
                   </div>
                 </TableCell>
+                <TableCell>
+                    <p className="text-sm text-muted-foreground line-clamp-1">{category.description}</p>
+                </TableCell>
                 <TableCell>{category.slug}</TableCell>
+                <TableCell>{category.color}</TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -60,7 +62,7 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Prop
                           Editar
                         </Link>
                       </DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteCategory(category.id)}>
+                        <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteCategory(category?.id ?? '')}>
                           <Trash2 className="mr-2 h-4 w-4" />
                           Eliminar
                         </DropdownMenuItem>
@@ -72,6 +74,7 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Prop
           </TableBody>
         </Table>
       </CardContent>
+      {/* <pre><b>{JSON.stringify(filteredCategories, null, 2) } </b> </pre>  */}
     </CustomCard>
   )
 }

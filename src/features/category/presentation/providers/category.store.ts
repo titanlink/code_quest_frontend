@@ -57,7 +57,7 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
     let retorno:any = { error: true, msg: "No action taken" };
     try {
       if (entitdad.id) retorno = await updateCategoryAction(entitdad);
-      if (entitdad.id == '0') retorno = await createCategoryAction(entitdad);
+      if (!entitdad.id) retorno = await createCategoryAction(entitdad);
 
       set({selected: retorno?.data, isLoading: false})
     }catch(error) {

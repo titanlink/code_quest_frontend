@@ -7,7 +7,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { ICategory } from "../..";
+import { ICategory, useCategoryStore } from "../..";
 
 interface Props {
   entity?: ICategory;
@@ -24,14 +24,17 @@ const formSchema = z.object({
 
 export const CategoryForm = ({entity}:Props) => {
 
+  const createOrUpdate = useCategoryStore((state) => state.createOrUpdate);
+
   const form = useForm < z.infer < typeof formSchema >> ({
     resolver: zodResolver(formSchema),
 
   })
 
-  function onSubmit(values: z.infer < typeof formSchema > ) {
+  async function onSubmit(values: z.infer < typeof formSchema > ) {
+    const resp = await createOrUpdate(values)
     try {
-      console.log(values);
+      console.log('resp',resp);
       toast(
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
           <code className="text-white">{JSON.stringify(values, null, 2)}</code>
@@ -116,6 +119,9 @@ export const CategoryForm = ({entity}:Props) => {
           />
 
           </CardContent>
+          <CardFooter>
+            <Button type="submit" size="lg">Submit</Button>
+          </CardFooter>
         </CustomCard>
       </form>
     </Form>

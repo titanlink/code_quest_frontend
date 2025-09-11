@@ -53,9 +53,17 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
       const { data } = await peti.mutate<any>({
         mutation: createCategoryGQL,
         fetchPolicy: "no-cache",
+        variables: {
+        input: {
+          slug: form.slug,
+          name: form.name,
+          description: form.description,
+          color: form.color,
+        },
+      },
       });
 
-      return CategoryMapper.fromJsonList(data["createCategory"]);
+      return CategoryMapper.fromJson(data["createCategory"]);
     } catch (e) {
       console.error(`Error => ${e}`);
       return [];

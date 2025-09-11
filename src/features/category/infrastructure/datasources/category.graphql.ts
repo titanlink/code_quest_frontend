@@ -23,21 +23,23 @@ export const findCategoryGQL = gql`
 `;
 
 export const createCategoryGQL = gql`
-  query createCategory($limit: Int, $offset: Int) {
-    createCategory(limit: $limit, offset: $offset) {
-      id
-      name
-      description
-    }
+  mutation CreateCategory($input: CreateCategoryInput!) {
+  createCategory(createCategoryInput: $input) {
+    name
+    description
+    slug
+    color
   }
+}
 `;
 
 export const updateCategoryGQL = gql`
-  query updateCategory($limit: Int, $offset: Int) {
-    updateCategory(limit: $limit, offset: $offset) {
-      id
-      name
-      description
-    }
+  mutation UpdateCategory($input: UpdateCategoryInput!) {
+  updateCategory(updateCategoryInput: $input) {
+    name
+    description
+    slug
+    color
   }
+}
 `;
