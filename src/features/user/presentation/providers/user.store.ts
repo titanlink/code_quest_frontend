@@ -33,7 +33,7 @@ export const useUserStore = create<UsersState>()((set, get) => ({
       const resp  = await allUserAction({ page, limit});
       set({items: resp ?? [],  isLoading: false})
     }catch(error) {
-      throw 'Users > getData > Unauthorized'
+      throw new Error('Users > getData > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
@@ -46,7 +46,7 @@ export const useUserStore = create<UsersState>()((set, get) => ({
       retorno = resp
       set({selected: resp.data, isLoading: false})
     }catch(error) {
-      throw 'Users > findOne > Unauthorized'
+      throw new Error('Users > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
@@ -61,7 +61,7 @@ export const useUserStore = create<UsersState>()((set, get) => ({
 
       set({selected: retorno?.data, isLoading: false})
     }catch(error) {
-      throw 'Users > findOne > Unauthorized'
+      throw new Error('Users > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
@@ -76,7 +76,7 @@ export const useUserStore = create<UsersState>()((set, get) => ({
       retorno = resp
       set({selected: resp.data, isLoading: false})
     }catch(error) {
-      throw 'Users > findOne > Unauthorized'
+      throw new Error('Users > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }

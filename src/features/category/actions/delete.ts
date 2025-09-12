@@ -5,14 +5,18 @@ import { CategoryDatasourceGQL, CategoryRepositoryImpl, ICategory } from "..";
 
 
 export async function deleteCategoryAction(id: string) : Promise<ResponsePropio> {
+  let retorno: ResponsePropio = { error: true, msg: 'Error desconocido'}
   const datasource = new CategoryDatasourceGQL();
   const repo = new CategoryRepositoryImpl(datasource);
 
   try {
-    return await repo.delete(id);
+    retorno = await repo.delete(id);
   } catch (e) {
-    console.error("Error en serverAction => deleteCategoryAction:", e);
-    return { error: true, msg: "No se pudo eliminar el asset" };
+    const error = "Error en serverAction => deleteCategoryAction:"
+    console.error(error, e);
+    retorno.msg = error
+  }finally {
+    return retorno
   }
 }
   

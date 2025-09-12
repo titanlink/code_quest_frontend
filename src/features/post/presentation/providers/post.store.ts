@@ -33,7 +33,7 @@ export const usePostStore = create<PostsState>()((set, get) => ({
       const resp  = await allPostAction({ page, limit});
       set({items: resp ?? [],  isLoading: false})
     }catch(error) {
-      throw 'Posts > getData > Unauthorized'
+      throw new Error('Posts > getData > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
@@ -46,7 +46,7 @@ export const usePostStore = create<PostsState>()((set, get) => ({
       retorno = resp
       set({selected: resp.data, isLoading: false})
     }catch(error) {
-      throw 'Posts > findOne > Unauthorized'
+      throw new Error('Posts > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
@@ -61,7 +61,7 @@ export const usePostStore = create<PostsState>()((set, get) => ({
 
       set({selected: retorno?.data, isLoading: false})
     }catch(error) {
-      throw 'Posts > findOne > Unauthorized'
+      throw new Error('Posts > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
@@ -76,7 +76,7 @@ export const usePostStore = create<PostsState>()((set, get) => ({
       retorno = resp
       set({selected: resp.data, isLoading: false})
     }catch(error) {
-      throw 'Posts > findOne > Unauthorized'
+      throw new Error('Posts > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }

@@ -32,7 +32,6 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
     try {
       set({ isLoading: true });
       const resp  = await allCategoryAction({ page, limit});
-      console.log("🚀 ~ resp.......:", resp)
       set({items: resp ?? [],  isLoading: false})
     }catch(error) {
       throw new Error('Categorys > getData > Unauthorized')
@@ -41,27 +40,26 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
     }
   },
 
-  findOne: async( id: string): Promise<ICategory | null> => {
-    let retorno = null
+  findOne: async( id: string): Promise<ICategory | ResponsePropio> => {
+    let retorno: ICategory | ResponsePropio = { error: true, msg: "Error desconocido" };
     try {
-      const resp  = await findCategoryAction(id);
-      retorno = resp
-      set({selected: resp.data, isLoading: false})
+      retorno  = await findCategoryAction(id);
+      if ('data' in retorno) set({selected: retorno.data, isLoading: false})
     }catch(error) {
-      throw 'Categorys > findOne > Unauthorized'
+      throw new Error('Categorys > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
-    return retorno.data ?? null
+    return retorno
   },
 
   createOrUpdate: async( entitdad: ICategory): Promise<ICategory | ResponsePropio> => {
-    let retorno:any = { error: true, msg: "No action taken" };
+    let retorno: ICategory | ResponsePropio = { error: true, msg: "Error desconocido" };
     try {
       if (entitdad.id) retorno = await updateCategoryAction(entitdad);
       if (!entitdad.id) retorno = await createCategoryAction(entitdad);
       
-      set({selected: retorno?.data, isLoading: false})
+      if ('data' in retorno) set({selected: retorno?.data, isLoading: false})
     }catch(error) {
       throw new Error('Categorys > createOrUpdate > Unauthorized')
     }finally {
@@ -77,7 +75,7 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
       const resp  = await deleteCategoryAction(id);
       retorno = resp
     }catch(error) {
-      throw 'Categorys > findOne > Unauthorized'
+      throw new Error('Categorys > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }

@@ -1,17 +1,19 @@
 "use server";
 
-import { CategoryDatasourceGQL, CategoryRepositoryImpl } from "..";
+import { ResponsePropio } from "@/config";
+import { CategoryDatasourceGQL, CategoryRepositoryImpl, ICategory } from "..";
 
 
-export async function findCategoryAction(id: string) {
+export async function findCategoryAction(id: string): Promise<ICategory | ResponsePropio> {
+  let retorno: ICategory | ResponsePropio = { error: true, msg: 'Error desconocido'}
   const datasource = new CategoryDatasourceGQL();
   const repo = new CategoryRepositoryImpl(datasource);
   try {
-    const response = await repo.findById(id);
-    return { success: true, data: response.data };
+    retorno = await repo.findById(id);
   } catch (e) {
     console.error("Error en findCategoryAction:", e);
-    return { success: false, error: "No se pudo obtener el asset" };
+  }finally{
+    return retorno
   }
 }
   

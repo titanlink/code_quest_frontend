@@ -9,7 +9,6 @@ export interface ICategory {
 
 export class CategoryMapper {
   static fromJson( json: Record<string, any> ): ICategory {
-    console.log("🚀 ~ CategoryMapper ~ fromJson ~ json:", json['name'])
     return {
       id: json['id'],
       name: json['name'],

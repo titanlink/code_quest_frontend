@@ -9,7 +9,7 @@ export class CategoryRepositoryImpl extends CategoryRepository {
     super();
   }
   
-  async findById(id: string): Promise<any> {
+  async findById(id: string): Promise<ICategory | ResponsePropio> {
     return this.datasource.findById(id);
   }
   async create(entity: any): Promise<ICategory | ResponsePropio> {

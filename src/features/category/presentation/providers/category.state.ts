@@ -26,7 +26,7 @@ export interface CategorysState {
   setLimit: (limit: number) =>void;
 
   getData: (page: number, limit: number) => Promise<void>;
-  findOne: (id: string) => Promise<ICategory | null>;
+  findOne: (id: string) => Promise<ICategory | ResponsePropio>;
   createOrUpdate: (client: ICategory) => Promise<ICategory | ResponsePropio>;
   deleteOne: (id: string) => Promise<ResponsePropio>;
 }

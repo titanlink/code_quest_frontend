@@ -29,26 +29,30 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
       return [];
     }
   }
-  async findById(id: string): Promise<any> {
-    // return mockCategories[0]
+  async findById(id: string): Promise<ICategory | ResponsePropio> {
+    let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
       const peti = await makeClientGraphql();
 
       const { data } = await peti.query<any>({
         query: findCategoryGQL,
         fetchPolicy: "no-cache",
+        variables: {
+          categoryId: Number(id),
+        },
       });
 
-      return CategoryMapper.fromJsonList(data["findCategory"]);
+      retorno = CategoryMapper.fromJson(data["category"]);
     } catch (e) {
       console.error(`Error => findCategoryGQL -> ${e}`);
-      return [];
+    }finally{
+      return retorno
     }
   
   }
 
   async create ( form: ICategory ): Promise<ICategory | ResponsePropio> {
-    // return mockCategories[0]
+    let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
       const peti = await makeClientGraphql();
 
@@ -66,17 +70,17 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
       });
 
       console.log("🚀 ~ CategoryDatasourceGQL ~ create ~ data:", data)
-      return CategoryMapper.fromJson(data["createCategory"]);
+      retorno =  CategoryMapper.fromJson(data["createCategory"]);
     } catch (e) {
       console.error(`Error => createCategoryGQL -> ${e}`);
-      const resp:ResponsePropio = { error: true, msg:`${e}` }
-      return resp;
+    } finally {
+      return retorno
     }
     
   };
 
   async update(form: ICategory): Promise<ICategory | ResponsePropio> {
-    // return mockCategories[0]
+    let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
       const peti = await makeClientGraphql();
 
@@ -93,12 +97,13 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
           },
         },
       });
-
-      return CategoryMapper.fromJson(data["updateCategory"]);
+      retorno = CategoryMapper.fromJson(data["updateCategory"]);
     } catch (e) {
-      const error = `Error => updateCategoryGQL -> ${e}`
+      const error = `${e}`
       console.error(error);
-      return {error: true, msg:error};
+      if ('msg' in retorno) retorno.msg = error
+    }finally{
+      return retorno
     }
   }
 
@@ -115,14 +120,14 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
         },
       });
       const resp = data['removeCategory']
-      if ('message' in resp) return { msg: resp['message'], error: !resp }
-      return retorno
+      if ('message' in resp) retorno =  { msg: resp['message'], error: !resp }
       
-
     } catch (e) {
       const error = `Error => updateCategoryGQL -> ${e}`
       console.error(error, e);
-      return {error: true, msg:error};
+      retorno.msg = error
+    } finally {
+      return retorno
     }
   }
 

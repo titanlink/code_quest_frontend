@@ -13,11 +13,13 @@ export const allCategoryGQL = gql`
 `;
 
 export const findCategoryGQL = gql`
-  query findCategory($limit: Int, $offset: Int) {
-    findCategory(limit: $limit, offset: $offset) {
+  query Category($categoryId: Int!) {
+    category(id: $categoryId) {
       id
-      name
-      description
+        name
+        description
+        color
+        slug
     }
   }
 `;

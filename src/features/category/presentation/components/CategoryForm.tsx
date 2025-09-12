@@ -25,7 +25,7 @@ const formSchema = z.object({
   description: z.string().optional(),
   color: z.string(inputErrors.required).regex(/^#[0-9A-F]{6}$/i, {
     message: "Debe ser un color hexadecimal válido.",
-  }),
+  }).optional(),
 });
 
 export const CategoryForm = ({entity}:Props) => {
@@ -37,8 +37,11 @@ export const CategoryForm = ({entity}:Props) => {
 
   const form = useForm < z.infer < typeof formSchema >> ({
     resolver: zodResolver(formSchema),
-    defaultValues: entity
-
+    defaultValues: {
+      ...entity,
+      id: entity?.id?.toString(),
+      color: entity?.color ?? '#FFFFFF',
+    }
   })
 
   async function onSubmit(values: z.infer < typeof formSchema > ) {
@@ -84,7 +87,7 @@ export const CategoryForm = ({entity}:Props) => {
               <Eye className="mr-2 h-4 w-4" />
               Vista previa
             </Button>
-            <Button type="submit" size="lg" disabled={isPending}>
+            <Button type="submit" size="lg" >
                 {isPending ? (
                   <> <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Guardando... </>
                 ) : (
@@ -166,15 +169,6 @@ export const CategoryForm = ({entity}:Props) => {
             />
 
             </CardContent>
-            <CardFooter>
-              {/* <Button type="submit" size="lg" disabled={isPending}>
-                {isPending ? (
-                  <> <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Guardando... </>
-                ) : (
-                  <> <Save className="h-4 w-4 mr-2" /> Guardar </>
-                )}
-              </Button> */}
-            </CardFooter>
           </CustomCard>
         </div>
 

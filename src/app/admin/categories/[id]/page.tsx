@@ -2,7 +2,7 @@
 import type React from "react"
 
 
-import { allCategoryAction, CategoryForm, ICategory, useCategoryStore } from "@/features"
+import { allCategoryAction, CategoryForm, findCategoryAction, ICategory, useCategoryStore } from "@/features"
 import { Badge, CardContent, CardHeader, CardTitle, CustomCard } from "@/components"
 import { notFound } from "next/navigation"
 import { mockCategories } from "@/lib"
@@ -13,6 +13,7 @@ type Params = Promise<{
 }>;
 
 export default async function Page(props: { params: Promise<Params> }) {
+  let isNotFound = false
   let entity : ICategory | undefined
   const params = await props.params;
   const categories: ICategory[]  = await allCategoryAction({ page:0, limit:1000 });
@@ -28,10 +29,9 @@ export default async function Page(props: { params: Promise<Params> }) {
 
 
   if (id > 0){
-    // const response = await findAssetAction(id);
-    const response = mockCategories[0]
-    if (!response) notFound();
-    entity = response;
+    const response = await findCategoryAction(id.toString());
+    if (response && !('id' in response)) isNotFound = true
+    if(!isNotFound && ('id' in response)) entity = response;
   } 
 
 

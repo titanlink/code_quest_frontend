@@ -33,7 +33,7 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
       const resp  = await allCommentAction({ page, limit});
       set({items: resp ?? [],  isLoading: false})
     }catch(error) {
-      throw 'Comments > getData > Unauthorized'
+      throw new Error('Comments > getData > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
@@ -46,7 +46,7 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
       retorno = resp
       set({selected: resp.data, isLoading: false})
     }catch(error) {
-      throw 'Comments > findOne > Unauthorized'
+      throw new Error('Comments > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
@@ -61,7 +61,7 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
 
       set({selected: retorno?.data, isLoading: false})
     }catch(error) {
-      throw 'Comments > findOne > Unauthorized'
+      throw new Error('Comments > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
@@ -76,7 +76,7 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
       retorno = resp
       set({selected: resp.data, isLoading: false})
     }catch(error) {
-      throw 'Comments > findOne > Unauthorized'
+      throw new Error('Comments > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }

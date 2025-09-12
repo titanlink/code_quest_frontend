@@ -6,12 +6,15 @@ import { ResponsePropio } from "@/config";
 
 
 export async function updateCategoryAction(entity: ICategory): Promise<ICategory | ResponsePropio> {
+  let retorno : ICategory | ResponsePropio = { error: true, msg: "Error desconocido" };
   const datasource = new CategoryDatasourceGQL();
   const repo = new CategoryRepositoryImpl(datasource);
   try {
-    return await repo.update(entity);
+    retorno = await repo.update(entity);
   } catch (e) {
     console.error("Error en createCategoryAction:", e);
-    return { error: true, msg: "No se pudo crear el entity" };
+    if ('error' in retorno) retorno.msg = "No se pudo crear el entity"
+  }finally {
+    return retorno
   }
 }
