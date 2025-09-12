@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { mockComments } from "@/lib/mock-data"
 import { CommentsTable, useCommentStore } from "@/features"
-import { LoadingPage, SearchFilters } from "@/components"
+import { AdminFeatureHeader, LoadingPage, SearchFilters } from "@/components"
 
 export default function AdminCommentsPage() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -34,13 +34,7 @@ export default function AdminCommentsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Comments</h1>
-          <p className="text-muted-foreground">Gestiona todos los artículos del blog</p>
-        </div>
-      </div>
-
+      <AdminFeatureHeader title="Comentarios" subTitle="Gestiona todos los commentarios del blog" ></AdminFeatureHeader>
 
       { isLoading ? ( 
         <LoadingPage /> 

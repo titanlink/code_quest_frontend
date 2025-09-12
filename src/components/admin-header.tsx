@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Bell, Settings, LogOut, Home } from "lucide-react"
 import Link from "next/link"
-import { AnimatedThemeToggler, DotGrid } from "."
+import { AnimatedThemeToggler, AuroraText, DotGrid, DotsGrid } from "."
 
 export function AdminHeader() {
   const { user, logout } = useAuth()
@@ -22,24 +22,13 @@ export function AdminHeader() {
       <div className="flex h-16 items-center justify-between px-6">
         <div className="flex items-center gap-4">
           <Link href="/" className="text-xl font-bold text-primary">
-            DevCaribe
+            <AuroraText> DevCaribe </AuroraText>
           </Link>
           <span className="text-sm text-muted-foreground">Panel de Administración</span>
         </div>
 
-        <div className="w-full h-full relative">
-        <DotGrid
-          dotSize={3}
-          gap={10}
-          baseColor="#271E37"
-          activeColor="#5227FF"
-          proximity={120}
-          shockRadius={250}
-          shockStrength={5}
-          resistance={750}
-          returnDuration={1.5}
-        />
-        </div>
+        <DotsGrid />
+        
 
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="sm" asChild>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { UsersTable, useUserStore } from "@/features"
-import { LoadingPage, SearchFilters } from "@/components"
+import { AdminFeatureHeader, LoadingPage, SearchFilters } from "@/components"
 
 export default function AdminUsersPage() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -36,10 +36,8 @@ export default function AdminUsersPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold">Usuarios</h1>
-        <p className="text-muted-foreground">Gestiona los usuarios registrados en el blog</p>
-      </div>
+      <AdminFeatureHeader title="Usuarios" subTitle="Gestiona los usuarios registrados en el blog" ></AdminFeatureHeader>
+      
 
       { isLoading ? ( 
           <LoadingPage /> 

@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { LogOut, Settings, User } from "lucide-react"
-import { AnimatedThemeToggler, DotGrid } from "."
+import { AnimatedThemeToggler, AuroraText, DotGrid, DotsGrid } from "."
 
 
 export function Navbar() {
@@ -22,22 +22,10 @@ export function Navbar() {
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="text-xl font-bold text-primary">
-          DevCaribe
+          <AuroraText> DevCaribe </AuroraText>
         </Link>
 
-        <div className="w-full h-full relative">
-          <DotGrid
-          dotSize={3}
-          gap={10}
-          baseColor="#271E37"
-          activeColor="#5227FF"
-          proximity={120}
-          shockRadius={250}
-          shockStrength={5}
-          resistance={750}
-          returnDuration={1.5}
-        />
-        </div>
+        <DotsGrid />
         
 
         <div className="flex items-center gap-4">

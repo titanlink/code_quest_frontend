@@ -1,11 +1,11 @@
-import { Badge, Button, CardContent, CardHeader, CardTitle, CustomCard, Input, Label } from '@/components'
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, CustomCard, Input, Label, Switch } from '@/components'
 import { Textarea } from '@/components/ui/textarea'
 import { mockCategories } from '@/lib'
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@radix-ui/react-select'
-import { Switch } from '@radix-ui/react-switch'
 import { X } from 'lucide-react'
 import React from 'react'
 import { IPost } from '../..'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
 
 interface formData {
     title: string;
@@ -110,23 +110,23 @@ export const PostForm = ({
                 <CardTitle>Configuración</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="published">Publicar</Label>
+                <Card className="flex flex-row px-2 py-3 items-center justify-between bg-gray-400/10">
+                    <Label htmlFor="published">Publicar</Label>
                   <Switch
                     id="published"
                     checked={formData.published}
                     onCheckedChange={(checked) => setFormData({ ...formData, published: checked })}
-                  />
-                </div>
+                    />
+                </Card>
 
-                <div className="flex items-center justify-between">
+                <Card className="flex flex-row px-2 py-3 items-center justify-between bg-gray-400/10">
                   <Label htmlFor="featured">Destacado</Label>
                   <Switch
                     id="featured"
                     checked={formData.featured}
                     onCheckedChange={(checked) => setFormData({ ...formData, featured: checked })}
                   />
-                </div>
+                </Card>
               </CardContent>
             </CustomCard>
 
