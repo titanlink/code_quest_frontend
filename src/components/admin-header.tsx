@@ -12,8 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Bell, Settings, LogOut, Home } from "lucide-react"
 import Link from "next/link"
-import { AnimatedThemeToggler } from "."
-import DotGrid from "./DotGrid"
+import { AnimatedThemeToggler, DotGrid } from "."
 
 export function AdminHeader() {
   const { user, logout } = useAuth()

@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { ICategory, useCategoryStore } from "../..";
-import { ResponsePropio } from '@/config';
+
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { ArrowLeft, Eye, Loader2, Save } from "lucide-react";

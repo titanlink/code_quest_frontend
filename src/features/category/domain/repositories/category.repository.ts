@@ -7,5 +7,5 @@ export abstract class CategoryRepository {
   abstract create(entity: any): Promise<ICategory | ResponsePropio>;
   abstract update(entity: any): Promise<ICategory | ResponsePropio>;
   abstract all(page:number, limit:number): Promise<any>;
-  abstract delete(id: string): Promise<ICategory | ResponsePropio>;
+  abstract delete(id: string): Promise<ResponsePropio>;
 }

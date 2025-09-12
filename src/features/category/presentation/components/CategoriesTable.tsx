@@ -9,9 +9,10 @@ import Link from 'next/link'
 interface Props {
   filteredCategories:ICategory[],
   handleDeleteCategory: (categoryId: string) => void
+  isPending?: boolean
 }
 
-export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Props) => {
+export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPending = false}: Props) => {
   return (
     <CustomCard>
       <CardHeader>
@@ -68,7 +69,7 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Prop
                         </Link>
                       </DropdownMenuItem>
                       <ConfirmDelete onDelete={() => handleDeleteCategory(category?.id ?? '')}>
-                        <Button variant="destructive" size="sm" className='w-full flex flex-row justify-between'>
+                        <Button variant="destructive" size="sm" className='w-full flex flex-row justify-between'  disabled={isPending}>
                           <Trash2 className="h-4 w-4" />
                           Eliminar
                         </Button>

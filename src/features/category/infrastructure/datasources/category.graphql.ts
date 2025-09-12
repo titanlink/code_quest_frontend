@@ -45,3 +45,12 @@ export const updateCategoryGQL = gql`
   }
 }
 `;
+export const removeCategoryGQL = gql`
+  mutation RemoveCategory($removeCategoryId: Int!) {
+  removeCategory(id: $removeCategoryId) {
+    error
+    message
+    statusCode
+  }
+}
+`;

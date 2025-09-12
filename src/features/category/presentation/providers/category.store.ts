@@ -71,18 +71,17 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
   
   },
   
-  deleteOne: async( id: string ) : Promise<ICategory | null> => {
-    let retorno = null
+  deleteOne: async( id: string ) : Promise<ResponsePropio> => {
+    let retorno: ResponsePropio = { msg:'Error desconocido', error: true}
     try {
       const resp  = await deleteCategoryAction(id);
       retorno = resp
-      set({selected: resp.data, isLoading: false})
     }catch(error) {
       throw 'Categorys > findOne > Unauthorized'
     }finally {
       set({ isLoading: false });
     }
-    return retorno?.data ?? null
+    return retorno
   },
 
 

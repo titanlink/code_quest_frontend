@@ -28,5 +28,5 @@ export interface CategorysState {
   getData: (page: number, limit: number) => Promise<void>;
   findOne: (id: string) => Promise<ICategory | null>;
   createOrUpdate: (client: ICategory) => Promise<ICategory | ResponsePropio>;
-  deleteOne: (id: string) => Promise<ICategory | null>;
+  deleteOne: (id: string) => Promise<ResponsePropio>;
 }

@@ -50,7 +50,7 @@ function hexToRgb(hex: string) {
   };
 }
 
-const DotGrid: React.FC<DotGridProps> = ({
+export const DotGrid: React.FC<DotGridProps> = ({
   dotSize = 16,
   gap = 32,
   baseColor = '#5227FF',
@@ -287,4 +287,3 @@ const DotGrid: React.FC<DotGridProps> = ({
   );
 };
 
-export default DotGrid;

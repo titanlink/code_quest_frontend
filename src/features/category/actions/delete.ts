@@ -1,9 +1,10 @@
 "use server";
 
-import { CategoryDatasourceGQL, CategoryRepositoryImpl } from "..";
+import { ResponsePropio } from "@/config";
+import { CategoryDatasourceGQL, CategoryRepositoryImpl, ICategory } from "..";
 
 
-export async function deleteCategoryAction(id: string) : Promise<any> {
+export async function deleteCategoryAction(id: string) : Promise<ResponsePropio> {
   const datasource = new CategoryDatasourceGQL();
   const repo = new CategoryRepositoryImpl(datasource);
 

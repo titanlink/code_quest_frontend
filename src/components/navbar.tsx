@@ -12,8 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { LogOut, Settings, User } from "lucide-react"
-import { AnimatedThemeToggler } from "."
-import DotGrid from "./DotGrid"
+import { AnimatedThemeToggler, DotGrid } from "."
+
 
 export function Navbar() {
   const { user, logout } = useAuth()

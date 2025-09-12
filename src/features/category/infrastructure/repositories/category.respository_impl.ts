@@ -21,7 +21,7 @@ export class CategoryRepositoryImpl extends CategoryRepository {
   async all(page: number, limit: number): Promise<any> {
     return this.datasource.all(page, limit);
   }
-  async delete(id: string): Promise<ICategory | ResponsePropio> {
+  async delete(id: string): Promise<ResponsePropio> {
     return this.datasource.delete(id);
   }
   

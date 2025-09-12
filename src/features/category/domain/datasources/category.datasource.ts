@@ -7,5 +7,5 @@ export interface CategoryDatasource {
   create(entity: any): Promise<ICategory | ResponsePropio>;
   update(entity: any): Promise<ICategory | ResponsePropio>;
   all(page:number, limit:number): Promise<any>;
-  delete(id: string): Promise<ICategory | ResponsePropio>;
+  delete(id: string): Promise<ResponsePropio>;
 }

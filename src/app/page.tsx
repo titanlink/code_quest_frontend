@@ -5,6 +5,7 @@ import { mockPosts } from "@/lib/mock-data"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, BookOpen, Users, TrendingUp } from "lucide-react"
 import Link from "next/link"
+import { TextType } from "@/components"
 
 export default function HomePage() {
   const featuredPosts = mockPosts.filter((post) => post.featured && post.published)
@@ -18,8 +19,14 @@ export default function HomePage() {
       <section className="relative py-20 px-4 bg-gradient-to-br from-primary/5 to-accent/10">
         <div className="container mx-auto max-w-6xl text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-balance mb-6">
-            Descubre el futuro de la
-            <span className="text-primary"> tecnología</span>
+            <TextType 
+            text={["Descubre el futuro de la tecnología"]}
+            typingSpeed={55}
+            pauseDuration={1500}
+            showCursor={true}
+            cursorCharacter="|"
+            className="text-primary"
+          />
           </h1>
           <p className="text-xl text-muted-foreground text-pretty max-w-2xl mx-auto mb-8">
             Artículos, tutoriales y análisis profundos sobre desarrollo web, diseño UX y las últimas tendencias

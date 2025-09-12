@@ -1,6 +1,6 @@
 import { CategoryDatasource, CategoryMapper, ICategory } from "../..";
 import { makeClientGraphql, mockCategories } from "@/lib";
-import { allCategoryGQL, createCategoryGQL, findCategoryGQL, updateCategoryGQL } from "./category.graphql";
+import { allCategoryGQL, createCategoryGQL, findCategoryGQL, removeCategoryGQL, updateCategoryGQL } from "./category.graphql";
 import { ResponsePropio } from "@/config";
 
 
@@ -102,8 +102,28 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
     }
   }
 
-  async delete(id: string): Promise<ICategory | ResponsePropio> {
-    return mockCategories[0]
+  async delete(id: string): Promise<ResponsePropio> {
+    let retorno: ResponsePropio = { msg: 'Error desconocido', error: true }
+    try {
+      const peti = await makeClientGraphql();
+
+      const { data } = await peti.mutate<any>({
+        mutation: removeCategoryGQL,
+        fetchPolicy: "no-cache",
+        variables: {
+          removeCategoryId: Number(id),
+        },
+      });
+      const resp = data['removeCategory']
+      if ('message' in resp) return { msg: resp['message'], error: !resp }
+      return retorno
+      
+
+    } catch (e) {
+      const error = `Error => updateCategoryGQL -> ${e}`
+      console.error(error, e);
+      return {error: true, msg:error};
+    }
   }
 
 }
