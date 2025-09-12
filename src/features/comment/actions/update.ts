@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { CommentDatasourceGQL, CommentRepositoryImpl } from "../infrastructure";
+import { CommentDatasourceGQL, CommentRepositoryImpl } from "..";
 import { IComment } from "../domain";
 
 

@@ -13,6 +13,7 @@ import {
 import { Bell, Settings, LogOut, Home } from "lucide-react"
 import Link from "next/link"
 import { AnimatedThemeToggler } from "."
+import DotGrid from "./DotGrid"
 
 export function AdminHeader() {
   const { user, logout } = useAuth()
@@ -25,6 +26,20 @@ export function AdminHeader() {
             DevCaribe
           </Link>
           <span className="text-sm text-muted-foreground">Panel de Administración</span>
+        </div>
+
+        <div className="w-full h-full relative">
+        <DotGrid
+          dotSize={3}
+          gap={10}
+          baseColor="#271E37"
+          activeColor="#5227FF"
+          proximity={120}
+          shockRadius={250}
+          shockStrength={5}
+          resistance={750}
+          returnDuration={1.5}
+        />
         </div>
 
         <div className="flex items-center gap-4">

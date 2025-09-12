@@ -1,6 +1,6 @@
 "use server";
 
-import { PostDatasourceGQL, PostRepositoryImpl } from "../infrastructure";
+import { PostDatasourceGQL, PostRepositoryImpl } from "..";
 
 
 export async function deletePostAction(id: string) : Promise<any> {

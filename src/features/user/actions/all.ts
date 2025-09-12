@@ -1,6 +1,6 @@
 "use server";
 
-import { UserDatasourceGQL, UserRepositoryImpl } from "../infrastructure";
+import { UserDatasourceGQL, UserRepositoryImpl } from "..";
 
 
 export async function allUserAction({page = 0, limit = 50}) : Promise<any> {

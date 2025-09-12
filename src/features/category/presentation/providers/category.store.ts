@@ -9,6 +9,7 @@ import {
   findCategoryAction,
   updateCategoryAction 
 } from "../..";
+import { ResponsePropio } from "@/config";
 
 
 export const useCategoryStore = create<CategorysState>()((set, get) => ({
@@ -31,9 +32,10 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
     try {
       set({ isLoading: true });
       const resp  = await allCategoryAction({ page, limit});
+      console.log("🚀 ~ resp.......:", resp)
       set({items: resp ?? [],  isLoading: false})
     }catch(error) {
-      throw 'Categorys > getData > Unauthorized'
+      throw new Error('Categorys > getData > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
@@ -53,19 +55,19 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
     return retorno.data ?? null
   },
 
-  createOrUpdate: async( entitdad: ICategory): Promise<any> => {
+  createOrUpdate: async( entitdad: ICategory): Promise<ICategory | ResponsePropio> => {
     let retorno:any = { error: true, msg: "No action taken" };
     try {
       if (entitdad.id) retorno = await updateCategoryAction(entitdad);
       if (!entitdad.id) retorno = await createCategoryAction(entitdad);
-
+      
       set({selected: retorno?.data, isLoading: false})
     }catch(error) {
-      throw 'Categorys > findOne > Unauthorized'
+      throw new Error('Categorys > createOrUpdate > Unauthorized')
     }finally {
       set({ isLoading: false });
+      return retorno
     }
-    return retorno
   
   },
   

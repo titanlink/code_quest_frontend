@@ -1,6 +1,6 @@
 "use server";
 
-import { CategoryDatasourceGQL, CategoryRepositoryImpl } from "../infrastructure";
+import { CategoryDatasourceGQL, CategoryRepositoryImpl } from "..";
 
 
 export async function allCategoryAction({page = 0, limit = 50}) : Promise<any> {

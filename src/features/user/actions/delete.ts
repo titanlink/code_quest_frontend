@@ -1,6 +1,6 @@
 "use server";
 
-import { UserDatasourceGQL, UserRepositoryImpl } from "../infrastructure";
+import { UserDatasourceGQL, UserRepositoryImpl } from "..";
 
 
 export async function deleteUserAction(id: string) : Promise<any> {

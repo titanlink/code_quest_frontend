@@ -20,7 +20,7 @@ export async function makeClientGraphql(time: number = 10000) {
 
   const httpLink = new HttpLink({
     // uri: process.env.NEXT_PUBLIC_BACKEND_URL_GQL,
-    uri:'http://192.168.0.204:4000/graphql',
+    uri:'http://192.168.0.107:4000/graphql',
     // fetchOptions: { cache: "no-store", timeoutPromise },
     headers:{
       Authorization: `Bearer ${token}`,

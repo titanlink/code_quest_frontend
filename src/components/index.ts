@@ -7,6 +7,7 @@ export * from './admin-sidebar'
 export * from './featured-post'
 export * from './navbar'
 export * from './post-card'
+export * from './input-errors'
 
 export * from './SearchFilters'
 export * from './AdminFeatureHeader'

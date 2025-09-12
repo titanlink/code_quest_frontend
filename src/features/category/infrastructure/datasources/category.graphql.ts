@@ -25,6 +25,7 @@ export const findCategoryGQL = gql`
 export const createCategoryGQL = gql`
   mutation CreateCategory($input: CreateCategoryInput!) {
   createCategory(createCategoryInput: $input) {
+    id
     name
     description
     slug
@@ -36,6 +37,7 @@ export const createCategoryGQL = gql`
 export const updateCategoryGQL = gql`
   mutation UpdateCategory($input: UpdateCategoryInput!) {
   updateCategory(updateCategoryInput: $input) {
+    id
     name
     description
     slug

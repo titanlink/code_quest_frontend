@@ -1,3 +1,4 @@
+import { ResponsePropio } from "@/config";
 import { ICategory } from "../..";
 
 
@@ -26,6 +27,6 @@ export interface CategorysState {
 
   getData: (page: number, limit: number) => Promise<void>;
   findOne: (id: string) => Promise<ICategory | null>;
-  createOrUpdate: (client: ICategory) => Promise<any>;
+  createOrUpdate: (client: ICategory) => Promise<ICategory | ResponsePropio>;
   deleteOne: (id: string) => Promise<ICategory | null>;
 }

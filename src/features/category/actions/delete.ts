@@ -1,10 +1,9 @@
 "use server";
 
-import { CategoryDatasourceGQL, CategoryRepositoryImpl } from "../infrastructure";
+import { CategoryDatasourceGQL, CategoryRepositoryImpl } from "..";
 
 
 export async function deleteCategoryAction(id: string) : Promise<any> {
-  // throw new Error("serverAction => deleteCategoryAction -> NOT IMPLEMENT")
   const datasource = new CategoryDatasourceGQL();
   const repo = new CategoryRepositoryImpl(datasource);
 

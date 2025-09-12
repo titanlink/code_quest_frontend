@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { UserDatasourceGQL, UserRepositoryImpl } from "../infrastructure";
+import { UserDatasourceGQL, UserRepositoryImpl } from "..";
 import { IUser } from "../domain";
 
 

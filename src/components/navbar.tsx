@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { LogOut, Settings, User } from "lucide-react"
 import { AnimatedThemeToggler } from "."
+import DotGrid from "./DotGrid"
 
 export function Navbar() {
   const { user, logout } = useAuth()
@@ -23,6 +24,21 @@ export function Navbar() {
         <Link href="/" className="text-xl font-bold text-primary">
           DevCaribe
         </Link>
+
+        <div className="w-full h-full relative">
+          <DotGrid
+          dotSize={3}
+          gap={10}
+          baseColor="#271E37"
+          activeColor="#5227FF"
+          proximity={120}
+          shockRadius={250}
+          shockStrength={5}
+          resistance={750}
+          returnDuration={1.5}
+        />
+        </div>
+        
 
         <div className="flex items-center gap-4">
           {user ? (

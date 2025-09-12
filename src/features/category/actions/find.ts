@@ -1,6 +1,6 @@
 "use server";
 
-import { CategoryDatasourceGQL, CategoryRepositoryImpl } from "../infrastructure";
+import { CategoryDatasourceGQL, CategoryRepositoryImpl } from "..";
 
 
 export async function findCategoryAction(id: string) {

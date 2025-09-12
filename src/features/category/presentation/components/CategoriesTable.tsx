@@ -15,7 +15,7 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Prop
   return (
     <CustomCard>
       <CardHeader>
-        <CardTitle>Todos los Categorys ({filteredCategories.length})</CardTitle>
+        <CardTitle>Todos los Categorias ({filteredCategories.length})</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -34,14 +34,18 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Prop
               <TableRow key={category.id}>
                 <TableCell>
                   <div className="space-y-1">
-                    <p className="font-medium">{category.name}</p>
+                    <p className="font-medium ">{category.name}</p>
                   </div>
                 </TableCell>
                 <TableCell>
                     <p className="text-sm text-muted-foreground line-clamp-1">{category.description}</p>
                 </TableCell>
                 <TableCell>{category.slug}</TableCell>
-                <TableCell>{category.color}</TableCell>
+                <TableCell>
+                  <Badge style={{ backgroundColor: category?.color}} className="text-black/75 font-bold">
+                    {category?.color}
+                  </Badge>
+                </TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -50,6 +54,7 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Prop
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
+                      
                       <DropdownMenuItem asChild>
                         <Link href={`/categories/${category.slug}`}>
                           <Eye className="mr-2 h-4 w-4" />
@@ -57,15 +62,18 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory}: Prop
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link href={`/admin/categories/${category.id}/edit`}>
+                        <Link href={`/admin/categories/${category.id}`}>
                           <Edit className="mr-2 h-4 w-4" />
                           Editar
                         </Link>
                       </DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteCategory(category?.id ?? '')}>
-                          <Trash2 className="mr-2 h-4 w-4" />
+                      <ConfirmDelete onDelete={() => handleDeleteCategory(category?.id ?? '')}>
+                        <Button variant="destructive" size="sm" className='w-full flex flex-row justify-between'>
+                          <Trash2 className="h-4 w-4" />
                           Eliminar
-                        </DropdownMenuItem>
+                        </Button>
+                      </ConfirmDelete>
+
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

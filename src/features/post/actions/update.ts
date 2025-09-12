@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { PostDatasourceGQL, PostRepositoryImpl } from "../infrastructure";
+import { PostDatasourceGQL, PostRepositoryImpl } from "..";
 import { IPost } from "../domain";
 
 

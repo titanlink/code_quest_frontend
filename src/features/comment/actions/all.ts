@@ -1,6 +1,6 @@
 "use server";
 
-import { CommentDatasourceGQL, CommentRepositoryImpl } from "../infrastructure";
+import { CommentDatasourceGQL, CommentRepositoryImpl } from "..";
 
 
 export async function allCommentAction({page = 0, limit = 50}) : Promise<any> {

@@ -13,6 +13,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useAuth } from "@/lib/auth-context"
 import { mockComments } from "@/lib/mock-data"
 import type { Comment } from "@/lib/types"
+import { CustomCard, ShineBorder } from "@/components"
 
 interface EnhancedCommentsSectionProps {
   postId: string
@@ -88,7 +89,7 @@ export function EnhancedCommentsSection({ postId }: EnhancedCommentsSectionProps
 
       {/* Comment Form */}
       {user ? (
-        <Card className="mb-8">
+        <CustomCard className="mb-8">
           <CardHeader>
             <CardTitle className="text-lg">Agregar comentario</CardTitle>
           </CardHeader>
@@ -115,7 +116,8 @@ export function EnhancedCommentsSection({ postId }: EnhancedCommentsSectionProps
               </div>
             </form>
           </CardContent>
-        </Card>
+            <ShineBorder shineColor={["#FE8FB5", "#FFBE7B"]} />
+        </CustomCard>
       ) : (
         <Card className="mb-8 bg-muted/30">
           <CardContent className="pt-6">
@@ -137,7 +139,7 @@ export function EnhancedCommentsSection({ postId }: EnhancedCommentsSectionProps
       )}
 
       {/* Comments List */}
-      <div className="space-y-6">
+      <div className="space-y-6 mt-4">
         {topLevelComments.length > 0 ? (
           topLevelComments.map((comment) => {
             const replies = getReplies(comment.id)
