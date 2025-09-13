@@ -9,7 +9,7 @@ export default function AdminUsersPage() {
   const getUsers = useUserStore((state) => state.getData);
   const users = useUserStore((state) => state.items);
 
-  const page: number = useUserStore( (state) => state.page ?? 1  );
+  const page: number = useUserStore( (state) => state.page ?? 0  );
   const limit: number = useUserStore( (state) => state.limit ?? 50  );
   const isLoading = useUserStore((state) => state.isLoading);
 

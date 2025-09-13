@@ -1,3 +1,4 @@
+import { ResponsePropio } from "@/config";
 import { IPost } from "../..";
 
 
@@ -25,7 +26,7 @@ export interface PostsState {
   setLimit: (limit: number) =>void;
 
   getData: (page: number, limit: number) => Promise<void>;
-  findOne: (id: string) => Promise<IPost | null>;
-  createOrUpdate: (client: IPost) => Promise<any>;
-  deleteOne: (id: string) => Promise<IPost | null>;
+  findOne: (id: string) => Promise<IPost | ResponsePropio>;
+  createOrUpdate: (client: IPost) => Promise<IPost | ResponsePropio>;
+  deleteOne: (id: string) => Promise<ResponsePropio>;
 }

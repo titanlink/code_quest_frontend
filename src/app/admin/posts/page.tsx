@@ -13,7 +13,7 @@ export default function AdminPostsPage() {
   const getPosts = usePostStore((state) => state.getData);
   const posts = usePostStore((state) => state.items);
 
-  const page: number = usePostStore( (state) => state.page ?? 1  );
+  const page: number = usePostStore( (state) => state.page ?? 0  );
   const limit: number = usePostStore( (state) => state.limit ?? 50  );
   const isLoading = usePostStore((state) => state.isLoading);
 

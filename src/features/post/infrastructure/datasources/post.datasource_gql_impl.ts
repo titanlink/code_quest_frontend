@@ -51,21 +51,31 @@ export class PostDatasourceGQL implements PostDatasource {
   }
 
   async create ( form: IPost ) {
-    let retorno: IPost | ResponsePropio = { msg: 'Error desconocido', error: true }
+    let retorno: IPost | ResponsePropio = { msg: 'Error desconocido, gql_impl', error: true }
     try {
       const peti = await makeClientGraphql();
+
+      const input = {
+        title: form.title,
+        slug: form.slug,
+        excerpt: form.excerpt,
+        content: form.content,
+        coverImage: form.coverImage ?? '',
+        published: form.published ?? false,
+        featured: form.featured ?? false,
+        tags: form.tags,
+        id_category: Number(form.categoryId),
+        likesCount: 0, // Campo IN-NECESARIO
+      }
 
       const { data } = await peti.mutate<any>({
         mutation: createPostGQL,
         fetchPolicy: "no-cache",
         variables: {
-          input: {
-            slug: form.slug,
-          },
+          input: input,
         },
       });
 
-      console.log("🚀 ~ PostDatasourceGQL ~ create ~ data:", data)
       retorno =  PostMapper.fromJson(data["createPost"]);
     } catch (e) {
       console.error(`Error => createPostGQL -> ${e}`);
@@ -76,26 +86,28 @@ export class PostDatasourceGQL implements PostDatasource {
   };
 
   async update(form: IPost) {
-    let retorno: IPost | ResponsePropio = { msg: 'Error desconocido', error: true }
+    let retorno: IPost | ResponsePropio = { msg: 'Error desconocido, gql impl', error: true }
     try {
       const peti = await makeClientGraphql();
+
+      const input = {
+        id: Number(form.id),
+        title: form.title,
+        slug: form.slug,
+        excerpt: form.excerpt,
+        content: form.content,
+        coverImage: form.coverImage,
+        published: form.published,
+        featured: form.featured,
+        tags: form.tags,
+        id_category: Number(form.categoryId),
+      }
 
       const { data } = await peti.mutate<any>({
         mutation: updatePostGQL,
         fetchPolicy: "no-cache",
         variables: {
-          input: {
-            id: Number(form.id),
-            title: form.title,
-            slug: form.slug,
-            excerpt: form.excerpt,
-            content: form.content,
-            coverImage: form.coverImage,
-            published: form.published,
-            featured: form.featured,
-            tags: form.tags,
-            id_category: Number(form.categoryId),
-          },
+          input: input,
         },
       });
       retorno = PostMapper.fromJson(data["updatePost"]);

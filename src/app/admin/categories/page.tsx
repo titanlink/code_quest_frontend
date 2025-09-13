@@ -19,7 +19,7 @@ export default function AdminCategoriesPage() {
   const removeCategory = useCategoryStore((state) => state.deleteOne);
   const categories = useCategoryStore((state) => state.items);
 
-  const page: number = useCategoryStore( (state) => state.page ?? 1  );
+  const page: number = useCategoryStore( (state) => state.page ?? 0  );
   const limit: number = useCategoryStore( (state) => state.limit ?? 50  );
   const isLoading = useCategoryStore((state) => state.isLoading);
 

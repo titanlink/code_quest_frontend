@@ -6,6 +6,7 @@ import { ResponsePropio } from "@/config";
 
 
 export async function updatePostAction(entity: IPost): Promise<IPost | ResponsePropio> {
+  console.log("🚀 ~ (PASO 1) updatePostAction ~ updatePostAction:")
   let retorno : IPost | ResponsePropio = { error: true, msg: "Error desconocido" };
   const datasource = new PostDatasourceGQL();
   const repo = new PostRepositoryImpl(datasource);

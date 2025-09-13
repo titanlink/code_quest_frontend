@@ -69,7 +69,6 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
         },
       });
 
-      console.log("🚀 ~ CategoryDatasourceGQL ~ create ~ data:", data)
       retorno =  CategoryMapper.fromJson(data["createCategory"]);
     } catch (e) {
       console.error(`Error => createCategoryGQL -> ${e}`);

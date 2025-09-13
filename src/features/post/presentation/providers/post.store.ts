@@ -9,6 +9,7 @@ import {
   findPostAction,
   updatePostAction 
 } from "../..";
+import { ResponsePropio } from "@/config";
 
 
 export const usePostStore = create<PostsState>()((set, get) => ({
@@ -39,48 +40,46 @@ export const usePostStore = create<PostsState>()((set, get) => ({
     }
   },
 
-  findOne: async( id: string): Promise<IPost | null> => {
-    let retorno = null
+  findOne: async( id: string): Promise<IPost | ResponsePropio> => {
+    let retorno: IPost | ResponsePropio = { error: true, msg: "Error desconocido" };
     try {
-      const resp  = await findPostAction(id);
-      retorno = resp
-      set({selected: resp.data, isLoading: false})
-    }catch(error) {
-      throw new Error('Posts > findOne > Unauthorized')
-    }finally {
-      set({ isLoading: false });
-    }
-    return retorno.data ?? null
-  },
-
-  createOrUpdate: async( entitdad: IPost): Promise<any> => {
-    let retorno:any = { error: true, msg: "No action taken" };
-    try {
-      if (entitdad.id) retorno = await updatePostAction(entitdad);
-      if (entitdad.id == '0') retorno = await createPostAction(entitdad);
-
-      set({selected: retorno?.data, isLoading: false})
+      retorno  = await findPostAction(id);
+      if ('data' in retorno) set({selected: retorno.data, isLoading: false})
     }catch(error) {
       throw new Error('Posts > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
     return retorno
+  },
+
+  createOrUpdate: async( entitdad: IPost): Promise<IPost | ResponsePropio> => {
+    let retorno: IPost | ResponsePropio = { error: true, msg: "Error desconocido, createOrUpdate" };
+    try {
+      if (entitdad.id) retorno = await updatePostAction(entitdad);
+      if (!entitdad.id) retorno = await createPostAction(entitdad);
+      
+      if ('data' in retorno) set({selected: retorno?.data, isLoading: false})
+    }catch(error) {
+      throw new Error('Posts > createOrUpdate > Unauthorized')
+    }finally {
+      set({ isLoading: false });
+      return retorno
+    }
   
   },
   
-  deleteOne: async( id: string ) : Promise<IPost | null> => {
-    let retorno = null
+  deleteOne: async( id: string ) : Promise<ResponsePropio> => {
+    let retorno: ResponsePropio = { msg:'Error desconocido', error: true}
     try {
       const resp  = await deletePostAction(id);
       retorno = resp
-      set({selected: resp.data, isLoading: false})
     }catch(error) {
       throw new Error('Posts > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
-    return retorno?.data ?? null
+    return retorno
   },
 
 

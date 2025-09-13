@@ -10,17 +10,18 @@ import { useForm } from "react-hook-form";
 import { IPost, usePostStore } from "../..";
 
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { ArrowLeft, Eye, Loader2, Save } from "lucide-react";
 import Link from "next/link";
 import { mockCategories } from "@/lib";
+import { useCategoryStore } from "@/features";
 
 interface Props {
   entity?: IPost;
 }
 
 const formSchema = z.object({
-  id: z.string(inputErrors.invalidFormat),
+  id: z.string().optional(),
   title: z.string(inputErrors.required).min(2,inputErrors.minLength(2)),
   slug: z.string(inputErrors.required).min(2,inputErrors.minLength(2)).max(60, inputErrors.minLength(60)),
   excerpt: z.string(inputErrors.required).min(2,inputErrors.minLength(2)),
@@ -38,6 +39,8 @@ export const PostForm = ({entity}:Props) => {
   const [isPending, startTransition] = useTransition()
   const router = useRouter();
   const createOrUpdate = usePostStore((state) => state.createOrUpdate);
+  const getCategories = useCategoryStore((state) => state.getData);
+  const categories = useCategoryStore((state) => state.items);
 
   const form = useForm < z.infer < typeof formSchema >> ({
     resolver: zodResolver(formSchema),
@@ -47,6 +50,10 @@ export const PostForm = ({entity}:Props) => {
       categoryId: entity?.categoryId?.toString(),
     }
   })
+
+  useEffect(() => {
+    getCategories(0, 1000);
+  }, []);
 
   async function onSubmit(values: z.infer < typeof formSchema > ) {
     // toast.info( <pre><b>{JSON.stringify(values, null, 2) } </b> </pre>)
@@ -72,22 +79,6 @@ export const PostForm = ({entity}:Props) => {
   return (
     <Form {...form}>
       {/* <pre><b>{JSON.stringify(form.formState.errors, null, 2) } </b> </pre> */}
-
-
-      {/* { Object.entries(form.formState.errors).length > 0 && (
-        <CustomAlert 
-        title="Revisar los siguientes criterios" 
-        description={
-        <ul>
-          {Object.entries(form.formState.errors).map(([key, value]) => (
-            <li key={key}>
-              <strong>{key}:</strong> {value.message}
-            </li>
-          ))}
-        </ul>}
-        className="mb-4" 
-        variant="error" />)} */}
-
 
       <form onSubmit={form.handleSubmit(onSubmit)}  className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       
@@ -259,28 +250,36 @@ export const PostForm = ({entity}:Props) => {
 
           {/* Category */}
           <CustomCard>
-            <CardHeader>
-              <CardTitle>Categoría</CardTitle>
-            </CardHeader>
+
             <CardContent>
-              <Select
-                value={'1'}
-                onValueChange={(value) => {}}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecciona una categoría" />
-                </SelectTrigger>
-                <SelectContent>
-                  {mockCategories.map((category) => (
-                    <SelectItem key={category.id} value={category.id}>
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: category.color }} />
-                        {category.name}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormField
+                control={form.control}
+                name="categoryId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Categoria</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {categories.map((category) => (
+                          <SelectItem key={category.id} value={category?.id?.toString() ?? ''}>
+                            <div className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: category.color }} />
+                              {category.name}
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                      
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </CardContent>
           </CustomCard>
 

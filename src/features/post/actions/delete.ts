@@ -1,18 +1,22 @@
 "use server";
 
+import { ResponsePropio } from "@/config";
 import { PostDatasourceGQL, PostRepositoryImpl } from "..";
 
 
-export async function deletePostAction(id: string) : Promise<any> {
-  // throw new Error("serverAction => deletePostAction -> NOT IMPLEMENT")
+export async function deletePostAction(id: string) : Promise<ResponsePropio> {
+  let retorno: ResponsePropio = { error: true, msg: 'Error desconocido'}
   const datasource = new PostDatasourceGQL();
   const repo = new PostRepositoryImpl(datasource);
 
   try {
-    return await repo.delete(id);
+    retorno = await repo.delete(id);
   } catch (e) {
-    console.error("Error en serverAction => deletePostAction:", e);
-    return { error: true, msg: "No se pudo eliminar el asset" };
+    const error = "Error en serverAction => deletePostAction:"
+    console.error(error, e);
+    retorno.msg = error
+  }finally {
+    return retorno
   }
 }
   

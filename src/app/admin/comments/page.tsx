@@ -13,7 +13,7 @@ export default function AdminCommentsPage() {
   const getComments = useCommentStore((state) => state.getData);
   const comments = useCommentStore((state) => state.items);
 
-  const page: number = useCommentStore( (state) => state.page ?? 1  );
+  const page: number = useCommentStore( (state) => state.page ?? 0  );
   const limit: number = useCommentStore( (state) => state.limit ?? 50  );
   const isLoading = useCommentStore((state) => state.isLoading);
 
