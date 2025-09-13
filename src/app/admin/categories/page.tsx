@@ -3,7 +3,6 @@
 import { useEffect, useState, useTransition } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { mockCategories } from "@/lib/mock-data"
 import { AdminFeatureHeader, LoadingPage, SearchFilters } from "@/components"
 import { Plus } from "lucide-react"
 import { CategoriesTable, useCategoryStore } from "@/features"

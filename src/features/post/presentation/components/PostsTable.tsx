@@ -39,10 +39,10 @@ export const PostsTable = ({filteredPosts, handleDeletePost}: Props) => {
                     <p className="text-sm text-muted-foreground line-clamp-1">{post.excerpt}</p>
                   </div>
                 </TableCell>
-                <TableCell>{post.author.name}</TableCell>
+                <TableCell>{post?.author?.name}</TableCell>
                 <TableCell>
-                  <Badge style={{ backgroundColor: post.category.color }} className="text-white">
-                    {post.category.name}
+                  <Badge style={{ backgroundColor: post?.category?.color }} className="text-white">
+                    {post?.category?.name}
                   </Badge>
                 </TableCell>
                 <TableCell>
@@ -53,7 +53,7 @@ export const PostsTable = ({filteredPosts, handleDeletePost}: Props) => {
                     {post.featured && <Badge className="bg-primary">Destacado</Badge>}
                   </div>
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground">{post.createdAt.toLocaleDateString()}</TableCell>
+                <TableCell className="text-sm text-muted-foreground">{post?.createdAt?.toLocaleDateString()}</TableCell>
                 <TableCell>
                   <div className="flex gap-4 text-sm text-muted-foreground">
                     <span>{post.viewsCount} vistas</span>
@@ -81,7 +81,7 @@ export const PostsTable = ({filteredPosts, handleDeletePost}: Props) => {
                           Editar
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive" onClick={() => handleDeletePost(post.id)}>
+                      <DropdownMenuItem className="text-destructive" onClick={() => handleDeletePost(post?.id ?? '')}>
                         <Trash2 className="mr-2 h-4 w-4" />
                         Eliminar
                       </DropdownMenuItem>

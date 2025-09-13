@@ -1,22 +1,58 @@
-import { ICategory, IUser } from "@/features"
+import { CategoryMapper, ICategory, IUser } from "@/features"
 
 export interface IPost {
-  id: string
+  id?: string
   title: string
   slug: string
   content: string
   excerpt: string
-  coverImage?: string
-  authorId: string
-  author: IUser
-  categoryId: string
-  category: ICategory
   tags: string[]
-  published: boolean
-  featured: boolean
-  likesCount: number
-  commentsCount: number
-  viewsCount: number
-  createdAt: Date
-  updatedAt: Date
+  published?: boolean
+  featured?: boolean
+  likesCount?: number
+  commentsCount?: number
+  viewsCount?: number
+  coverImage?: string
+  authorId?: string
+  author?: IUser
+  categoryId?: string
+  category?: ICategory
+  createdAt?: Date
+  updatedAt?: Date
+}
+
+export class PostMapper {
+  static fromJson( json: Record<string, any> ): IPost {
+    const category = CategoryMapper.fromJson(json['category'])
+    return {
+      id: json['id'],
+      title: json['title'],
+      slug: json['slug'],
+      content: json['content'],
+      coverImage: json['coverImage'],
+      excerpt:  json['excerpt'],
+      authorId: json['authorId'],
+      author: json['author'],
+      categoryId: category?.id,
+      category: category,
+      tags: json['tags'],
+      published: json['published'] ?? false,
+      featured: json['featured'] ?? false,
+      likesCount: json['likesCount'] ?? 0,
+      commentsCount: json['commentsCount'] ?? 0,
+      viewsCount: json['viewsCount'] ?? 0,
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt']
+    }
+  }
+
+  static fromJsonList( data: any ) : IPost[] {
+    const entities: IPost[] = [];
+    if (!data) return entities
+    for (const json of data) {
+      const entidad = PostMapper.fromJson(json);
+      if(entidad) entities.push(entidad);
+    }
+    return entities;
+  }
 }

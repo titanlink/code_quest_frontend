@@ -9,7 +9,6 @@ import { Plus } from "lucide-react"
 
 export default function AdminPostsPage() {
   const [searchTerm, setSearchTerm] = useState("")
-  // const [posts, setPosts] = useState(mockPosts)
 
   const getPosts = usePostStore((state) => state.getData);
   const posts = usePostStore((state) => state.items);
@@ -20,8 +19,8 @@ export default function AdminPostsPage() {
 
   const filteredPosts = posts.filter(
     (post) =>
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.author.name.toLowerCase().includes(searchTerm.toLowerCase()),
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) 
+    // || post.author.name.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
   const handleDeletePost = (postId: string) => {

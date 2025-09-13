@@ -9,19 +9,19 @@ export class CategoryRepositoryImpl extends CategoryRepository {
     super();
   }
   
-  async findById(id: string): Promise<ICategory | ResponsePropio> {
+  async findById(id: string){
     return this.datasource.findById(id);
   }
-  async create(entity: any): Promise<ICategory | ResponsePropio> {
+  async create(entity: any){
     return this.datasource.create(entity);
   }
-  async update(entity: any): Promise<ICategory | ResponsePropio> {
+  async update(entity: any){
     return this.datasource.update(entity);
   }
-  async all(page: number, limit: number): Promise<any> {
+  async all(page: number, limit: number){
     return this.datasource.all(page, limit);
   }
-  async delete(id: string): Promise<ResponsePropio> {
+  async delete(id: string){
     return this.datasource.delete(id);
   }
   

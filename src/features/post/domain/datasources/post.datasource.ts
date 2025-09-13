@@ -1,10 +1,11 @@
+import { ResponsePropio } from "@/config";
 import { IPost } from "..";
 
 
 export interface PostDatasource {
-  all(page:number, limit:number): Promise<IPost[]>;
-  findById(id: string): Promise<any>;
-  create(entity: any): Promise<any>;
-  update(entity: any): Promise<any>;
-  delete(id: string): Promise<any>;
+  all(page:number, limit:number): Promise<any>;
+  findById(id: string): Promise<IPost | ResponsePropio>;
+  create(entity: any): Promise<IPost | ResponsePropio>;
+  update(entity: any): Promise<IPost | ResponsePropio>;
+  delete(id: string): Promise<ResponsePropio>;
 }

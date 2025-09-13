@@ -1,17 +1,19 @@
 "use server";
 
-import { PostDatasourceGQL, PostRepositoryImpl } from "..";
+import { ResponsePropio } from "@/config";
+import { PostDatasourceGQL, PostRepositoryImpl, IPost } from "..";
 
 
-export async function findPostAction(id: string) {
+export async function findPostAction(id: string): Promise<IPost | ResponsePropio> {
+  let retorno: IPost | ResponsePropio = { error: true, msg: 'Error desconocido'}
   const datasource = new PostDatasourceGQL();
   const repo = new PostRepositoryImpl(datasource);
   try {
-    const response = await repo.findById(id);
-    return { success: true, data: response.data };
+    retorno = await repo.findById(id);
   } catch (e) {
     console.error("Error en findPostAction:", e);
-    return { success: false, error: "No se pudo obtener el asset" };
+  }finally{
+    return retorno
   }
 }
   

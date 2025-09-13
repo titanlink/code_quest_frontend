@@ -1,5 +1,5 @@
 import { CategoryDatasource, CategoryMapper, ICategory } from "../..";
-import { makeClientGraphql, mockCategories } from "@/lib";
+import { makeClientGraphql } from "@/lib";
 import { allCategoryGQL, createCategoryGQL, findCategoryGQL, removeCategoryGQL, updateCategoryGQL } from "./category.graphql";
 import { ResponsePropio } from "@/config";
 
@@ -8,7 +8,7 @@ import { ResponsePropio } from "@/config";
 export class CategoryDatasourceGQL implements CategoryDatasource {
   
 
-  async all(page = 0, limit = 50): Promise<any> {
+  async all(page = 0, limit = 50) {
     // return mockCategories
     try {
       const peti = await makeClientGraphql();
@@ -29,7 +29,7 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
       return [];
     }
   }
-  async findById(id: string): Promise<ICategory | ResponsePropio> {
+  async findById(id: string){
     let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
       const peti = await makeClientGraphql();
@@ -51,7 +51,7 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
   
   }
 
-  async create ( form: ICategory ): Promise<ICategory | ResponsePropio> {
+  async create ( form: ICategory ) {
     let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
       const peti = await makeClientGraphql();
@@ -79,7 +79,7 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
     
   };
 
-  async update(form: ICategory): Promise<ICategory | ResponsePropio> {
+  async update(form: ICategory){
     let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
       const peti = await makeClientGraphql();
@@ -107,7 +107,7 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
     }
   }
 
-  async delete(id: string): Promise<ResponsePropio> {
+  async delete(id: string) {
     let retorno: ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
       const peti = await makeClientGraphql();
