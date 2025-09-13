@@ -60,10 +60,17 @@ export const createPostGQL = gql`
   mutation CreatePost($input: CreatePostInput!) {
   createPost(createPostInput: $input) {
     id
-    name
-    description
+    title
     slug
-    color
+    content
+    excerpt
+    coverImage
+    published
+    featured
+    tags
+    category {
+      id
+    }
   }
 }
 `;
@@ -72,10 +79,17 @@ export const updatePostGQL = gql`
   mutation UpdatePost($input: UpdatePostInput!) {
   updatePost(updatePostInput: $input) {
     id
-    name
-    description
+    title
     slug
-    color
+    content
+    excerpt
+    coverImage
+    published
+    featured
+    tags
+    category {
+      id
+    }
   }
 }
 `;

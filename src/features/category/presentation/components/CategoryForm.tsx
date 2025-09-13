@@ -47,6 +47,7 @@ export const CategoryForm = ({entity}:Props) => {
   async function onSubmit(values: z.infer < typeof formSchema > ) {
     // toast.info( <pre><b>{JSON.stringify(values, null, 2) } </b> </pre>)
     let isCreated = false
+    let actioned = isNew ? 'Registrado' : 'Actualizado'
     startTransition(async () => {
       try {
         const resp = await createOrUpdate(values)
@@ -54,7 +55,7 @@ export const CategoryForm = ({entity}:Props) => {
         if ("error" in resp && resp['error']){ toast.error(resp.msg); return }
         if ("id" in resp) isCreated = true 
         if (!isCreated) return
-        toast.success("Registrado Correctamente!")
+        toast.success(`${actioned} Correctamente!`)
         router.push(`/admin/categories`)
 
       } catch (error) {

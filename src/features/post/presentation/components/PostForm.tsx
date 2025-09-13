@@ -1,6 +1,6 @@
 "use client"
 
-import { Input, Button, CustomCard, CardContent, CardTitle, CardHeader, CardFooter, FormColorInput, inputErrors, Card, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, TagsInput, CustomAlert } from "@/components";
+import { Input, Button, CustomCard, CardContent, CardTitle, CardHeader, CardFooter, FormColorInput, inputErrors, Card, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, TagsInput, CustomAlert, FormErrors } from "@/components";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Form } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod"
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const formSchema = z.object({
-  id: z.string(),
+  id: z.string(inputErrors.invalidFormat),
   title: z.string(inputErrors.required).min(2,inputErrors.minLength(2)),
   slug: z.string(inputErrors.required).min(2,inputErrors.minLength(2)).max(60, inputErrors.minLength(60)),
   excerpt: z.string(inputErrors.required).min(2,inputErrors.minLength(2)),
@@ -43,14 +43,15 @@ export const PostForm = ({entity}:Props) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       ...entity,
-      // id: entity?.id?.toString(),
+      id: entity?.id?.toString(),
       categoryId: entity?.categoryId?.toString(),
     }
   })
 
   async function onSubmit(values: z.infer < typeof formSchema > ) {
-    toast.info( <pre><b>{JSON.stringify(values, null, 2) } </b> </pre>)
+    // toast.info( <pre><b>{JSON.stringify(values, null, 2) } </b> </pre>)
     let isCreated = false
+    let actioned = isNew ? 'Registrado' : 'Actualizado'
     startTransition(async () => {
       try {
         const resp = await createOrUpdate(values)
@@ -58,8 +59,8 @@ export const PostForm = ({entity}:Props) => {
         if ("error" in resp && resp['error']){ toast.error(resp.msg); return }
         if ("id" in resp) isCreated = true 
         if (!isCreated) return
-        toast.success("Registrado Correctamente!")
-        router.push(`/admin/categories`)
+        toast.success(`${actioned} Correctamente!`)
+        router.push(`/admin/posts`)
 
       } catch (error) {
         console.error("Form submission error", error);
@@ -72,8 +73,10 @@ export const PostForm = ({entity}:Props) => {
     <Form {...form}>
       {/* <pre><b>{JSON.stringify(form.formState.errors, null, 2) } </b> </pre> */}
 
-      { Object.entries(form.formState.errors).length > 0 && (<CustomAlert 
-        title="Dato importante sobre la prioridad" 
+
+      {/* { Object.entries(form.formState.errors).length > 0 && (
+        <CustomAlert 
+        title="Revisar los siguientes criterios" 
         description={
         <ul>
           {Object.entries(form.formState.errors).map(([key, value]) => (
@@ -83,7 +86,7 @@ export const PostForm = ({entity}:Props) => {
           ))}
         </ul>}
         className="mb-4" 
-        variant="error" />)}
+        variant="error" />)} */}
 
 
       <form onSubmit={form.handleSubmit(onSubmit)}  className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -107,7 +110,7 @@ export const PostForm = ({entity}:Props) => {
                 <Eye className="mr-2 h-4 w-4" />
                 Vista previa
               </Button>
-              <Button type="submit" size="lg" >
+              <Button type="submit" size="lg" disabled={isPending}>
                   {isPending ? (
                     <> <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Guardando... </>
                   ) : (
@@ -204,6 +207,8 @@ export const PostForm = ({entity}:Props) => {
 
         {/* Sidebar */}
         <div className="space-y-6">
+          <FormErrors formState={form.formState}/>
+
           {/* Publish Settings */}
           <CustomCard>
             <CardHeader>
@@ -307,7 +312,7 @@ export const PostForm = ({entity}:Props) => {
                     <FormLabel>Etiquetas</FormLabel>
                     <FormControl>
                       <TagsInput
-                        value={field.value}
+                        value={field.value ?? []}
                         onValueChange={field.onChange}
                         placeholder="Enter para agregar"
                       />

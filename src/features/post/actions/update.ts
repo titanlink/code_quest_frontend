@@ -1,21 +1,20 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { PostDatasourceGQL, PostRepositoryImpl } from "..";
 import { IPost } from "../domain";
+import { ResponsePropio } from "@/config";
 
 
-export async function updatePostAction(data: IPost): Promise<any> {
+export async function updatePostAction(entity: IPost): Promise<IPost | ResponsePropio> {
+  let retorno : IPost | ResponsePropio = { error: true, msg: "Error desconocido" };
   const datasource = new PostDatasourceGQL();
   const repo = new PostRepositoryImpl(datasource);
-  throw new Error("serverAction => updatePostAction -> NOT IMPLEMENT")
-  // try {
-  //   const entity = new Post(data.id, data.path, data.type, data.active);
-  //   const response = await repo.update(entity);
-  //   revalidatePath("/entity");
-  //   return response
-  // } catch (e) {
-  //   console.error("Error en createPostAction:", e);
-  //   return { error: true, msg: "No se pudo crear el entity" };
-  // }
+  try {
+    retorno = await repo.update(entity);
+  } catch (e) {
+    console.error("Error en createPostAction:", e);
+    if ('error' in retorno) retorno.msg = "No se pudo crear el entity"
+  }finally {
+    return retorno
+  }
 }

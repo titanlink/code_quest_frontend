@@ -86,8 +86,15 @@ export class PostDatasourceGQL implements PostDatasource {
         variables: {
           input: {
             id: Number(form.id),
+            title: form.title,
             slug: form.slug,
-
+            excerpt: form.excerpt,
+            content: form.content,
+            coverImage: form.coverImage,
+            published: form.published,
+            featured: form.featured,
+            tags: form.tags,
+            id_category: Number(form.categoryId),
           },
         },
       });

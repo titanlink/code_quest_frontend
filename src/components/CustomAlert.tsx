@@ -47,7 +47,7 @@ export const CustomAlert = ({
 
         {/* Texto a la derecha */}
         <div className="flex flex-col">
-          <AlertTitle className="font-semibold">{title}</AlertTitle>
+          <AlertTitle className="font-semibold text-xl">{title}</AlertTitle>
           <AlertDescription className="text-sm text-muted-foreground">
             {description}
           </AlertDescription>
