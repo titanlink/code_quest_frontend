@@ -29,8 +29,8 @@ export function PostCard({ post }: Props) {
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute top-4 left-4">
-              <Badge style={{ backgroundColor: post.category.color }} className="text-white">
-                {post.category.name}
+              <Badge style={{ backgroundColor: post?.category?.color }} className="text-white">
+                {post?.category?.name}
               </Badge>
             </div>
           </div>
@@ -65,16 +65,16 @@ export function PostCard({ post }: Props) {
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-3">
             <Avatar className="h-8 w-8">
-              <AvatarImage src={post.author.avatar || "/placeholder.svg"} alt={post.author.name} />
-              <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
+              <AvatarImage src={post?.author?.avatar || "/placeholder.svg"} alt={post?.author?.name} />
+              <AvatarFallback>{post?.author?.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
-              <p className="text-sm font-medium">{post.author.name}</p>
+              <p className="text-sm font-medium">{post?.author?.name}</p>
             </div>
           </div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4" />
-            <span>{post.createdAt.toLocaleDateString()}</span>
+            <span>{post?.createdAt?.toLocaleDateString()}</span>
           </div>
         </div>
       </CardFooter>

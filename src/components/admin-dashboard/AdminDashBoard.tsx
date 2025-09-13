@@ -16,7 +16,7 @@ export const AdminDashBoard = async () => {
     const draftPosts = posts.filter((p) => !p.published).length
     const totalUsers = users.length
     const totalComments = comments.length
-    const totalViews = posts.reduce((sum, post) => sum + post.viewsCount, 0)
+    const totalViews = posts.reduce((sum, post) => sum + (post?.viewsCount ?? 0), 0)
   
     const recentPosts = posts.slice(0, 5)
     const recentComments = comments.slice(0, 5)

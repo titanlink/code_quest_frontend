@@ -22,7 +22,6 @@ export default async function Page(props: { params: Promise<Params> }) {
     isNew = false
     id = Number(params.id);
   }
-  const actionTitle = isNew ? 'Nueva' : 'Editar'
   if ((id == 0 && !isNew) || isNaN(id)) notFound();
 
 

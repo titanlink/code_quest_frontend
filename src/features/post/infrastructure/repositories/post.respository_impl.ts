@@ -1,4 +1,5 @@
-import { PostDatasource, PostRepository } from "../..";
+import { ResponsePropio } from "@/config";
+import { IPost, PostDatasource, PostRepository } from "../..";
 
 
 
@@ -6,6 +7,10 @@ import { PostDatasource, PostRepository } from "../..";
 export class PostRepositoryImpl extends PostRepository {
   constructor(private readonly datasource: PostDatasource) {
     super();
+  }
+
+  async findBySlugId(id: string) {
+    return this.datasource.findBySlugId(id);
   }
   
   async findById(id: string) {

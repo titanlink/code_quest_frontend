@@ -41,18 +41,6 @@ export default async function Page(props: { params: Promise<Params> }) {
     <div className="space-y-6">
       <div  className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CategoryForm entity={entity}/>
-        <CustomCard>
-          <CardHeader>
-            <CardTitle>Todas las categorias</CardTitle>
-          </CardHeader>
-          <CardContent className="grid grid-rows-3 gap-2">
-            { categories.map((category) => (
-              <Badge key={category.id} style={{ backgroundColor: category?.color}} className="text-black/50">
-                {category?.name}
-              </Badge>
-            )) }
-          </CardContent>
-        </CustomCard>
       </div>
     </div>
   )

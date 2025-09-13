@@ -9,18 +9,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { Heart, MessageCircle, Eye, Calendar, Clock, ArrowLeft, Bookmark } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
+import { IPost } from "@/features"
 // import { SocialShare } from "@/components/social-share"
-import type { Post } from "@/lib/types"
 
 interface PostContentProps {
-  post: Post
+  post: IPost
 }
 
 export function PostContent({ post }: PostContentProps) {
   const { user } = useAuth()
   const [isLiked, setIsLiked] = useState(false)
   const [isBookmarked, setIsBookmarked] = useState(false)
-  const [likesCount, setLikesCount] = useState(post.likesCount)
+  const [likesCount, setLikesCount] = useState(post.likesCount ?? 0)
 
   const handleLike = () => {
     if (!user) {
@@ -54,8 +54,8 @@ export function PostContent({ post }: PostContentProps) {
           Artículos
         </Link>
         <span>/</span>
-        <Link href={`/posts?category=${post.category.slug}`} className="hover:text-foreground transition-colors">
-          {post.category.name}
+        <Link href={`/posts?category=${post?.category?.slug}`} className="hover:text-foreground transition-colors">
+          {post?.category?.name}
         </Link>
         <span>/</span>
         <span className="text-foreground">{post.title}</span>
@@ -72,8 +72,8 @@ export function PostContent({ post }: PostContentProps) {
       {/* Header */}
       <header className="space-y-6">
         <div className="flex flex-wrap gap-2">
-          <Badge style={{ backgroundColor: post.category.color }} className="text-white">
-            {post.category.name}
+          <Badge style={{ backgroundColor: post?.category?.color }} className="text-white">
+            {post?.category?.name}
           </Badge>
           {post.featured && <Badge className="bg-primary text-primary-foreground">Destacado</Badge>}
         </div>
@@ -86,15 +86,15 @@ export function PostContent({ post }: PostContentProps) {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Avatar className="h-12 w-12">
-              <AvatarImage src={post.author.avatar || "/placeholder.svg"} alt={post.author.name} />
-              <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
+              <AvatarImage src={post?.author?.avatar || "/placeholder.svg"} alt={post?.author?.name} />
+              <AvatarFallback>{post?.author?.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-medium">{post.author.name}</p>
+              <p className="font-medium">{post?.author?.name}</p>
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
-                  <span>{post.createdAt.toLocaleDateString()}</span>
+                  <span>{post?.createdAt?.toLocaleDateString()}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />

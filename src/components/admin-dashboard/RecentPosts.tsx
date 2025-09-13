@@ -24,7 +24,7 @@ const RecentPosts = ({recentPosts}: Props) => {
                 <Badge variant={post.published ? "default" : "secondary"}>
                   {post.published ? "Publicado" : "Borrador"}
                 </Badge>
-                <span className="text-xs text-muted-foreground">{post.createdAt.toLocaleDateString()}</span>
+                <span className="text-xs text-muted-foreground">{post?.createdAt?.toLocaleDateString()}</span>
               </div>
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">

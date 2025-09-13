@@ -1,16 +1,27 @@
 import { notFound } from "next/navigation"
 import { Navbar } from "@/components/navbar"
 import { mockPosts } from "@/lib/mock-data"
-import { EnhancedCommentsSection, PostContent, PostSidebar, RelatedPosts } from "@/features"
+import { EnhancedCommentsSection, findPostBySlugAction, IPost, PostContent, PostSidebar, RelatedPosts } from "@/features"
 
-interface PostPageProps {
+interface Props {
   params: {
     slug: string
   }
 }
 
-export default function PostPage({ params }: PostPageProps) {
-  const post = mockPosts.find((p) => p.slug === params.slug)
+export default async function PostPage({ params }: Props) {
+  let post: IPost | undefined
+  let isNotFound = false
+  const slug = 'asdasd'// params.slug 
+
+
+  const response = await findPostBySlugAction(slug);
+  if (response && !('id' in response)) isNotFound = true
+  if(!isNotFound && ('id' in response)) post = response;
+
+  
+
+  // const post = mockPosts.find((p) => p.slug === slug)
 
   if (!post) {
     notFound()
@@ -30,7 +41,7 @@ export default function PostPage({ params }: PostPageProps) {
           {/* Main Content */}
           <div className="lg:col-span-3">
             <PostContent post={post} />
-            <EnhancedCommentsSection postId={post.id} />
+            <EnhancedCommentsSection postId={post.id ?? ''} postComments={post.comments} />
           </div>
 
           {/* Sidebar */}
@@ -51,7 +62,7 @@ export default function PostPage({ params }: PostPageProps) {
 }
 
 // Generate metadata for SEO
-export async function generateMetadata({ params }: PostPageProps) {
+export async function generateMetadata({ params }: Props) {
   const post = mockPosts.find((p) => p.slug === params.slug)
 
   if (!post) {

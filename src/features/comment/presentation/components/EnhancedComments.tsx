@@ -14,24 +14,27 @@ import { useAuth } from "@/lib/auth-context"
 import { mockComments } from "@/lib/mock-data"
 import type { Comment } from "@/lib/types"
 import { CustomCard, ShineBorder } from "@/components"
+import { createCommentAction, IComment } from "@/features"
+import { toast } from "sonner"
 
-interface EnhancedCommentsSectionProps {
-  postId: string
+interface Props {
+  postId: string,
+  postComments: IComment[],
 }
 
-export function EnhancedCommentsSection({ postId }: EnhancedCommentsSectionProps) {
+export function EnhancedCommentsSection({ postId, postComments }: Props) {
   const { user } = useAuth()
   const [newComment, setNewComment] = useState("")
   const [replyTo, setReplyTo] = useState<string | null>(null)
   const [replyContent, setReplyContent] = useState("")
-  const [comments, setComments] = useState(mockComments.filter((c) => c.postId === postId))
+  const [comments, setComments] = useState(postComments)
   const [likedComments, setLikedComments] = useState<Set<string>>(new Set())
 
-  const handleSubmitComment = (e: React.FormEvent) => {
+  const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!user || !newComment.trim()) return
 
-    const comment: Comment = {
+    const comment: IComment = {
       id: Date.now().toString(),
       content: newComment,
       postId,
@@ -40,6 +43,9 @@ export function EnhancedCommentsSection({ postId }: EnhancedCommentsSectionProps
       createdAt: new Date(),
       updatedAt: new Date(),
     }
+
+    const resp = await createCommentAction(comment)
+    if ('error' in resp) return
 
     setComments([comment, ...comments])
     setNewComment("")
@@ -142,22 +148,22 @@ export function EnhancedCommentsSection({ postId }: EnhancedCommentsSectionProps
       <div className="space-y-6 mt-4">
         {topLevelComments.length > 0 ? (
           topLevelComments.map((comment) => {
-            const replies = getReplies(comment.id)
-            const isLiked = likedComments.has(comment.id)
+            const replies = getReplies(comment?.id ?? '')
+            const isLiked = likedComments.has(comment?.id ?? '')
 
             return (
               <div key={comment.id} className="space-y-4">
                 <div className="flex gap-4">
                   <Avatar className="h-10 w-10">
-                    <AvatarImage src={comment.author.avatar || "/placeholder.svg"} alt={comment.author.name} />
-                    <AvatarFallback>{comment.author.name.charAt(0)}</AvatarFallback>
+                    <AvatarImage src={comment?.author?.avatar || "/placeholder.svg"} alt={comment?.author?.name} />
+                    <AvatarFallback>{comment?.author?.name.charAt(0)}</AvatarFallback>
                   </Avatar>
 
                   <div className="flex-1 space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium">{comment.author.name}</span>
-                        <span className="text-sm text-muted-foreground">{comment.createdAt.toLocaleDateString()}</span>
+                        <span className="font-medium">{comment?.author?.name}</span>
+                        <span className="text-sm text-muted-foreground">{comment?.createdAt?.toLocaleDateString()}</span>
                       </div>
 
                       <DropdownMenu>
@@ -178,7 +184,7 @@ export function EnhancedCommentsSection({ postId }: EnhancedCommentsSectionProps
                     <p className="text-sm leading-relaxed">{comment.content}</p>
 
                     <div className="flex items-center gap-4 text-sm">
-                      <Button
+                      {/* <Button
                         variant="ghost"
                         size="sm"
                         className={`h-auto p-0 ${isLiked ? "text-red-500" : "text-muted-foreground"} hover:text-red-500`}
@@ -191,16 +197,16 @@ export function EnhancedCommentsSection({ postId }: EnhancedCommentsSectionProps
                         variant="ghost"
                         size="sm"
                         className="h-auto p-0 text-muted-foreground hover:text-foreground"
-                        onClick={() => setReplyTo(replyTo === comment.id ? null : comment.id)}
+                        onClick={() => setReplyTo(replyTo === comment?.id  ? null : comment.id)}
                       >
                         <Reply className="h-4 w-4 mr-1" />
                         Responder
-                      </Button>
+                      </Button> */}
                     </div>
 
                     {/* Reply Form */}
                     {replyTo === comment.id && user && (
-                      <form onSubmit={(e) => handleSubmitReply(e, comment.id)} className="mt-4 space-y-3">
+                      <form onSubmit={(e) => handleSubmitReply(e, comment?.id ?? '')} className="mt-4 space-y-3">
                         <div className="flex gap-3">
                           <Avatar className="h-8 w-8">
                             <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
@@ -208,7 +214,7 @@ export function EnhancedCommentsSection({ postId }: EnhancedCommentsSectionProps
                           </Avatar>
                           <div className="flex-1">
                             <Textarea
-                              placeholder={`Responder a ${comment.author.name}...`}
+                              placeholder={`Responder a ${comment?.author?.name}...`}
                               value={replyContent}
                               onChange={(e) => setReplyContent(e.target.value)}
                               className="min-h-[80px]"
@@ -232,20 +238,20 @@ export function EnhancedCommentsSection({ postId }: EnhancedCommentsSectionProps
                 {replies.length > 0 && (
                   <div className="ml-14 space-y-4 border-l-2 border-muted pl-4">
                     {replies.map((reply) => {
-                      const isReplyLiked = likedComments.has(reply.id)
+                      const isReplyLiked = likedComments.has(reply?.id ?? '')
 
                       return (
                         <div key={reply.id} className="flex gap-3">
                           <Avatar className="h-8 w-8">
-                            <AvatarImage src={reply.author.avatar || "/placeholder.svg"} alt={reply.author.name} />
-                            <AvatarFallback>{reply.author.name.charAt(0)}</AvatarFallback>
+                            <AvatarImage src={reply?.author?.avatar || "/placeholder.svg"} alt={reply?.author?.name} />
+                            <AvatarFallback>{reply?.author?.name.charAt(0)}</AvatarFallback>
                           </Avatar>
 
                           <div className="flex-1 space-y-2">
                             <div className="flex items-center gap-2">
-                              <span className="font-medium text-sm">{reply.author.name}</span>
+                              <span className="font-medium text-sm">{reply?.author?.name}</span>
                               <span className="text-xs text-muted-foreground">
-                                {reply.createdAt.toLocaleDateString()}
+                                {reply?.createdAt?.toLocaleDateString()}
                               </span>
                             </div>
 
@@ -256,7 +262,7 @@ export function EnhancedCommentsSection({ postId }: EnhancedCommentsSectionProps
                                 variant="ghost"
                                 size="sm"
                                 className={`h-auto p-0 ${isReplyLiked ? "text-red-500" : "text-muted-foreground"} hover:text-red-500`}
-                                onClick={() => handleLikeComment(reply.id)}
+                                onClick={() => handleLikeComment(reply?.id ?? '')}
                               >
                                 <Heart className={`h-3 w-3 mr-1 ${isReplyLiked ? "fill-current" : ""}`} />
                                 Me gusta

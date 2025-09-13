@@ -9,6 +9,7 @@ import {
   findCommentAction,
   updateCommentAction 
 } from "../..";
+import { ResponsePropio } from "@/config";
 
 
 export const useCommentStore = create<CommentsState>()((set, get) => ({
@@ -39,48 +40,46 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
     }
   },
 
-  findOne: async( id: string): Promise<IComment | null> => {
-    let retorno = null
+  findOne: async( id: string): Promise<IComment | ResponsePropio> => {
+    let retorno: IComment | ResponsePropio = { error: true, msg: "Error desconocido" };
     try {
-      const resp  = await findCommentAction(id);
-      retorno = resp
-      set({selected: resp.data, isLoading: false})
-    }catch(error) {
-      throw new Error('Comments > findOne > Unauthorized')
-    }finally {
-      set({ isLoading: false });
-    }
-    return retorno.data ?? null
-  },
-
-  createOrUpdate: async( entitdad: IComment): Promise<any> => {
-    let retorno:any = { error: true, msg: "No action taken" };
-    try {
-      if (entitdad.id) retorno = await updateCommentAction(entitdad);
-      if (entitdad.id == '0') retorno = await createCommentAction(entitdad);
-
-      set({selected: retorno?.data, isLoading: false})
+      retorno  = await findCommentAction(id);
+      if ('data' in retorno) set({selected: retorno.data, isLoading: false})
     }catch(error) {
       throw new Error('Comments > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
     return retorno
+  },
+
+  createOrUpdate: async( entitdad: IComment): Promise<IComment | ResponsePropio> => {
+    let retorno: IComment | ResponsePropio = { error: true, msg: "Error desconocido, createOrUpdate" };
+    try {
+      if (entitdad.id) retorno = await updateCommentAction(entitdad);
+      if (!entitdad.id) retorno = await createCommentAction(entitdad);
+      
+      if ('data' in retorno) set({selected: retorno?.data, isLoading: false})
+    }catch(error) {
+      throw new Error('Comments > createOrUpdate > Unauthorized')
+    }finally {
+      set({ isLoading: false });
+      return retorno
+    }
   
   },
   
-  deleteOne: async( id: string ) : Promise<IComment | null> => {
-    let retorno = null
+  deleteOne: async( id: string ) : Promise<ResponsePropio> => {
+    let retorno: ResponsePropio = { msg:'Error desconocido', error: true}
     try {
       const resp  = await deleteCommentAction(id);
       retorno = resp
-      set({selected: resp.data, isLoading: false})
     }catch(error) {
       throw new Error('Comments > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
-    return retorno?.data ?? null
+    return retorno
   },
 
 

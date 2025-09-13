@@ -1,3 +1,4 @@
+import { ResponsePropio } from "@/config";
 import { IComment } from "../..";
 
 
@@ -25,7 +26,7 @@ export interface CommentsState {
   setLimit: (limit: number) =>void;
 
   getData: (page: number, limit: number) => Promise<void>;
-  findOne: (id: string) => Promise<IComment | null>;
-  createOrUpdate: (client: IComment) => Promise<any>;
-  deleteOne: (id: string) => Promise<IComment | null>;
+  findOne: (id: string) => Promise<IComment | ResponsePropio>;
+  createOrUpdate: (client: IComment) => Promise<IComment | ResponsePropio>;
+  deleteOne: (id: string) => Promise<ResponsePropio>;
 }

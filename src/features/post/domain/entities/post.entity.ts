@@ -1,4 +1,4 @@
-import { CategoryMapper, ICategory, IUser } from "@/features"
+import { CategoryMapper, CommentMapper, ICategory, IComment, IUser } from "@/features"
 
 export interface IPost {
   id?: string
@@ -7,6 +7,7 @@ export interface IPost {
   content: string
   excerpt: string
   tags: string[]
+  comments: IComment[]
   published?: boolean
   featured?: boolean
   likesCount?: number
@@ -33,6 +34,7 @@ export class PostMapper {
       excerpt:  json['excerpt'],
       authorId: json['authorId'],
       author: json['author'],
+      comments: CommentMapper.fromJsonList(json['comment']),
       categoryId: category?.id,
       category: category,
       tags: json['tags'],

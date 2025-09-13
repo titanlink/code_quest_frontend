@@ -1,6 +1,6 @@
 "use client"
 
-import { Input, Button, CustomCard, CardContent, CardTitle, CardHeader, CardFooter, FormColorInput, inputErrors } from "@/components";
+import { Input, Button, CustomCard, CardContent, CardTitle, CardHeader, CardFooter, FormColorInput, inputErrors, FormErrors } from "@/components";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Form } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod"
@@ -174,6 +174,9 @@ export const CategoryForm = ({entity}:Props) => {
         </div>
 
         </form>
+      </div>
+      <div className="space-y-6">
+        <FormErrors formState={form.formState}/>
       </div>
     </Form>
   )

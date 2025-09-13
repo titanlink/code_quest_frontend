@@ -86,7 +86,7 @@ export const PostForm = ({entity}:Props) => {
           <div className="flex items-center justify-between" >
             <div className="flex items-center gap-4">
               <Button variant="ghost" asChild>
-                <Link href="/admin/categories">
+                <Link href="/admin/posts">
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Volver
                 </Link>

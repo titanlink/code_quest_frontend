@@ -1,9 +1,11 @@
+import { ResponsePropio } from "@/config";
+import { IComment } from "..";
 
 
 export interface CommentDatasource {
-  findById(id: string): Promise<any>;
-  create(entity: any): Promise<any>;
-  update(entity: any): Promise<any>;
   all(page:number, limit:number): Promise<any>;
-  delete(id: string): Promise<any>;
+  findById(id: string): Promise<IComment | ResponsePropio>;
+  create(entity: any): Promise<IComment | ResponsePropio>;
+  update(entity: any): Promise<IComment | ResponsePropio>;
+  delete(id: string): Promise<ResponsePropio>;
 }

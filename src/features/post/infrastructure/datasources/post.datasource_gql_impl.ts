@@ -1,13 +1,12 @@
 import { PostDatasource, PostMapper, IPost } from "../..";
 import { makeClientGraphql } from "@/lib";
-import { allPostGQL, createPostGQL, findPostGQL, removePostGQL, updatePostGQL } from "./post.graphql";
+import { allPostGQL, createPostGQL, findPostBySlugGQL, findPostGQL, removePostGQL, updatePostGQL } from "./post.graphql";
 import { ResponsePropio } from "@/config";
 
 
 
 export class PostDatasourceGQL implements PostDatasource {
   
-
   async all(page = 0, limit = 50) {
     try {
       const peti = await makeClientGraphql();
@@ -48,6 +47,27 @@ export class PostDatasourceGQL implements PostDatasource {
       return retorno
     }
   
+  }
+
+  async findBySlugId(slug: string): Promise<IPost | ResponsePropio> {
+    let retorno: IPost | ResponsePropio = { msg: 'Error desconocido', error: true }
+    try {
+      const peti = await makeClientGraphql();
+
+      const { data } = await peti.query<any>({
+        query: findPostBySlugGQL,
+        fetchPolicy: "no-cache",
+        variables: {
+          slug: slug
+        },
+      });
+
+      retorno = PostMapper.fromJson(data["postBySlug"]);
+    } catch (e) {
+      console.error(`Error => findBySlugId -> ${e}`);
+    }finally{
+      return retorno
+    }
   }
 
   async create ( form: IPost ) {

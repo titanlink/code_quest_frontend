@@ -55,6 +55,36 @@ export const findPostGQL = gql`
     }
   }
 `;
+export const findPostBySlugGQL = gql`
+  query Post($slug: String!) {
+    postBySlug(slug: $slug) {
+      id
+      title
+      slug
+      content
+      excerpt
+      coverImage
+      published
+      featured
+      likesCount
+      tags
+      createAt
+      updateAt
+
+      category {
+        id
+        name
+        slug
+        description
+        color
+      }
+      comment {
+        id
+        content
+      }
+    }
+  }
+`;
 
 export const createPostGQL = gql`
   mutation CreatePost($input: CreatePostInput!) {

@@ -5,11 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Calendar, MapPin, LinkIcon, Twitter, Github } from "lucide-react"
-import type { Post } from "@/lib/types"
 import { CustomCard } from "@/components"
+import { IPost } from "@/features"
 
 interface PostSidebarProps {
-  post: Post
+  post: IPost
 }
 
 export function PostSidebar({ post }: PostSidebarProps) {
@@ -23,13 +23,13 @@ export function PostSidebar({ post }: PostSidebarProps) {
         <CardContent className="space-y-4">
           <div className="flex items-center gap-3">
             <Avatar className="h-16 w-16">
-              <AvatarImage src={post.author.avatar || "/placeholder.svg"} alt={post.author.name} />
-              <AvatarFallback className="text-lg">{post.author.name.charAt(0)}</AvatarFallback>
+              <AvatarImage src={post?.author?.avatar || "/placeholder.svg"} alt={post?.author?.name} />
+              <AvatarFallback className="text-lg">{post?.author?.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
-              <h3 className="font-semibold">{post.author.name}</h3>
+              <h3 className="font-semibold">{post?.author?.name}</h3>
               <p className="text-sm text-muted-foreground">
-                {post.author.role === "admin" ? "Administrador" : "Colaborador"}
+                {post?.author?.role === "admin" ? "Administrador" : "Colaborador"}
               </p>
             </div>
           </div>
@@ -42,7 +42,7 @@ export function PostSidebar({ post }: PostSidebarProps) {
           <div className="space-y-2 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              <span>Miembro desde {post.author.createdAt.getFullYear()}</span>
+              <span>Miembro desde {post?.author?.createdAt.getFullYear()}</span>
             </div>
             {/* <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />

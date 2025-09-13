@@ -3,7 +3,7 @@ import { DotGrid } from './DotGrid'
 
 export const DotsGrid = () => {
   return (
-     <div className="w-full h-full relative">
+    <div className="w-full h-full relative">
       <DotGrid
         dotSize={3}
         gap={10}
@@ -15,6 +15,6 @@ export const DotsGrid = () => {
         resistance={750}
         returnDuration={1.5}
       />
-      </div>
+    </div>
   )
 }
