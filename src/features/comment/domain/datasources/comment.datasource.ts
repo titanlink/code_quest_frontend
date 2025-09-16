@@ -3,9 +3,9 @@ import { IComment } from "..";
 
 
 export interface CommentDatasource {
-  all(page:number, limit:number): Promise<any>;
-  findById(id: string): Promise<IComment | ResponsePropio>;
-  create(entity: any): Promise<IComment | ResponsePropio>;
-  update(entity: any): Promise<IComment | ResponsePropio>;
-  delete(id: string): Promise<ResponsePropio>;
+  all(page:number, limit:number, token:string): Promise<any>;
+  findById(id: string, token:string): Promise<IComment | ResponsePropio>;
+  create(entity: any, token:string): Promise<IComment | ResponsePropio>;
+  update(entity: any, token:string): Promise<IComment | ResponsePropio>;
+  delete(id: string, token:string): Promise<ResponsePropio>;
 }

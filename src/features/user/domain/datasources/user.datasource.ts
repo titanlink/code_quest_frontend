@@ -1,9 +1,9 @@
 
 
 export interface UserDatasource {
-  findById(id: string): Promise<any>;
-  create(entity: any): Promise<any>;
-  update(entity: any): Promise<any>;
-  all(page:number, limit:number): Promise<any>;
-  delete(id: string): Promise<any>;
+  findById(id: string, token: string): Promise<any>;
+  create(entity: any, token: string): Promise<any>;
+  update(entity: any, token: string): Promise<any>;
+  all(page:number, limit:number, token: string): Promise<any>;
+  delete(id: string, token: string): Promise<any>;
 }

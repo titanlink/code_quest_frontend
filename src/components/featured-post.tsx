@@ -4,10 +4,10 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Calendar, Heart, MessageCircle, Eye, Star } from "lucide-react"
-import type { Post } from "@/lib/types"
+import { IPost } from "@/features"
 
 interface FeaturedPostProps {
-  post: Post
+  post: IPost
 }
 
 export function FeaturedPost({ post }: FeaturedPostProps) {
@@ -16,20 +16,20 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
       <CardContent className="p-0">
         <Link href={`/posts/${post.slug}`}>
           <div className="relative aspect-[16/10] overflow-hidden">
-            <Image
-              src={post.coverImage || "/placeholder.svg?height=300&width=600"}
+            {/* <Image
+              src={post?.coverImage || "/placeholder.svg?height=300&width=600"}
               alt={post.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
-            />
+            /> */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             <div className="absolute top-4 left-4 flex gap-2">
               <Badge className="bg-primary text-primary-foreground">
                 <Star className="h-3 w-3 mr-1" />
                 Destacado
               </Badge>
-              <Badge style={{ backgroundColor: post.category.color }} className="text-white">
-                {post.category.name}
+              <Badge style={{ backgroundColor: post?.category?.color }} className="text-white">
+                {post?.category?.name}
               </Badge>
             </div>
             <div className="absolute bottom-6 left-6 right-6 text-white">
@@ -41,14 +41,14 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-8 w-8 border-2 border-white/20">
-                    <AvatarImage src={post.author.avatar || "/placeholder.svg"} alt={post.author.name} />
-                    <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
+                    <AvatarImage src={post?.author?.avatar || "/placeholder.svg"} alt={post?.author?.name} />
+                    <AvatarFallback>{post?.author?.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="text-sm font-medium">{post.author.name}</p>
+                    <p className="text-sm font-medium">{post?.author?.name}</p>
                     <div className="flex items-center gap-1 text-xs text-white/70">
                       <Calendar className="h-3 w-3" />
-                      <span>{post.createdAt.toLocaleDateString()}</span>
+                      <span>{post?.createdAt?.toLocaleDateString()}</span>
                     </div>
                   </div>
                 </div>

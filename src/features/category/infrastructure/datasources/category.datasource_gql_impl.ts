@@ -8,10 +8,10 @@ import { ResponsePropio } from "@/config";
 export class CategoryDatasourceGQL implements CategoryDatasource {
   
 
-  async all(page = 0, limit = 50) {
+  async all(page = 0, limit = 50, token: string) {
     // return mockCategories
     try {
-      const peti = await makeClientGraphql();
+      const peti = await makeClientGraphql(token);
 
       const { data } = await peti.query<any>({
         query: allCategoryGQL,
@@ -29,10 +29,10 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
       return [];
     }
   }
-  async findById(id: string){
+  async findById(id: string, token: string){
     let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
-      const peti = await makeClientGraphql();
+      const peti = await makeClientGraphql(token);
 
       const { data } = await peti.query<any>({
         query: findCategoryGQL,
@@ -51,10 +51,10 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
   
   }
 
-  async create ( form: ICategory ) {
-    let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido', error: true }
+  async create ( form: ICategory, token: string ) {
+    let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido createCategoryGQL gql_impl', error: true }
     try {
-      const peti = await makeClientGraphql();
+      const peti = await makeClientGraphql(token);
 
       const { data } = await peti.mutate<any>({
         mutation: createCategoryGQL,
@@ -78,10 +78,10 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
     
   };
 
-  async update(form: ICategory){
+  async update(form: ICategory, token: string){
     let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
-      const peti = await makeClientGraphql();
+      const peti = await makeClientGraphql(token);
 
       const { data } = await peti.mutate<any>({
         mutation: updateCategoryGQL,
@@ -106,10 +106,10 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
     }
   }
 
-  async delete(id: string) {
+  async delete(id: string, token: string) {
     let retorno: ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
-      const peti = await makeClientGraphql();
+      const peti = await makeClientGraphql(token);
 
       const { data } = await peti.mutate<any>({
         mutation: removeCategoryGQL,

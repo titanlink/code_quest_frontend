@@ -44,7 +44,7 @@ export interface Comment {
   authorId: string
   author: User
   parentId?: string
-  replies?: Comment[]
+  sub_comment?: Comment[]
   createdAt: Date
   updatedAt: Date
 }

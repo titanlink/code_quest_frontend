@@ -1,3 +1,5 @@
+'use client'
+
 import { Navbar } from "@/components/navbar"
 import { PostCard } from "@/components/post-card"
 import { FeaturedPost } from "@/components/featured-post"
@@ -5,11 +7,34 @@ import { mockPosts } from "@/lib/mock-data"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, BookOpen, Users, TrendingUp } from "lucide-react"
 import Link from "next/link"
-import { TextType } from "@/components"
+import { LoadingPage, Skeleton, TextType } from "@/components"
+import { usePostStore } from "@/features"
+import { useEffect, useState } from "react"
+import { useAuth } from "@/lib"
 
-export default function HomePage() {
-  const featuredPosts = mockPosts.filter((post) => post.featured && post.published)
-  const regularPosts = mockPosts.filter((post) => !post.featured && post.published)
+export default  function HomePage() {
+
+  const getPosts = usePostStore((state) => state.getData);
+  const posts = usePostStore((state) => state.items);
+  const isLoading = usePostStore((state) => state.isLoading);
+
+  const featuredPosts = posts.filter((post) => post.featured && post.published)
+  const regularPosts = posts.filter((post) => !post.featured && post.published)
+  const { user, getToken } = useAuth()
+  const [token, setToken] = useState<string | null>(null)
+
+  
+  useEffect(() => {
+    const fetchToken = async () => {
+      if (user) {
+        const authToken = await getToken() ?? ''
+        setToken(authToken)
+        getPosts(0, 10, authToken );
+      }
+    }
+    fetchToken()
+  }, [user, getToken])
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -54,7 +79,7 @@ export default function HomePage() {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <BookOpen className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-2xl font-bold mb-2">{mockPosts.length}+</h3>
+              <h3 className="text-2xl font-bold mb-2">{posts.length}+</h3>
               <p className="text-muted-foreground">Artículos Publicados</p>
             </div>
             <div className="flex flex-col items-center">
@@ -104,9 +129,13 @@ export default function HomePage() {
             </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {regularPosts.map((post) => (
+            { isLoading && [1,2,3].map((post) => (
+              <Skeleton className="h-96 w-96 " />
+            ))}
+            {!isLoading && regularPosts.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
+            
           </div>
         </div>
       </section>

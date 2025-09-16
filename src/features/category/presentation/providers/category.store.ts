@@ -28,10 +28,10 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
   setLimit(limit?: number){ set({limit: limit ?? 50}) },
 
 
-  getData: async(page: number = 0, limit: number = 50) => {
+  getData: async(page: number = 0, limit: number = 50, token = 'NO TENGO TOKEN') => {
     try {
       set({ isLoading: true });
-      const resp  = await allCategoryAction({ page, limit});
+      const resp  = await allCategoryAction({ page, limit}, token );
       set({items: resp ?? [],  isLoading: false})
     }catch(error) {
       throw new Error('Categorys > getData > Unauthorized')
@@ -40,10 +40,10 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
     }
   },
 
-  findOne: async( id: string): Promise<ICategory | ResponsePropio> => {
+  findOne: async( id: string, token = 'NO TENGO TOKEN'): Promise<ICategory | ResponsePropio> => {
     let retorno: ICategory | ResponsePropio = { error: true, msg: "Error desconocido" };
     try {
-      retorno  = await findCategoryAction(id);
+      retorno  = await findCategoryAction(id, token);
       if ('data' in retorno) set({selected: retorno.data, isLoading: false})
     }catch(error) {
       throw new Error('Categorys > findOne > Unauthorized')
@@ -53,11 +53,11 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
     return retorno
   },
 
-  createOrUpdate: async( entitdad: ICategory): Promise<ICategory | ResponsePropio> => {
+  createOrUpdate: async( entitdad: ICategory, token = 'NO TENGO TOKEN'): Promise<ICategory | ResponsePropio> => {
     let retorno: ICategory | ResponsePropio = { error: true, msg: "Error desconocido" };
     try {
-      if (entitdad.id) retorno = await updateCategoryAction(entitdad);
-      if (!entitdad.id) retorno = await createCategoryAction(entitdad);
+      if (entitdad.id) retorno = await updateCategoryAction(entitdad, token);
+      if (!entitdad.id) retorno = await createCategoryAction(entitdad, token);
       
       if ('data' in retorno) set({selected: retorno?.data, isLoading: false})
     }catch(error) {
@@ -69,10 +69,10 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
   
   },
   
-  deleteOne: async( id: string ) : Promise<ResponsePropio> => {
+  deleteOne: async( id: string, token = 'NO TENGO TOKEN' ) : Promise<ResponsePropio> => {
     let retorno: ResponsePropio = { msg:'Error desconocido', error: true}
     try {
-      const resp  = await deleteCategoryAction(id);
+      const resp  = await deleteCategoryAction(id, token);
       retorno = resp
     }catch(error) {
       throw new Error('Categorys > findOne > Unauthorized')

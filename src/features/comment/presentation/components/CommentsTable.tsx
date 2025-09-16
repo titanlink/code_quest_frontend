@@ -38,7 +38,7 @@ export const CommentsTable = ({filteredComments, handleDeleteComment}: Props) =>
                     {/* <p className="text-sm text-muted-foreground line-clamp-1">{comment.excerpt}</p> */}
                   </div>
                 </TableCell>
-                <TableCell>{comment.author.name}</TableCell>
+                <TableCell>{comment?.author?.name}</TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -47,7 +47,7 @@ export const CommentsTable = ({filteredComments, handleDeleteComment}: Props) =>
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteComment(comment.id)}>
+                      <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteComment(comment?.id ?? '')}>
                         <Trash2 className="mr-2 h-4 w-4" />
                         Eliminar
                       </DropdownMenuItem>

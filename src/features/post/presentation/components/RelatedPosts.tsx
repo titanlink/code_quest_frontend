@@ -3,10 +3,10 @@ import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Heart, MessageCircle } from "lucide-react"
-import type { Post } from "@/lib/types"
+import { IPost } from "@/features"
 
 interface RelatedPostsProps {
-  posts: Post[]
+  posts: IPost[]
 }
 
 export function RelatedPosts({ posts }: RelatedPostsProps) {
@@ -26,8 +26,8 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute top-3 left-3">
-                    <Badge style={{ backgroundColor: post.category.color }} className="text-white text-xs">
-                      {post.category.name}
+                    <Badge style={{ backgroundColor: post?.category?.color }} className="text-white text-xs">
+                      {post?.category?.name}
                     </Badge>
                   </div>
                 </div>
@@ -45,7 +45,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <Calendar className="h-3 w-3" />
-                    <span>{post.createdAt.toLocaleDateString()}</span>
+                    <span>{post?.createdAt?.toLocaleDateString()}</span>
                   </div>
 
                   <div className="flex items-center gap-3">

@@ -13,10 +13,18 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { LogOut, Settings, User } from "lucide-react"
 import { AnimatedThemeToggler, AuroraText, DotGrid, DotsGrid } from "."
+import { useRouter } from "next/navigation"
 
 
 export function Navbar() {
   const { user, logout } = useAuth()
+  const router = useRouter()
+
+
+  const logOut = () => {
+    logout()
+    router.push("/")
+  }
 
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -31,7 +39,8 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           {user ? (
             <>
-              {user.role === "admin" && (
+              {/* {user.role === "admin" && ( */}
+              {user && (
                 <Button variant="outline" asChild>
                   <Link href="/admin">Panel Admin</Link>
                 </Button>
@@ -43,15 +52,15 @@ export function Navbar() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
-                      <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                      <AvatarImage src={user?.photoURL || "/placeholder.svg"} alt={user?.displayName ?? ''} />
+                      <AvatarFallback>{user?.displayName?.charAt(0).toUpperCase()}</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end" forceMount>
                   <div className="flex items-center justify-start gap-2 p-2">
                     <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">{user.name}</p>
+                      <p className="font-medium">{user?.displayName}</p>
                       <p className="w-[200px] truncate text-sm text-muted-foreground">{user.email}</p>
                     </div>
                   </div>
@@ -62,16 +71,16 @@ export function Navbar() {
                       Perfil
                     </Link>
                   </DropdownMenuItem>
-                  {user.role === "admin" && (
+                  {/* {user.role === "admin" && (
                     <DropdownMenuItem asChild>
                       <Link href="/admin">
                         <Settings className="mr-2 h-4 w-4" />
                         Administración
                       </Link>
                     </DropdownMenuItem>
-                  )}
+                  )} */}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout}>
+                  <DropdownMenuItem onClick={logOut}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Cerrar sesión
                   </DropdownMenuItem>

@@ -1,5 +1,5 @@
 import type React from "react"
-import { AdminHeader, AdminSidebar, AuthGuard } from "@/components"
+import { AdminHeader, AdminSidebar } from "@/components"
 
 export default function AdminLayout({
   children,
@@ -7,7 +7,7 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   return (
-      <AuthGuard requireAdmin>
+      // <AuthGuard requireAdmin>
         <div className="min-h-screen bg-background">
           <AdminHeader />
           <div className="flex">
@@ -16,6 +16,6 @@ export default function AdminLayout({
             <main className="flex-1 p-6">{children}</main>
           </div>
         </div>
-      </AuthGuard>
+      // </AuthGuard>
   )
 }

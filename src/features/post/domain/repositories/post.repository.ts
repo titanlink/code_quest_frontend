@@ -3,10 +3,10 @@ import { IPost } from "..";
 
 
 export abstract class PostRepository {
-  abstract all(page:number, limit:number): Promise<any>;
-  abstract findById(id: string): Promise<IPost | ResponsePropio>;
-  abstract findBySlugId(id: string): Promise<IPost | ResponsePropio>;
-  abstract create(entity: any): Promise<IPost | ResponsePropio>;
-  abstract update(entity: any): Promise<IPost | ResponsePropio>;
-  abstract delete(id: string): Promise<ResponsePropio>;
+  abstract all(page:number, limit:number, token: string): Promise<IPost[] | ResponsePropio>;
+  abstract findById(id: string, token: string): Promise<IPost | ResponsePropio>;
+  abstract findBySlugId(id: string, token: string): Promise<IPost | ResponsePropio>;
+  abstract create(entity: any, token: string): Promise<IPost | ResponsePropio>;
+  abstract update(entity: any, token: string): Promise<IPost | ResponsePropio>;
+  abstract delete(id: string, token: string): Promise<ResponsePropio>;
 }

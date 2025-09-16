@@ -20,16 +20,16 @@ export default function AdminCommentsPage() {
   const filteredComments = comments.filter(
     (comment) =>
       comment.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      comment.author.name.toLowerCase().includes(searchTerm.toLowerCase()),
+      comment?.author?.name.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
   const handleDeleteComment = (commentId: string) => {
     // setComments(comments.filter((p) => p.id !== commentId))
   }
 
-  useEffect(() => {
-      getComments(page, limit);
-  }, [page, limit, getComments]);
+  // useEffect(() => {
+  //     getComments(page, limit);
+  // }, [page, limit, getComments]);
 
   return (
     <div className="space-y-6">

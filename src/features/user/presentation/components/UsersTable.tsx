@@ -50,7 +50,7 @@ export const UsersTable = ({filteredUsers, handleToggleRole}: Props) => {
                     {user.role === "admin" ? "Administrador" : "Usuario"}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground">{user.createdAt.toLocaleDateString()}</TableCell>
+                <TableCell className="text-sm text-muted-foreground">{user?.createdAt?.toLocaleDateString()}</TableCell>
                 <TableCell>
                   <Badge variant="outline" className="text-green-600 border-green-600">
                     Activo

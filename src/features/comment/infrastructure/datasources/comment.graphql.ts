@@ -1,17 +1,22 @@
 import { gql } from "@apollo/client";
 
 export const allCommentGQL = gql`
-  query allCategories($limit: Int, $offset: Int) {
+  query allComment($limit: Int, $offset: Int) {
     allComment(limit: $limit, offset: $offset) {
       id
       content
-      postId
-      authorId
-      author
-      parentId
-      replies
-      createdAt
-      updatedAt
+      user {
+        id
+        name
+        email
+      }
+      post {
+        id
+      }
+      sub_comment {
+        id 
+        content
+      }
     }
   }
 `;
@@ -25,7 +30,7 @@ export const findCommentGQL = gql`
       authorId
       author
       parentId
-      replies
+      # sub_comment
       createdAt
       updatedAt
     }
@@ -37,6 +42,7 @@ export const createCommentGQL = gql`
   createComment(createCommentInput: $input) {
     id
     content
+    # parent_id
   }
 }
 `;
@@ -50,7 +56,7 @@ export const updateCommentGQL = gql`
     authorId
     author
     parentId
-    replies
+    # sub_comment
     createdAt
     updatedAt
   }

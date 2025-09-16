@@ -6,7 +6,7 @@ import { UserDatasourceGQL, UserRepositoryImpl } from "..";
 
 export async function createUserAction(data: any ) {
   const datasource = new UserDatasourceGQL();
-  const repo = new UserRepositoryImpl(datasource);
+  const repo = new UserRepositoryImpl(datasource, token);
   throw new Error("serverAction => createUserAction -> NOT IMPLEMENT")
   // const entity = new User(0, data.path, data.type, true);
 

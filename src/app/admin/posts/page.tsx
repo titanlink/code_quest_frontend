@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { PostsTable, usePostStore } from "@/features"
 import { AdminFeatureHeader, LoadingPage, SearchFilters } from "@/components"
 import { Plus } from "lucide-react"
+import { useAuth } from "@/lib"
 
 export default function AdminPostsPage() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -13,9 +14,12 @@ export default function AdminPostsPage() {
   const getPosts = usePostStore((state) => state.getData);
   const posts = usePostStore((state) => state.items);
 
-  const page: number = usePostStore( (state) => state.page ?? 0  );
+  const page: number = usePostStore( (state) => state.page ?? 1  );
   const limit: number = usePostStore( (state) => state.limit ?? 50  );
   const isLoading = usePostStore((state) => state.isLoading);
+
+  const { user, getToken } = useAuth()
+  const [token, setToken] = useState<string | null>(null)
 
   const filteredPosts = posts.filter(
     (post) =>
@@ -28,8 +32,16 @@ export default function AdminPostsPage() {
   }
 
   useEffect(() => {
-      getPosts(page, limit);
-    }, [page, limit, getPosts]);
+    const fetchToken = async () => {
+      if (user) {
+        const authToken = await getToken() ?? ''
+        setToken(token)
+        getPosts(0, 10, authToken );
+      }
+    }
+    fetchToken()
+  }, [user, getToken])
+
 
   return (
     <div className="space-y-6">

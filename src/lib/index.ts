@@ -1,5 +1,4 @@
 export * from './auth-context'
-export * from './axios-config'
 export * from './client-graphql'
 export * from './mock-data'
 export * from './types'

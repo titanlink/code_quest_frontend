@@ -42,7 +42,7 @@ export function PostSidebar({ post }: PostSidebarProps) {
           <div className="space-y-2 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              <span>Miembro desde {post?.author?.createdAt.getFullYear()}</span>
+              <span>Miembro desde {post?.author?.createdAt?.getFullYear()}</span>
             </div>
             {/* <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />

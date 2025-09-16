@@ -5,9 +5,9 @@ export interface IComment {
   content: string
   postId: string
   authorId?: string
-  author?: IUser
+  author: IUser
   parentId?: string
-  replies?: IComment[]
+  sub_comment?: IComment[]
   createdAt?: Date
   updatedAt?: Date
 }
@@ -19,7 +19,8 @@ export class CommentMapper {
       id: json['id'],
       content: json['content'],
       postId: json['postId'],
-      author: json['author'],
+      sub_comment: CommentMapper.fromJsonList(json['sub_comment'] ?? []),
+      author: json['user'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
     }

@@ -1,7 +1,7 @@
 export * from './ui'
 export * from './magicui'
 export * from './admin-dashboard'
-export * from './auth-guard'
+// export * from './auth-guard'
 export * from './admin-header'
 export * from './admin-sidebar'
 export * from './featured-post'

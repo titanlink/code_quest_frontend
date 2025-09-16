@@ -1,15 +1,24 @@
 import React from 'react'
 import { IPost } from '../..'
-import { PostCard } from '@/components'
+import { PostCard, Skeleton } from '@/components'
 
 interface Props {
   filteredPosts:IPost[],
+  isLoading?:boolean,
   clearFilters: () => void
 }
-export const PostGrid = ({filteredPosts, clearFilters}:Props) => {
+export const PostGrid = ({filteredPosts, clearFilters, isLoading}:Props) => {
+
+  if (isLoading) {
+    return( <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{ [1,2,3].map((index) => ( 
+      <Skeleton key={index} className="h-130 w-full " /> ))}
+    </div>
+    )
+  }
+
   return (
     <>
-     {
+    {
       filteredPosts.length > 0 ? (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPosts.map((post) => (

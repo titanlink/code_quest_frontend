@@ -1,23 +1,42 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Navbar } from "@/components/navbar"
 // import { SearchFilters } from "@/components/search-filters"
-import { mockPosts } from "@/lib/mock-data"
 
 import type { PostFilters } from "@/lib/types"
-import { PostGrid, ResultsSummary } from "@/features"
+import { PostGrid, ResultsSummary, usePostStore } from "@/features"
+import { useAuth } from "@/lib"
 
 export default function PostsPage() {
+  const getPosts = usePostStore((state) => state.getData);
+  const items = usePostStore((state) => state.items);
+  const page: number = usePostStore( (state) => state.page ?? 0  );
+  const limit: number = usePostStore( (state) => state.limit ?? 50  );
+  const isLoading = usePostStore((state) => state.isLoading);
+  const { user, getToken } = useAuth()
+  const [token, setToken] = useState<string | null>(null)
+
   const [filters, setFilters] = useState<PostFilters>({
     search: "",
     category: "",
-    featured: undefined,
-    published: true,
+    featured: false,
+    published: false,
   })
 
+  useEffect(() => {
+    const fetchToken = async () => {
+      if (user) {
+        const authToken = await getToken() ?? ''
+        setToken(authToken)
+        getPosts(0, 10, authToken );
+      }
+    }
+    fetchToken()
+  }, [user, getToken])
+
   const filteredPosts = useMemo(() => {
-    return mockPosts.filter((post) => {
+    return items.filter((post) => {
       // Filter by published status
       if (filters.published !== undefined && post.published !== filters.published) {
         return false
@@ -29,7 +48,7 @@ export default function PostsPage() {
       }
 
       // Filter by category
-      if (filters.category && post.category.slug !== filters.category) {
+      if (filters.category && post?.category?.slug !== filters.category) {
         return false
       }
 
@@ -40,7 +59,7 @@ export default function PostsPage() {
         const matchesExcerpt = post.excerpt.toLowerCase().includes(searchTerm)
         const matchesContent = post.content.toLowerCase().includes(searchTerm)
         const matchesTags = post.tags.some((tag) => tag.toLowerCase().includes(searchTerm))
-        const matchesAuthor = post.author.name.toLowerCase().includes(searchTerm)
+        const matchesAuthor = post?.author?.name.toLowerCase().includes(searchTerm)
 
         if (!matchesTitle && !matchesExcerpt && !matchesContent && !matchesTags && !matchesAuthor) {
           return false
@@ -59,8 +78,8 @@ export default function PostsPage() {
     setFilters({
       search: "",
       category: "",
-      featured: undefined,
-      published: true,
+      featured: false,
+      published: false,
     })
   }
 
@@ -84,7 +103,7 @@ export default function PostsPage() {
         <ResultsSummary filteredPosts={filteredPosts} clearFilters={clearFilters} filters={filters} />
 
         {/* Posts Grid */}
-        <PostGrid filteredPosts={filteredPosts} clearFilters={clearFilters} />
+        <PostGrid filteredPosts={items} clearFilters={clearFilters} isLoading={isLoading} />
       </div>
     </div>
   )

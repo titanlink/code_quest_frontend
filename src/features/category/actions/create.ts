@@ -5,9 +5,9 @@ import { CategoryDatasourceGQL, CategoryRepositoryImpl, ICategory } from "..";
 
 
 
-export async function createCategoryAction(data: ICategory) : Promise<ICategory | ResponsePropio> {
+export async function createCategoryAction(data: ICategory, token: string) : Promise<ICategory | ResponsePropio> {
   const datasource = new CategoryDatasourceGQL();
-  const repo = new CategoryRepositoryImpl(datasource);
+  const repo = new CategoryRepositoryImpl(datasource, token);
 
   try {
     return await repo.create(data);

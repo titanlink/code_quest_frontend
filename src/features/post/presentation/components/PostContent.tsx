@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { Heart, MessageCircle, Eye, Calendar, Clock, ArrowLeft, Bookmark } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
-import { IPost } from "@/features"
+import { createLikePostAction, deleteLikeAction, ILike, IPost } from "@/features"
 // import { SocialShare } from "@/components/social-share"
 
 interface PostContentProps {
@@ -18,16 +18,23 @@ interface PostContentProps {
 
 export function PostContent({ post }: PostContentProps) {
   const { user } = useAuth()
-  const [isLiked, setIsLiked] = useState(false)
+  const [isLiked, setIsLiked] = useState(post.isLiked)
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [likesCount, setLikesCount] = useState(post.likesCount ?? 0)
+  const [like, setLike] = useState<ILike>({ post: post, }) 
 
-  const handleLike = () => {
+  const handleLike = async () => {
     if (!user) {
       // Redirect to login or show login modal
       return
     }
 
+    
+    const resp = isLiked ?  await deleteLikeAction(like.id ?? '') : await createLikePostAction(like)
+    if ('error' in resp) return
+    console.log("🚀 ~ handleLike ~ resp:", resp)
+    setLike(resp)
+    
     setIsLiked(!isLiked)
     setLikesCount(isLiked ? likesCount - 1 : likesCount + 1)
   }
@@ -69,6 +76,7 @@ export function PostContent({ post }: PostContentProps) {
         </Link>
       </Button>
 
+
       {/* Header */}
       <header className="space-y-6">
         <div className="flex flex-wrap gap-2">
@@ -107,10 +115,10 @@ export function PostContent({ post }: PostContentProps) {
           {/* Social Actions */}
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
+              {/* <div className="flex items-center gap-1">
                 <Eye className="h-4 w-4" />
                 <span>{post.viewsCount}</span>
-              </div>
+              </div> */}
               <div className="flex items-center gap-1">
                 <MessageCircle className="h-4 w-4" />
                 <span>{post.commentsCount}</span>

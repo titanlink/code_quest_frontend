@@ -12,9 +12,10 @@ interface Props {
 export default async function PostPage({ params }: Props) {
   let post: IPost | undefined
   let isNotFound = false
-  const slug = 'asdasd'// params.slug 
+  const slug =  params.slug 
 
 
+  // const response = mockPosts[0];
   const response = await findPostBySlugAction(slug);
   if (response && !('id' in response)) isNotFound = true
   if(!isNotFound && ('id' in response)) post = response;
@@ -41,7 +42,7 @@ export default async function PostPage({ params }: Props) {
           {/* Main Content */}
           <div className="lg:col-span-3">
             <PostContent post={post} />
-            <EnhancedCommentsSection postId={post.id ?? ''} postComments={post.comments} />
+            <EnhancedCommentsSection  post={post} postId={post.id ?? ''} postComments={post.comments ?? []} />
           </div>
 
           {/* Sidebar */}
@@ -62,22 +63,22 @@ export default async function PostPage({ params }: Props) {
 }
 
 // Generate metadata for SEO
-export async function generateMetadata({ params }: Props) {
-  const post = mockPosts.find((p) => p.slug === params.slug)
+// export async function generateMetadata({ params }: Props) {
+//   const post = mockPosts.find((p) => p.slug === params.slug)
 
-  if (!post) {
-    return {
-      title: "Post no encontrado",
-    }
-  }
+//   if (!post) {
+//     return {
+//       title: "Post no encontrado",
+//     }
+//   }
 
-  return {
-    title: post.title,
-    description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      images: post.coverImage ? [post.coverImage] : [],
-    },
-  }
-}
+//   return {
+//     title: post.title,
+//     description: post.excerpt,
+//     openGraph: {
+//       title: post.title,
+//       description: post.excerpt,
+//       images: post.coverImage ? [post.coverImage] : [],
+//     },
+//   }
+// }

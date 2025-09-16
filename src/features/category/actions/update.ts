@@ -5,10 +5,10 @@ import { ICategory } from "../domain";
 import { ResponsePropio } from "@/config";
 
 
-export async function updateCategoryAction(entity: ICategory): Promise<ICategory | ResponsePropio> {
+export async function updateCategoryAction(entity: ICategory, token: string): Promise<ICategory | ResponsePropio> {
   let retorno : ICategory | ResponsePropio = { error: true, msg: "Error desconocido" };
   const datasource = new CategoryDatasourceGQL();
-  const repo = new CategoryRepositoryImpl(datasource);
+  const repo = new CategoryRepositoryImpl(datasource, token);
   try {
     retorno = await repo.update(entity);
   } catch (e) {

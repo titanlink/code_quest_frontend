@@ -3,8 +3,12 @@
 import { useEffect, useState } from "react"
 import { UsersTable, useUserStore } from "@/features"
 import { AdminFeatureHeader, LoadingPage, SearchFilters } from "@/components"
+import { useAuth } from "@/lib"
 
 export default function AdminUsersPage() {
+  const { user, getToken } = useAuth()
+  const [token, setToken] = useState<string | null>(null)
+
   const [searchTerm, setSearchTerm] = useState("")
   const getUsers = useUserStore((state) => state.getData);
   const users = useUserStore((state) => state.items);
@@ -24,8 +28,15 @@ export default function AdminUsersPage() {
   }
 
   useEffect(() => {
-      getUsers(page, limit);
-  }, [page, limit, getUsers]);
+    const fetchToken = async () => {
+      if (user) {
+        const authToken = await getToken() ?? ''
+        setToken(token)
+        getUsers(0, 10, authToken );
+      }
+    }
+    fetchToken()
+  }, [user, getToken])
 
   const handleToggleRole = (userId: string) => {
     // setUsers(

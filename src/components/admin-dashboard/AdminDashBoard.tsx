@@ -1,16 +1,26 @@
+'use client'
 import { mockPosts, mockUsers, mockComments } from '@/lib/mock-data'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DashBoardHeader from './DashBoardHeader'
 import StatsCards from './StatsCards'
 import RecentPosts from './RecentPosts'
 import RecentComments from './RecentComments'
-import { allCommentAction, allPostAction, allUserAction, IPost } from '@/features'
+import { useCommentStore, usePostStore, useUserStore } from '@/features'
+import { useAuth } from '@/lib'
 
-export const AdminDashBoard = async () => {
-    const posts  = await allPostAction({ page: 0, limit: 100});
-    const users  = await allUserAction({ page: 0, limit: 100});
-    const comments  = await allCommentAction({ page: 0, limit: 100});
+export const AdminDashBoard = () => {
+    const { user, getToken } = useAuth()
+    const [token, setToken] = useState<string | null>(null)
 
+    const getPosts = usePostStore((state) => state.getData);
+    const posts = usePostStore((state) => state.items);
+
+    const getUsers = useUserStore((state) => state.getData);
+    const users = useUserStore((state) => state.items);
+
+    const getComments = useCommentStore((state) => state.getData);
+    const comments = useCommentStore((state) => state.items);
+    
     const totalPosts = posts.length
     const publishedPosts = posts.filter((p) => p?.published).length
     const draftPosts = posts.filter((p) => !p.published).length
@@ -20,6 +30,32 @@ export const AdminDashBoard = async () => {
   
     const recentPosts = posts.slice(0, 5)
     const recentComments = comments.slice(0, 5)
+
+
+    useEffect(() => {
+    const fetchToken = async () => {
+      if (user) {
+        const authToken = await getToken() ?? ''
+        setToken(authToken)
+        getComments(0, 1000, authToken);
+        getPosts(0, 1000, authToken );
+        getUsers(0, 1000, authToken);
+      }
+    }
+    fetchToken()
+  }, [user, getToken])
+
+    // useEffect(() => {
+    //     getUsers(0, 50);
+    // }, [getUsers]);
+    
+    // useEffect(() => {
+    //     getPosts(0, 50);
+    // }, [getPosts]);
+
+    // useEffect(() => {
+    //     getComments(0, 50);
+    // }, [getComments]);
     
   return (
     <div className="space-y-6">

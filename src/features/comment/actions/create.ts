@@ -5,9 +5,9 @@ import { CommentDatasourceGQL, CommentRepositoryImpl, IComment } from "..";
 
 
 
-export async function createCommentAction(data: IComment) : Promise<IComment | ResponsePropio> {
+export async function createCommentAction(data: IComment, token: string = 'No Token') : Promise<IComment | ResponsePropio> {
   const datasource = new CommentDatasourceGQL();
-  const repo = new CommentRepositoryImpl(datasource);
+  const repo = new CommentRepositoryImpl(datasource, token);
 
   try {
     return await repo.create(data);

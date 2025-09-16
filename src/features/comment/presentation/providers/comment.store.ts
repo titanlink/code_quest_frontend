@@ -28,10 +28,10 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
   setLimit(limit?: number){ set({limit: limit ?? 50}) },
 
 
-  getData: async(page: number = 0, limit: number = 50) => {
+  getData: async(page: number = 0, limit: number = 50, token = 'NO TENGO TOKEN') => {
     try {
       set({ isLoading: true });
-      const resp  = await allCommentAction({ page, limit});
+      const resp  = await allCommentAction({ page, limit}, token );
       set({items: resp ?? [],  isLoading: false})
     }catch(error) {
       throw new Error('Comments > getData > Unauthorized')
@@ -40,10 +40,10 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
     }
   },
 
-  findOne: async( id: string): Promise<IComment | ResponsePropio> => {
+  findOne: async( id: string, token: string): Promise<IComment | ResponsePropio> => {
     let retorno: IComment | ResponsePropio = { error: true, msg: "Error desconocido" };
     try {
-      retorno  = await findCommentAction(id);
+      retorno  = await findCommentAction(id, token);
       if ('data' in retorno) set({selected: retorno.data, isLoading: false})
     }catch(error) {
       throw new Error('Comments > findOne > Unauthorized')
@@ -53,11 +53,11 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
     return retorno
   },
 
-  createOrUpdate: async( entitdad: IComment): Promise<IComment | ResponsePropio> => {
+  createOrUpdate: async( entitdad: IComment, token: string): Promise<IComment | ResponsePropio> => {
     let retorno: IComment | ResponsePropio = { error: true, msg: "Error desconocido, createOrUpdate" };
     try {
-      if (entitdad.id) retorno = await updateCommentAction(entitdad);
-      if (!entitdad.id) retorno = await createCommentAction(entitdad);
+      if (entitdad.id) retorno = await updateCommentAction(entitdad, token);
+      if (!entitdad.id) retorno = await createCommentAction(entitdad, token);
       
       if ('data' in retorno) set({selected: retorno?.data, isLoading: false})
     }catch(error) {
@@ -69,10 +69,10 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
   
   },
   
-  deleteOne: async( id: string ) : Promise<ResponsePropio> => {
+  deleteOne: async( id: string, token: string ) : Promise<ResponsePropio> => {
     let retorno: ResponsePropio = { msg:'Error desconocido', error: true}
     try {
-      const resp  = await deleteCommentAction(id);
+      const resp  = await deleteCommentAction(id, token);
       retorno = resp
     }catch(error) {
       throw new Error('Comments > findOne > Unauthorized')

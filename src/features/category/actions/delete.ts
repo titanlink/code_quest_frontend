@@ -4,10 +4,10 @@ import { ResponsePropio } from "@/config";
 import { CategoryDatasourceGQL, CategoryRepositoryImpl, ICategory } from "..";
 
 
-export async function deleteCategoryAction(id: string) : Promise<ResponsePropio> {
+export async function deleteCategoryAction(id: string, token: string) : Promise<ResponsePropio> {
   let retorno: ResponsePropio = { error: true, msg: 'Error desconocido'}
   const datasource = new CategoryDatasourceGQL();
-  const repo = new CategoryRepositoryImpl(datasource);
+  const repo = new CategoryRepositoryImpl(datasource, token);
 
   try {
     retorno = await repo.delete(id);

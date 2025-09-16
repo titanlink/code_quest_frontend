@@ -1,3 +1,4 @@
+import { IPost } from "@/features"
 import type { User, Category, Post, Comment } from "./types"
 
 export const mockUsers: User[] = [
@@ -44,7 +45,7 @@ export const mockCategories: Category[] = [
   },
 ]
 
-export const mockPosts: Post[] = [
+export const mockPosts: IPost[] = [
   {
     id: "1",
     title: "Introducción a Next.js 15",

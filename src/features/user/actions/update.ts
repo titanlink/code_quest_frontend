@@ -7,7 +7,7 @@ import { IUser } from "../domain";
 
 export async function updateUserAction(data: IUser): Promise<any> {
   const datasource = new UserDatasourceGQL();
-  const repo = new UserRepositoryImpl(datasource);
+  const repo = new UserRepositoryImpl(datasource, token);
   throw new Error("serverAction => updateUserAction -> NOT IMPLEMENT")
   // try {
   //   const entity = new User(data.id, data.path, data.type, data.active);

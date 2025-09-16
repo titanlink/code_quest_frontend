@@ -4,10 +4,10 @@ import { ResponsePropio } from "@/config";
 import { PostDatasourceGQL, PostRepositoryImpl, IPost } from "..";
 
 
-export async function findPostAction(id: string): Promise<IPost | ResponsePropio> {
-  let retorno: IPost | ResponsePropio = { error: true, msg: 'Error desconocido'}
+export async function findPostAction(id: string, token: string): Promise<IPost | ResponsePropio> {
+  let retorno: IPost | ResponsePropio = { error: true, msg: 'Error desconocido > findPostAction'}
   const datasource = new PostDatasourceGQL();
-  const repo = new PostRepositoryImpl(datasource);
+  const repo = new PostRepositoryImpl(datasource, token);
   try {
     retorno = await repo.findById(id);
   } catch (e) {
@@ -17,10 +17,10 @@ export async function findPostAction(id: string): Promise<IPost | ResponsePropio
   }
 }
 
-export async function findPostBySlugAction(id: string): Promise<IPost | ResponsePropio> {
+export async function findPostBySlugAction(id: string, token: string): Promise<IPost | ResponsePropio> {
   let retorno: IPost | ResponsePropio = { error: true, msg: 'Error desconocido'}
   const datasource = new PostDatasourceGQL();
-  const repo = new PostRepositoryImpl(datasource);
+  const repo = new PostRepositoryImpl(datasource, token);
   try {
     retorno = await repo.findBySlugId(id);
   } catch (e) {

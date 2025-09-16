@@ -1,9 +1,9 @@
 import { gql } from "@apollo/client";
 
 export const allPostGQL = gql`
-  query allCategories($limit: Int, $offset: Int) {
+  query allPosts($limit: Int, $offset: Int) {
     allPost(limit: $limit, offset: $offset) {
-      id
+    items { id
       title
       slug
       content
@@ -23,7 +23,8 @@ export const allPostGQL = gql`
         description
         color
       }
-
+    },
+    total
     }
   }
 `;
@@ -58,30 +59,38 @@ export const findPostGQL = gql`
 export const findPostBySlugGQL = gql`
   query Post($slug: String!) {
     postBySlug(slug: $slug) {
-      id
-      title
-      slug
-      content
-      excerpt
-      coverImage
-      published
-      featured
-      likesCount
-      tags
-      createAt
-      updateAt
-
-      category {
+      item {
         id
-        name
+        title
         slug
-        description
-        color
-      }
-      comment {
-        id
         content
+        excerpt
+        coverImage
+        published
+        featured
+        likesCount
+        tags
+        createAt
+        updateAt
+
+        category {
+          id
+          name
+          slug
+          description
+          color
+        }
+        comment {
+          id
+          content
+          sub_comment {
+            id 
+            content
+          }
+        }
       }
+      is_like
+
     }
   }
 `;

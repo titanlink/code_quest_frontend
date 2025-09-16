@@ -24,8 +24,8 @@ export interface UsersState {
   setPage: (page: number) =>void;
   setLimit: (limit: number) =>void;
 
-  getData: (page: number, limit: number) => Promise<void>;
-  findOne: (id: string) => Promise<IUser | null>;
-  createOrUpdate: (client: IUser) => Promise<any>;
-  deleteOne: (id: string) => Promise<IUser | null>;
+  getData: (page: number, limit: number, token: string) => Promise<void>;
+  findOne: (id: string, token: string) => Promise<IUser | null>;
+  createOrUpdate: (client: IUser, token: string) => Promise<any>;
+  deleteOne: (id: string, token: string) => Promise<IUser | null>;
 }

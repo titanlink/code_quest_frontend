@@ -10,9 +10,10 @@ import { useForm } from "react-hook-form";
 import { ICategory, useCategoryStore } from "../..";
 
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { ArrowLeft, Eye, Loader2, Save } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/lib";
 
 interface Props {
   entity?: ICategory;
@@ -31,6 +32,8 @@ const formSchema = z.object({
 export const CategoryForm = ({entity}:Props) => {
   const isNew = entity ? false : true
   const actionTitle = isNew ? 'Nueva' : 'Editar'
+  const { user, getToken } = useAuth()
+  const [token, setToken] = useState<string>('')
   const [isPending, startTransition] = useTransition()
   const router = useRouter();
   const createOrUpdate = useCategoryStore((state) => state.createOrUpdate);
@@ -44,13 +47,23 @@ export const CategoryForm = ({entity}:Props) => {
     }
   })
 
+  useEffect(() => {
+    const fetchToken = async () => {
+      if (user) {
+        const authToken = await getToken() ?? ''
+        setToken(authToken)
+      }
+    }
+    fetchToken()
+  }, [user, getToken])
+
   async function onSubmit(values: z.infer < typeof formSchema > ) {
     // toast.info( <pre><b>{JSON.stringify(values, null, 2) } </b> </pre>)
     let isCreated = false
     let actioned = isNew ? 'Registrado' : 'Actualizado'
     startTransition(async () => {
       try {
-        const resp = await createOrUpdate(values)
+        const resp = await createOrUpdate(values, token)
         console.log('resp',resp);
         if ("error" in resp && resp['error']){ toast.error(resp.msg); return }
         if ("id" in resp) isCreated = true 

@@ -6,7 +6,7 @@ import { UserDatasourceGQL, UserRepositoryImpl } from "..";
 export async function deleteUserAction(id: string) : Promise<any> {
   // throw new Error("serverAction => deleteUserAction -> NOT IMPLEMENT")
   const datasource = new UserDatasourceGQL();
-  const repo = new UserRepositoryImpl(datasource);
+  const repo = new UserRepositoryImpl(datasource, token);
 
   try {
     return await repo.delete(id);

@@ -5,7 +5,7 @@ import { UserDatasourceGQL, UserRepositoryImpl } from "..";
 
 export async function findUserAction(id: string) {
   const datasource = new UserDatasourceGQL();
-  const repo = new UserRepositoryImpl(datasource);
+  const repo = new UserRepositoryImpl(datasource, token);
   try {
     const response = await repo.findById(id);
     return response

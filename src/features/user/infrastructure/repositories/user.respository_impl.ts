@@ -4,24 +4,24 @@ import { UserDatasource, UserRepository } from "../..";
 
 
 export class UserRepositoryImpl extends UserRepository {
-  constructor(private readonly datasource: UserDatasource) {
+  constructor(private readonly datasource: UserDatasource, private token: string = '') {
     super();
   }
   
   async findById(id: string): Promise<any> {
-    return this.datasource.findById(id);
+    return this.datasource.findById(id, this.token);
   }
   async create(entity: any): Promise<any> {
-    return this.datasource.create(entity);
+    return this.datasource.create(entity, this.token);
   }
   async update(entity: any): Promise<any> {
-    return this.datasource.update(entity);
+    return this.datasource.update(entity, this.token);
   }
   async all(page: number, limit: number): Promise<any> {
-    return this.datasource.all(page, limit);
+    return this.datasource.all(page, limit, this.token);
   }
   async delete(id: string): Promise<any> {
-    return this.datasource.delete(id);
+    return this.datasource.delete(id, this.token);
   }
   
 }

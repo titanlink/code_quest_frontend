@@ -3,10 +3,10 @@ import { IPost } from "..";
 
 
 export interface PostDatasource {
-  all(page:number, limit:number): Promise<any>;
-  findById(id: string): Promise<IPost | ResponsePropio>;
-  findBySlugId(id: string): Promise<IPost | ResponsePropio>;
-  create(entity: any): Promise<IPost | ResponsePropio>;
-  update(entity: any): Promise<IPost | ResponsePropio>;
-  delete(id: string): Promise<ResponsePropio>;
+  all(page:number, limit:number, token: string): Promise<IPost[] | ResponsePropio>;
+  findById(id: string, token: string): Promise<IPost | ResponsePropio>;
+  findBySlugId(id: string, token: string): Promise<IPost | ResponsePropio>;
+  create(entity: any, token: string): Promise<IPost | ResponsePropio>;
+  update(entity: any, token: string): Promise<IPost | ResponsePropio>;
+  delete(id: string, token: string): Promise<ResponsePropio>;
 }

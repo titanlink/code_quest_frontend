@@ -3,9 +3,9 @@
 import { CommentDatasourceGQL, CommentRepositoryImpl } from "..";
 
 
-export async function findCommentAction(id: string) {
+export async function findCommentAction(id: string, token: string) {
   const datasource = new CommentDatasourceGQL();
-  const repo = new CommentRepositoryImpl(datasource);
+  const repo = new CommentRepositoryImpl(datasource, token);
   try {
     const response = await repo.findById(id);
     return response;

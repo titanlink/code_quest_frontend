@@ -25,8 +25,8 @@ export interface PostsState {
   setPage: (page: number) =>void;
   setLimit: (limit: number) =>void;
 
-  getData: (page: number, limit: number) => Promise<void>;
+  getData: (page: number, limit: number, token: string) => Promise<void>;
   findOne: (id: string) => Promise<IPost | ResponsePropio>;
-  createOrUpdate: (client: IPost) => Promise<IPost | ResponsePropio>;
+  createOrUpdate: (client: IPost, token: string) => Promise<IPost | ResponsePropio>;
   deleteOne: (id: string) => Promise<ResponsePropio>;
 }

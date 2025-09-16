@@ -8,10 +8,10 @@ import { ResponsePropio } from "@/config";
 export class CommentDatasourceGQL implements CommentDatasource {
   
 
-  async all(page = 0, limit = 50) {
+  async all(page = 0, limit = 50, token: string) {
     // return mockCategories
     try {
-      const peti = await makeClientGraphql();
+      const peti = await makeClientGraphql(token);
 
       const { data } = await peti.query<any>({
         query: allCommentGQL,
@@ -21,7 +21,6 @@ export class CommentDatasourceGQL implements CommentDatasource {
           offset: page
         },
       });
-
       return CommentMapper.fromJsonList(data["allComment"]);
     } catch (e) {
       console.error(`Error => allCommentGQL -> ${e}`);
@@ -29,10 +28,10 @@ export class CommentDatasourceGQL implements CommentDatasource {
       return [];
     }
   }
-  async findById(id: string){
+  async findById(id: string, token: string){
     let retorno: IComment | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
-      const peti = await makeClientGraphql();
+      const peti = await makeClientGraphql(token);
 
       const { data } = await peti.query<any>({
         query: findCommentGQL,
@@ -51,10 +50,10 @@ export class CommentDatasourceGQL implements CommentDatasource {
   
   }
 
-  async create ( form: IComment ) {
+  async create ( form: IComment, token: string ) {
     let retorno: IComment | ResponsePropio = { msg: 'Error desconocido gql_impl', error: true }
     try {
-      const peti = await makeClientGraphql();
+      const peti = await makeClientGraphql(token);
 
       const { data } = await peti.mutate<any>({
         mutation: createCommentGQL,
@@ -63,15 +62,13 @@ export class CommentDatasourceGQL implements CommentDatasource {
           input: {
             content: form.content,
             id_post: Number(form.postId),
-            // authorId: form.authorId,
-            // author: form.author,
-            // parentId: form.parentId,
-            // replies: form.replies,
+            // parent_id: form.parentId,
           },
         },
       });
 
       console.log("🚀 ~ CommentDatasourceGQL ~ create ~ retorno:", retorno)
+      console.log("🚀 ~ CommentDatasourceGQL ~ create ~ data:", data)
       retorno =  CommentMapper.fromJson(data["createComment"]);
     } catch (e) {
       console.error(`Error => createCommentGQL -> ${e}`);
@@ -81,10 +78,10 @@ export class CommentDatasourceGQL implements CommentDatasource {
     
   };
 
-  async update(form: IComment){
+  async update(form: IComment, token: string){
     let retorno: IComment | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
-      const peti = await makeClientGraphql();
+      const peti = await makeClientGraphql(token);
 
       const { data } = await peti.mutate<any>({
         mutation: updateCommentGQL,
@@ -97,7 +94,7 @@ export class CommentDatasourceGQL implements CommentDatasource {
             authorId: form.authorId,
             author: form.author,
             parentId: form.parentId,
-            replies: form.replies,
+            sub_comment: form.sub_comment,
           },
         },
       });
@@ -111,10 +108,10 @@ export class CommentDatasourceGQL implements CommentDatasource {
     }
   }
 
-  async delete(id: string) {
+  async delete(id: string, token: string) {
     let retorno: ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
-      const peti = await makeClientGraphql();
+      const peti = await makeClientGraphql(token);
 
       const { data } = await peti.mutate<any>({
         mutation: removeCommentGQL,

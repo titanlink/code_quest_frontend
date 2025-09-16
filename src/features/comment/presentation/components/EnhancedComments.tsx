@@ -14,15 +14,16 @@ import { useAuth } from "@/lib/auth-context"
 import { mockComments } from "@/lib/mock-data"
 import type { Comment } from "@/lib/types"
 import { CustomCard, ShineBorder } from "@/components"
-import { createCommentAction, IComment } from "@/features"
+import { createCommentAction, IComment, IPost, IUser } from "@/features"
 import { toast } from "sonner"
 
 interface Props {
+  post: IPost,
   postId: string,
   postComments: IComment[],
 }
 
-export function EnhancedCommentsSection({ postId, postComments }: Props) {
+export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
   const { user } = useAuth()
   const [newComment, setNewComment] = useState("")
   const [replyTo, setReplyTo] = useState<string | null>(null)
@@ -30,16 +31,31 @@ export function EnhancedCommentsSection({ postId, postComments }: Props) {
   const [comments, setComments] = useState(postComments)
   const [likedComments, setLikedComments] = useState<Set<string>>(new Set())
 
+  const currentUser:IUser = {
+    id: post.author?.id ?? '',
+    email: user?.email ?? '',
+    name: user?.displayName ?? '',
+    role: 'user',
+  }
+
+  const author:IUser = {
+    id: post.author?.id ?? '',
+    email: post.author?.email ?? '',
+    name: post.author?.name ?? '',
+    role: post.author?.role ?? 'user',
+  }
+
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!user || !newComment.trim()) return
-
+    
+    // console.log("🚀 ~ handleSubmitComment ~ user:", user)
     const comment: IComment = {
       id: Date.now().toString(),
       content: newComment,
       postId,
-      authorId: user.id,
-      author: user,
+      authorId: currentUser.id,
+      author: currentUser,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -51,20 +67,24 @@ export function EnhancedCommentsSection({ postId, postComments }: Props) {
     setNewComment("")
   }
 
-  const handleSubmitReply = (e: React.FormEvent, parentId: string) => {
+  const handleSubmitReply = async (e: React.FormEvent, parentId: string) => {
     e.preventDefault()
     if (!user || !replyContent.trim()) return
 
-    const reply: Comment = {
+    const reply: IComment = {
       id: Date.now().toString(),
       content: replyContent,
       postId,
-      authorId: user.id,
-      author: user,
+      authorId: user.providerId,
+      author: author,
       parentId,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
+    // console.log("🚀 ~ handleSubmitReply ~ reply:", reply)
+
+    const resp = await createCommentAction(reply)
+    if ('error' in resp) return
 
     setComments([reply, ...comments])
     setReplyContent("")
@@ -82,9 +102,9 @@ export function EnhancedCommentsSection({ postId, postComments }: Props) {
     }
     setLikedComments(newLikedComments)
   }
-
+  
   const topLevelComments = comments.filter((c) => !c.parentId)
-  const getReplies = (commentId: string) => comments.filter((c) => c.parentId === commentId)
+  const getsub_comment = (commentId: string) => comments.filter((c) => c.parentId === commentId)
 
   return (
     <section className="mt-16 pt-16 border-t">
@@ -103,8 +123,8 @@ export function EnhancedCommentsSection({ postId, postComments }: Props) {
             <form onSubmit={handleSubmitComment} className="space-y-4">
               <div className="flex gap-3">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
-                  <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                  <AvatarImage src={user.photoURL || "/placeholder.svg"} alt={user?.displayName ?? ''} />
+                  <AvatarFallback>{user?.displayName?.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
                   <Textarea
@@ -148,7 +168,7 @@ export function EnhancedCommentsSection({ postId, postComments }: Props) {
       <div className="space-y-6 mt-4">
         {topLevelComments.length > 0 ? (
           topLevelComments.map((comment) => {
-            const replies = getReplies(comment?.id ?? '')
+            const sub_comment:IComment[] = comment.sub_comment ?? [] //getsub_comment(comment?.id ?? '')
             const isLiked = likedComments.has(comment?.id ?? '')
 
             return (
@@ -184,11 +204,11 @@ export function EnhancedCommentsSection({ postId, postComments }: Props) {
                     <p className="text-sm leading-relaxed">{comment.content}</p>
 
                     <div className="flex items-center gap-4 text-sm">
-                      {/* <Button
+                      <Button
                         variant="ghost"
                         size="sm"
                         className={`h-auto p-0 ${isLiked ? "text-red-500" : "text-muted-foreground"} hover:text-red-500`}
-                        onClick={() => handleLikeComment(comment.id)}
+                        onClick={() => handleLikeComment(comment?.id ?? '')}
                       >
                         <Heart className={`h-4 w-4 mr-1 ${isLiked ? "fill-current" : ""}`} />
                         Me gusta
@@ -197,11 +217,11 @@ export function EnhancedCommentsSection({ postId, postComments }: Props) {
                         variant="ghost"
                         size="sm"
                         className="h-auto p-0 text-muted-foreground hover:text-foreground"
-                        onClick={() => setReplyTo(replyTo === comment?.id  ? null : comment.id)}
+                        onClick={() => setReplyTo(replyTo === comment?.id  ? null : comment?.id ?? '')}
                       >
                         <Reply className="h-4 w-4 mr-1" />
                         Responder
-                      </Button> */}
+                      </Button>
                     </div>
 
                     {/* Reply Form */}
@@ -209,8 +229,8 @@ export function EnhancedCommentsSection({ postId, postComments }: Props) {
                       <form onSubmit={(e) => handleSubmitReply(e, comment?.id ?? '')} className="mt-4 space-y-3">
                         <div className="flex gap-3">
                           <Avatar className="h-8 w-8">
-                            <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
-                            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                            <AvatarImage src={user.photoURL || "/placeholder.svg"} alt={user.displayName ?? ''} />
+                            <AvatarFallback>{user?.displayName?.charAt(0)}</AvatarFallback>
                           </Avatar>
                           <div className="flex-1">
                             <Textarea
@@ -234,10 +254,10 @@ export function EnhancedCommentsSection({ postId, postComments }: Props) {
                   </div>
                 </div>
 
-                {/* Replies */}
-                {replies.length > 0 && (
+                {/* sub_comment */}
+                {sub_comment.length > 0 && (
                   <div className="ml-14 space-y-4 border-l-2 border-muted pl-4">
-                    {replies.map((reply) => {
+                    {sub_comment.map((reply) => {
                       const isReplyLiked = likedComments.has(reply?.id ?? '')
 
                       return (

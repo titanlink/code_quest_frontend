@@ -1,132 +1,101 @@
 "use client"
 
 import type React from "react"
-
 import { createContext, useContext, useEffect, useState } from "react"
-import type { User } from "./types"
-import { mockUsers } from "./mock-data"
+import {
+  type User,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+  updateProfile,
+} from "firebase/auth"
+import { auth, googleProvider } from "@/lib/firebase"
+import { getAuthToken } from "@/lib/auth-utils"
 
 interface AuthContextType {
   user: User | null
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>
-  loginWithDiscord: () => Promise<{ success: boolean; error?: string }>
-  register: (email: string, password: string, name: string) => Promise<{ success: boolean; error?: string }>
-  logout: () => void
   loading: boolean
+  signIn: (email: string, password: string) => Promise<void>
+  signUp: (email: string, password: string, displayName?: string) => Promise<void>
+  signInWithGoogle: () => Promise<void>
+  logout: () => Promise<void>
+  getToken: () => Promise<string | null>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    // Check for stored user session
-    const storedUser = localStorage.getItem("blog-user")
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
-    }
-    setLoading(false)
-  }, [])
-
-  const login = async (email: string, password: string) => {
-    setLoading(true)
-
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Mock authentication - check against mock users
-    const foundUser = mockUsers.find((u) => u.email === email)
-
-    if (foundUser && password === "password123") {
-      setUser(foundUser)
-      localStorage.setItem("blog-user", JSON.stringify(foundUser))
-      setLoading(false)
-      return { success: true }
-    }
-
-    setLoading(false)
-    return { success: false, error: "Credenciales inválidas" }
-  }
-
-  const loginWithDiscord = async () => {
-    setLoading(true)
-
-    // Simulate Discord OAuth flow
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    // Mock successful Discord login
-    const discordUser: User = {
-      id: "discord-" + Date.now(),
-      email: "discord@example.com",
-      name: "Usuario Discord",
-      avatar: "/diverse-user-avatars.png",
-      role: "user",
-      discordId: "discord#" + Math.floor(Math.random() * 9999),
-      createdAt: new Date(),
-    }
-
-    setUser(discordUser)
-    localStorage.setItem("blog-user", JSON.stringify(discordUser))
-    setLoading(false)
-    return { success: true }
-  }
-
-  const register = async (email: string, password: string, name: string) => {
-    setLoading(true)
-
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Check if user already exists
-    const existingUser = mockUsers.find((u) => u.email === email)
-    if (existingUser) {
-      setLoading(false)
-      return { success: false, error: "El usuario ya existe" }
-    }
-
-    // Create new user
-    const newUser: User = {
-      id: "user-" + Date.now(),
-      email,
-      name,
-      avatar: "/diverse-user-avatars.png",
-      role: "user",
-      createdAt: new Date(),
-    }
-
-    setUser(newUser)
-    localStorage.setItem("blog-user", JSON.stringify(newUser))
-    setLoading(false)
-    return { success: true }
-  }
-
-  const logout = () => {
-    setUser(null)
-    localStorage.removeItem("blog-user")
-  }
-
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        loginWithDiscord,
-        register,
-        logout,
-        loading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  )
-}
-
-export function useAuth() {
+export const useAuth = () => {
   const context = useContext(AuthContext)
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider")
   }
   return context
+}
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user)
+      setLoading(false)
+    })
+
+    return unsubscribe
+  }, [])
+
+  const signIn = async (email: string, password: string) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const signUp = async (email: string, password: string, displayName?: string) => {
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email, password)
+      if (displayName && result.user) {
+        await updateProfile(result.user, { displayName })
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const signInWithGoogle = async () => {
+    try {
+      const credential = await signInWithPopup(auth, googleProvider)
+      console.log("🚀 ~ signInWithGoogle ~ credential:", credential)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const logout = async () => {
+    try {
+      await signOut(auth)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const getToken = async () => {
+    return await getAuthToken()
+  }
+
+  const value: AuthContextType = {
+    user,
+    loading,
+    signIn,
+    signUp,
+    signInWithGoogle,
+    logout,
+    getToken,
+  }
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

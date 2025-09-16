@@ -5,9 +5,9 @@ import { CommentDatasourceGQL, CommentRepositoryImpl } from "..";
 import { IComment } from "../domain";
 
 
-export async function updateCommentAction(data: IComment): Promise<any> {
+export async function updateCommentAction(data: IComment, token: string): Promise<any> {
   const datasource = new CommentDatasourceGQL();
-  const repo = new CommentRepositoryImpl(datasource);
+  const repo = new CommentRepositoryImpl(datasource, token);
   throw new Error("serverAction => updateCommentAction -> NOT IMPLEMENT")
   // try {
   //   const entity = new Comment(data.id, data.path, data.type, data.active);

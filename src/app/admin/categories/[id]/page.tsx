@@ -1,46 +1,55 @@
+"use client"
 
-import type React from "react"
+import React, { useEffect, useState } from "react"
+import { useParams, useRouter } from "next/navigation"
+import { CategoryForm, findCategoryAction, ICategory } from "@/features"
+import { useAuth } from "@/lib"
 
+export default function Page() {
+  const params = useParams<{ id: string }>()
+  const router = useRouter()
+  const { user, getToken } = useAuth()
 
-import { allCategoryAction, CategoryForm, findCategoryAction, ICategory, useCategoryStore } from "@/features"
-import { Badge, CardContent, CardHeader, CardTitle, CustomCard } from "@/components"
-import { notFound } from "next/navigation"
-import { mockCategories } from "@/lib"
+  const [entity, setEntity] = useState<ICategory | undefined>()
+  const [loading, setLoading] = useState(true)
 
+  const idParam = params.id
+  const isNew = idParam === "new"
+  const id = !isNew ? Number(idParam) : 0
 
-type Params = Promise<{
-  id: string;
-}>;
+  useEffect(() => {
+    const fetchData = async () => {
+      if ((id === 0 && !isNew) || isNaN(id)) {
+        router.replace("/404") // equivalente a notFound()
+        return
+      }
 
-export default async function Page(props: { params: Promise<Params> }) {
-  let isNotFound = false
-  let entity : ICategory | undefined
-  const params = await props.params;
-  const categories: ICategory[]  = await allCategoryAction({ page:0, limit:1000 });
-  let isNew = true;
-  let id = 0
-  if (params.id != 'new'){ 
-    isNew = false
-    id = Number(params.id);
+      if (id > 0) {
+        if (user){
+          const token = await getToken()
+          const response = await findCategoryAction(id.toString(), token ?? "")
+          console.log("🚀 ~ fetchData ~ response:", response)
+          if (!response || !("id" in response)) {
+              router.replace("/404")
+          } else {
+              setEntity(response)
+          }
+        }
+      }
+      setLoading(false)
+    }
+
+    fetchData()
+  }, [id, isNew, getToken, router, user])
+
+  if (loading) {
+    return <div>Cargando...</div>
   }
-  const actionTitle = isNew ? 'Nueva' : 'Editar'
-  if ((id == 0 && !isNew) || isNaN(id)) notFound();
-
-
-
-  if (id > 0){
-    const response = await findCategoryAction(id.toString());
-    if (response && !('id' in response)) isNotFound = true
-    if(!isNotFound && ('id' in response)) entity = response;
-  } 
-
-
-
 
   return (
     <div className="space-y-6">
-      <div  className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <CategoryForm entity={entity}/>
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
+        <CategoryForm entity={entity} />
       </div>
     </div>
   )

@@ -7,7 +7,7 @@ export interface IPost {
   content: string
   excerpt: string
   tags: string[]
-  comments: IComment[]
+  comments?: IComment[]
   published?: boolean
   featured?: boolean
   likesCount?: number
@@ -18,13 +18,15 @@ export interface IPost {
   author?: IUser
   categoryId?: string
   category?: ICategory
+  isLiked?: boolean
   createdAt?: Date
   updatedAt?: Date
 }
 
 export class PostMapper {
-  static fromJson( json: Record<string, any> ): IPost {
+  static fromJson( json: Record<string, any>, isLiked?: boolean ): IPost {
     const category = CategoryMapper.fromJson(json['category'])
+    const comments = CommentMapper.fromJsonList(json['comment'] ?? [])
     return {
       id: json['id'],
       title: json['title'],
@@ -34,7 +36,7 @@ export class PostMapper {
       excerpt:  json['excerpt'],
       authorId: json['authorId'],
       author: json['author'],
-      comments: CommentMapper.fromJsonList(json['comment']),
+      comments: comments,
       categoryId: category?.id,
       category: category,
       tags: json['tags'],
@@ -44,7 +46,8 @@ export class PostMapper {
       commentsCount: json['commentsCount'] ?? 0,
       viewsCount: json['viewsCount'] ?? 0,
       createdAt: json['createdAt'],
-      updatedAt: json['updatedAt']
+      updatedAt: json['updatedAt'],
+      isLiked: isLiked ?? false,
     }
   }
 
