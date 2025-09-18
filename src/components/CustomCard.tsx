@@ -17,7 +17,6 @@ export const CustomCard = <T,>({children, className, isActive , withHover, isLoa
         <LoadingPage className={'h-full'} label="" detail=""/>
       )}
       { !isLoading && (
-        <div className=" text-card-foreground rounded-xl flex flex-col gap-6 py-6 shadow-sm">
           <ClickSpark
             sparkColor='#fff'
             sparkSize={10}
@@ -25,9 +24,10 @@ export const CustomCard = <T,>({children, className, isActive , withHover, isLoa
             sparkCount={8}
             duration={400}
           >
+        <div className=" text-card-foreground rounded-xl flex flex-col gap-6 py-6 shadow-sm">
         {children}
-        </ClickSpark>
         </div> 
+        </ClickSpark>
       )}
     </MagicCard>
   )
