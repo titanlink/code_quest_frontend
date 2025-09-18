@@ -8,8 +8,11 @@ import { Plus } from "lucide-react"
 import { CategoriesTable, useCategoryStore } from "@/features"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/lib"
 
 export default function AdminCategoriesPage() {
+  const { user, getToken } = useAuth()
+  const [token, setToken] = useState<string>('')
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("")
   const [isPending, startTransition] = useTransition()
@@ -29,11 +32,23 @@ export default function AdminCategoriesPage() {
       categorie.description?.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
+  useEffect(() => {
+    const fetchToken = async () => {
+      if (user) {
+        const authToken = await getToken() ?? ''
+        setToken(authToken)
+        getCategories(page, limit, token);
+      }
+    }
+    fetchToken()
+  }, [page, limit, getCategories, isPending]);
+  
+
   const handleDeleteCategorie = async (categorieId: string) => {
 
       startTransition(async () => {
       try {
-        const resp = await removeCategory(categorieId)
+        const resp = await removeCategory(categorieId, token)
         if ("error" in resp && resp['error']){ toast.error(resp.msg); return }
         toast.success(resp.msg)
         router.push(`/admin/categories`)
@@ -45,9 +60,6 @@ export default function AdminCategoriesPage() {
     })
   }
 
-  useEffect(() => {
-    getCategories(page, limit);
-  }, [page, limit, getCategories, isPending]);
 
 
   return (

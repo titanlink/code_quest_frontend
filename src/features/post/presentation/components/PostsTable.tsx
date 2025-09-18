@@ -56,7 +56,7 @@ export const PostsTable = ({filteredPosts, handleDeletePost}: Props) => {
                 <TableCell className="text-sm text-muted-foreground">{post?.createdAt?.toLocaleDateString()}</TableCell>
                 <TableCell>
                   <div className="flex gap-4 text-sm text-muted-foreground">
-                    <span>{post.viewsCount} vistas</span>
+                    <span>{post.totalView} vistas</span>
                     <span>{post.likesCount} likes</span>
                     <span>{post.commentsCount} comentarios</span>
                   </div>

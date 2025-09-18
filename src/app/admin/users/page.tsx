@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { UsersTable, useUserStore } from "@/features"
+import { IUser, UsersTable, useUserStore } from "@/features"
 import { AdminFeatureHeader, LoadingPage, SearchFilters } from "@/components"
 import { useAuth } from "@/lib"
+import { toast } from "sonner"
 
 export default function AdminUsersPage() {
   const { user, getToken } = useAuth()
@@ -11,7 +12,9 @@ export default function AdminUsersPage() {
 
   const [searchTerm, setSearchTerm] = useState("")
   const getUsers = useUserStore((state) => state.getData);
+  const changeRole = useUserStore((state) => state.changeRole);
   const users = useUserStore((state) => state.items);
+
 
   const page: number = useUserStore( (state) => state.page ?? 0  );
   const limit: number = useUserStore( (state) => state.limit ?? 50  );
@@ -31,17 +34,15 @@ export default function AdminUsersPage() {
     const fetchToken = async () => {
       if (user) {
         const authToken = await getToken() ?? ''
-        setToken(token)
-        getUsers(0, 10, authToken );
+        setToken(authToken)
+        getUsers(page, limit, authToken );
       }
     }
     fetchToken()
   }, [user, getToken])
 
-  const handleToggleRole = (userId: string) => {
-    // setUsers(
-    //   users.map((user) => (user.id === userId ? { ...user, role: user.role === "admin" ? "user" : "admin" } : user)),
-    // )
+  const handleToggleRole = async (user: IUser) => {
+    if (token) {  await changeRole(user, token); return }
   }
 
   return (

@@ -11,6 +11,8 @@ export const allPostGQL = gql`
       coverImage
       published
       featured
+      total_view
+      viewUserCount
       likesCount
       commentCount
       tags
@@ -58,6 +60,8 @@ export const findPostGQL = gql`
       content
       excerpt
       coverImage
+      total_view
+      viewUserCount
       published
       featured
       likesCount
@@ -86,6 +90,8 @@ export const findPostBySlugGQL = gql`
         slug
         content
         excerpt
+        total_view
+        viewUserCount
         coverImage
         published
         featured

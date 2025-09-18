@@ -8,7 +8,7 @@ import { IUser } from '../..'
 
 interface Props {
   filteredUsers: IUser[],
-  handleToggleRole: (userId: string) => void
+  handleToggleRole: (user: IUser) => void
 }
 
 export const UsersTable = ({filteredUsers, handleToggleRole}: Props) => {
@@ -64,7 +64,7 @@ export const UsersTable = ({filteredUsers, handleToggleRole}: Props) => {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleToggleRole(user.id)}>
+                      <DropdownMenuItem onClick={() => handleToggleRole(user)}>
                         <Shield className="mr-2 h-4 w-4" />
                         {user.role === "admin" ? "Quitar admin" : "Hacer admin"}
                       </DropdownMenuItem>

@@ -51,7 +51,6 @@ export class PostDatasourceGQL implements PostDatasource {
         },
       });
 
-      console.log("🚀 ~ PostDatasourceGQL ~ findById ~ data:", data)
       const entity = PostMapper.fromJson(data["post"]);
       if (entity?.id) retorno = entity 
     } catch (e) {

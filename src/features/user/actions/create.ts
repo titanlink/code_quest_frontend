@@ -4,7 +4,7 @@ import { UserDatasourceGQL, UserRepositoryImpl } from "..";
 
 
 
-export async function createUserAction(data: any ) {
+export async function createUserAction(data: any, token:string ) {
   const datasource = new UserDatasourceGQL();
   const repo = new UserRepositoryImpl(datasource, token);
   throw new Error("serverAction => createUserAction -> NOT IMPLEMENT")

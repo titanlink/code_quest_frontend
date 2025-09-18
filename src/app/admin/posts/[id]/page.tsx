@@ -2,20 +2,17 @@
 
 import React, { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { PostForm, findPostAction, IPost, usePostStore } from "@/features"
+import { PostForm, findPostAction, IPost } from "@/features"
 import { useAuth } from "@/lib"
 import { LoadingPage } from "@/components"
 
 export default function Page() {
-  const findOne = usePostStore((state) => state.findOne);
-  const isLoading = usePostStore((state) => state.isLoading);
-  const selected = usePostStore((state) => state.selected);
   const params = useParams<{ id: string }>()
   const router = useRouter()
   const { user, getToken } = useAuth()
 
   const [entity, setEntity] = useState<IPost | undefined>()
-  // const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
 
   const idParam = params.id
   const isNew = idParam === "new"
@@ -31,7 +28,7 @@ export default function Page() {
       if (id > 0) {
         if (user){
           const token = await getToken()
-          const response = await findOne(id.toString(), token ?? "")
+          const response = await findPostAction(id.toString(), token ?? "")
           if (!response || !("id" in response)) {
               router.replace("/404")
           } else {
@@ -39,18 +36,19 @@ export default function Page() {
           }
         }
       }
+      setLoading(false)
     }
 
     fetchData()
   }, [id, isNew, getToken, router, user])
 
-  if (isLoading) return <LoadingPage />
+  if (loading) return <LoadingPage />
   
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
-        <PostForm entity={selected} />
+        <PostForm entity={entity} />
       </div>
     </div>
   )

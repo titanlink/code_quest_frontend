@@ -19,8 +19,8 @@ export interface CategorysState {
   items:ICategory[];
   filterItems?:ICategory[];
 
-  setSelected: (selected:ICategory | null) => void;
-  selected?:ICategory | null;
+  setSelected: (selected:ICategory | undefined) => void;
+  selected?:ICategory | undefined;
   
   setPage: (page: number) =>void;
   setLimit: (limit: number) =>void;

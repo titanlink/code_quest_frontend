@@ -9,6 +9,7 @@ import {
   findUserAction,
   updateUserAction 
 } from "../..";
+import { toast } from "sonner";
 
 
 export const useUserStore = create<UsersState>()((set, get) => ({
@@ -39,25 +40,41 @@ export const useUserStore = create<UsersState>()((set, get) => ({
     }
   },
 
-  findOne: async( id: string): Promise<IUser | null> => {
+  findOne: async( id: string, token:string): Promise<IUser | null> => {
     let retorno = null
     try {
-      const resp  = await findUserAction(id);
+      const resp  = await findUserAction(id, token);
       retorno = resp
-      set({selected: resp.data, isLoading: false})
+      set({selected: resp, isLoading: false})
     }catch(error) {
       throw new Error('Users > findOne > Unauthorized')
     }finally {
       set({ isLoading: false });
     }
-    return retorno.data ?? null
+    return retorno ?? null
   },
 
-  createOrUpdate: async( entitdad: IUser): Promise<any> => {
+  changeRole: async( entitdad: IUser, token:string) => {
+    let retorno:any = { error: true, msg: "No action taken" };
+    
+    try {
+      if (entitdad.id) retorno = await updateUserAction(entitdad, token, true);
+      const usersUpdated = [ retorno, ...get().items.filter((p) => p.id !== retorno.id) ] 
+      // toast.success('testing')
+      set({selected: retorno?.data, isLoading: false,  items: usersUpdated})
+    }catch(error) {
+      throw new Error('Users > findOne > Unauthorized')
+    }finally {
+      set({ isLoading: false });
+    }
+    return retorno
+  
+  },
+  createOrUpdate: async( entitdad: IUser, token:string): Promise<any> => {
     let retorno:any = { error: true, msg: "No action taken" };
     try {
-      if (entitdad.id) retorno = await updateUserAction(entitdad);
-      if (entitdad.id == '0') retorno = await createUserAction(entitdad);
+      if (entitdad.id) retorno = await updateUserAction(entitdad,token);
+      // if (entitdad.id == '0') retorno = await createUserAction(entitdad);
 
       set({selected: retorno?.data, isLoading: false})
     }catch(error) {

@@ -12,10 +12,11 @@ export interface IPost {
   comments?: IComment[]
   published?: boolean
   featured?: boolean
+  totalView?: number
+  viewUserCount?: number
   likesCount?: number
   bookMarkCount?: number
   commentsCount?: number
-  viewsCount?: number
   coverImage?: string |  File
   authorId?: string
   author?: IUser
@@ -55,9 +56,11 @@ export class PostMapper {
         published: json['published'] ?? false,
         featured: json['featured'] ?? false,
         likesCount: json['likesCount'] ?? likes.length,
+        totalView: json['total_view'] ?? 0,
+        viewUserCount: json['viewUserCount'] ?? 0,
         bookMarkCount: json['bookMarkCount'] ?? bookmarks.length,
         commentsCount: json['commentsCount'] ?? comments.length,
-        viewsCount: json['viewsCount'] ?? 0,
+  
         createdAt: new Date(json['createAt']),
         updatedAt: new Date(json['updateAt']),
         isLiked: isLiked ?? false,

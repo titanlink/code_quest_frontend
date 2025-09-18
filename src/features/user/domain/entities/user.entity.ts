@@ -3,10 +3,12 @@ export interface IUser {
   id: string
   email: string
   name: string
-  avatar?: string
   role: "admin" | "user"
+  avatar?: string
+  provider?: string
   discordId?: string
   createdAt?: Date
+  updatedAt?: Date
 }
 
 export class UserMapper {
@@ -16,7 +18,11 @@ export class UserMapper {
       id: json['id'],
       name: json['name'],
       email: json['email'],
-      role: 'user'
+      role: json['role'],
+      avatar: json['avatar'],
+      provider: json['provider'],
+      createdAt: new Date(json['createAt']),
+      updatedAt: new Date(json['updateAt']),
     }
   }
 

@@ -10,6 +10,7 @@ import { LogOut, User, Mail, Calendar, Key, Copy, Check } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components"
 import { useAuth } from "@/lib"
+import LoginPage from "../login/page"
 
 export default function DashboardPage() {
   const { user, logout, getToken } = useAuth()
@@ -62,9 +63,7 @@ export default function DashboardPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
+      <LoginPage />
     )
   }
 

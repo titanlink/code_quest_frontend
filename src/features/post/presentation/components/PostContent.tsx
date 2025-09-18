@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
-import { Heart, MessageCircle, Calendar, Clock, ArrowLeft, Bookmark } from "lucide-react"
+import { Heart, MessageCircle, Calendar, Clock, ArrowLeft, Bookmark, Eye } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
 import { createBookMarkAction, createLikePostAction, deleteBookMarkAction, deleteLikeAction, IBookMark, ILike, IPost } from "@/features"
 import { getImageUrl } from "@/lib"
@@ -161,10 +161,10 @@ export function PostContent({ post }: Props) {
           {/* Social Actions */}
           <div className="flex setIsBookMarkeditems-center gap-4">
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              {/* <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1">
                 <Eye className="h-4 w-4" />
-                <span>{post.viewsCount}</span>
-              </div> */}
+                <span>{post.totalView}</span>
+              </div>
               <div className="flex items-center gap-1">
                 <MessageCircle className="h-4 w-4" />
                 <span>{post.commentsCount}</span>

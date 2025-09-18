@@ -48,7 +48,6 @@ export const usePostStore = create<PostsState>()((set, get) => ({
     try {
       set({ isLoading: true });
       retorno  = await findPostAction(id, token);
-      console.log("🚀 ~ retorno:", retorno)
       if ('id' in retorno) set({selected: retorno})
     }catch(error) {
       throw new Error('Posts > findOne > Unauthorized')

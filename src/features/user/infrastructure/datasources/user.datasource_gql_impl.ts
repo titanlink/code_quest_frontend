@@ -87,8 +87,9 @@ export class UserDatasourceGQL implements UserDatasource {
         variables: {
           input: {
             id: Number(form.id),
-            email: form.email,
             name: form.name,
+            avatar: form.avatar,
+            role: form.role,
           },
         },
       });
@@ -123,6 +124,34 @@ export class UserDatasourceGQL implements UserDatasource {
       console.error(error, e);
       retorno.msg = error
     } finally {
+      return retorno
+    }
+  }
+
+  async changeRole(form: IUser, token: string ){
+    const newRole = (form.role == 'user') ? 'admin' : 'user'
+    form.role = newRole
+    let retorno: IUser | ResponsePropio = { msg: 'Error desconocido', error: true }
+    try {
+      const peti = await makeClientGraphql(token);
+
+      const { data } = await peti.mutate<any>({
+        mutation: updateUserGQL,
+        fetchPolicy: "no-cache",
+        variables: {
+          input: {
+            id: Number(form.id),
+            role: form.role
+          },
+        },
+      });
+      const entity = UserMapper.fromJson(data["updateUser"]);
+      if (entity) retorno = entity
+    } catch (e) {
+      const error = `${e}`
+      console.error(error);
+      if ('msg' in retorno) retorno.msg = error
+    }finally{
       return retorno
     }
   }

@@ -32,7 +32,7 @@ export interface Post {
   featured: boolean
   likesCount: number
   commentsCount: number
-  viewsCount: number
+  totalView: number
   createdAt: Date
   updatedAt: Date
 }

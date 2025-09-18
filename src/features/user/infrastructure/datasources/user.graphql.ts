@@ -1,12 +1,17 @@
 import { gql } from "@apollo/client";
 
 export const allUserGQL = gql`
-  query allCategories($limit: Int, $offset: Int) {
+  query allUsers($limit: Int, $offset: Int) {
     allUser(limit: $limit, offset: $offset) {
       items {
         id
         name
         email
+        role
+        provider
+        avatar
+        createAt
+        updateAt
       }
       total
     }
@@ -19,6 +24,11 @@ export const findUserGQL = gql`
       id
       name
       email
+      role
+      avatar
+      provider
+      createAt
+      updateAt
     }
   }
 `;
@@ -29,6 +39,7 @@ export const createUserGQL = gql`
     id
     name
     email
+    role
   }
 }
 `;
@@ -39,6 +50,11 @@ export const updateUserGQL = gql`
     id
     name
     email
+    role
+    avatar
+    provider
+    createAt
+    updateAt
   }
 }
 `;

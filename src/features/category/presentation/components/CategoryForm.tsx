@@ -101,7 +101,7 @@ export const CategoryForm = ({entity}:Props) => {
               <Eye className="mr-2 h-4 w-4" />
               Vista previa
             </Button>
-            <Button type="submit" size="lg" >
+            <Button type="submit" size="lg"  disabled={isPending}>
                 {isPending ? (
                   <> <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Guardando... </>
                 ) : (

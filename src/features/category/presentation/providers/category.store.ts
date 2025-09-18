@@ -19,10 +19,10 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
   total: 0,
   items: [],
   isLoading: true,
-  selected: null,
+  selected: undefined,
 
 
-  setSelected(selected: ICategory | null) { set({selected, isLoading: false}) },
+  setSelected(selected: ICategory | undefined) { set({selected, isLoading: false}) },
 
   setPage(page?: number){ set({page: page ?? 1}) },
   setLimit(limit?: number){ set({limit: limit ?? 50}) },
@@ -43,8 +43,10 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
   findOne: async( id: string, token = 'NO TENGO TOKEN'): Promise<ICategory | ResponsePropio> => {
     let retorno: ICategory | ResponsePropio = { error: true, msg: "Error desconocido" };
     try {
+      set({isLoading: true})
       retorno  = await findCategoryAction(id, token);
-      if ('data' in retorno) set({selected: retorno.data, isLoading: false})
+      if ('id' in retorno) set({selected: retorno})
+        set({ isLoading: false });
     }catch(error) {
       throw new Error('Categorys > findOne > Unauthorized')
     }finally {

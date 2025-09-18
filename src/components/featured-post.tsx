@@ -65,7 +65,7 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
                   </div>
                   <div className="flex items-center gap-1">
                     <Eye className="h-4 w-4" />
-                    <span>{post.viewsCount}</span>
+                    <span>{post.totalView}</span>
                   </div>
                 </div>
               </div>

@@ -78,10 +78,10 @@ const StatsCards = ({publishedPosts, totalPosts, draftPosts, totalUsers, totalCo
               className="whitespace-pre-wrap text-2xl font-medium tracking-tighter text-black dark:text-white"
             />
           </div>
-          <p className="text-xs text-muted-foreground">
+          {/* <p className="text-xs text-muted-foreground">
             <TrendingUp className="inline h-3 w-3 mr-1" />
             +12% este mes
-          </p>
+          </p> */}
         </CardContent>
       </CustomCard>
     </div>

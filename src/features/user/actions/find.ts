@@ -3,7 +3,7 @@
 import { UserDatasourceGQL, UserRepositoryImpl } from "..";
 
 
-export async function findUserAction(id: string) {
+export async function findUserAction(id: string, token: string) {
   const datasource = new UserDatasourceGQL();
   const repo = new UserRepositoryImpl(datasource, token);
   try {

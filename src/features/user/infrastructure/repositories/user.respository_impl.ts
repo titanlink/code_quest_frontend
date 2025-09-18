@@ -17,6 +17,9 @@ export class UserRepositoryImpl extends UserRepository {
   async update(entity: any): Promise<any> {
     return this.datasource.update(entity, this.token);
   }
+  async changeRole(entity: any): Promise<any> {
+    return this.datasource.changeRole(entity, this.token);
+  }
   async all(page: number, limit: number): Promise<any> {
     return this.datasource.all(page, limit, this.token);
   }
