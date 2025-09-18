@@ -24,15 +24,15 @@ export const useUserStore = create<UsersState>()((set, get) => ({
 
   setSelected(selected: IUser | null) { set({selected, isLoading: false}) },
 
-  setPage(page?: number){ set({page: page ?? 1}) },
-  setLimit(limit?: number){ set({limit: limit ?? 50}) },
+  setPage(page?: number){ set({page: page}) },
+  setLimit(limit?: number){ set({limit: limit}) },
 
 
   getData: async(page: number = 0, limit: number = 50, token = 'NO TENGO TOKEN') => {
     try {
       set({ isLoading: true });
       const resp  = await allUserAction({ page, limit}, token );
-      set({items: resp ?? [],  isLoading: false})
+      set({items: resp.data  ?? [], total: resp.totalRecords, isLoading: false})
     }catch(error) {
       throw new Error('Users > getData > Unauthorized')
     }finally {

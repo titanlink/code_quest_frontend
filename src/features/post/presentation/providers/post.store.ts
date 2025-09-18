@@ -34,7 +34,6 @@ export const usePostStore = create<PostsState>()((set, get) => ({
     try {
       set({ isLoading: true });      
       const resp  = await allPostAction({ page, limit}, token );
-      console.log("🚀 ~ resp:", page,limit,  resp)
       set({items: resp.data  ?? [], total: resp.totalRecords})
     }catch(error) {
       throw new Error('Posts > getData > Unauthorized')

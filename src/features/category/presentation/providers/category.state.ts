@@ -10,8 +10,8 @@ export interface CategorysState {
   isError?: boolean;
   isLastPage?: boolean;
   page: number | undefined;
-  limit: number | undefined;
-  total: number | undefined;
+  limit: number;
+  total: number;
   isLoading: boolean;
   search?: string;
 

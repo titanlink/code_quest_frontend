@@ -15,7 +15,7 @@ import { ResponsePropio } from "@/config";
 export const useCategoryStore = create<CategorysState>()((set, get) => ({
   isGridView: true,
   page: 0,
-  limit: 50,
+  limit: 99999,
   total: 0,
   items: [],
   isLoading: true,
@@ -24,8 +24,8 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
 
   setSelected(selected: ICategory | undefined) { set({selected, isLoading: false}) },
 
-  setPage(page?: number){ set({page: page ?? 1}) },
-  setLimit(limit?: number){ set({limit: limit ?? 50}) },
+  setPage(page?: number){ set({page: page}) },
+  setLimit(limit?: number){ set({limit: limit}) },
 
 
   getData: async(page: number = 0, limit: number = 50, token = 'NO TENGO TOKEN') => {

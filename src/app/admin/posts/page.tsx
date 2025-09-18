@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { PostsTable, usePostStore } from "@/features"
-import { AdminFeatureHeader, LoadingPage, SearchFilters } from "@/components"
+import { AdminFeatureHeader, LoadingPage, PaginationManager, SearchFilters } from "@/components"
 import { Plus } from "lucide-react"
 import { useAuth } from "@/lib"
 
@@ -13,9 +13,14 @@ export default function AdminPostsPage() {
 
   const getPosts = usePostStore((state) => state.getData);
   const posts = usePostStore((state) => state.items);
+  const totalRecords = usePostStore((state) => state.total);
 
-  const page: number = usePostStore( (state) => state.page ?? 1  );
-  const limit: number = usePostStore( (state) => state.limit ?? 50  );
+  // const page: number = usePostStore( (state) => state.page ?? 1  );
+  // const limit: number = usePostStore( (state) => state.limit ?? 50  );
+
+  const [limit,setLimit] = useState(50)
+  const [page,setPage] = useState(0)
+  
   const isLoading = usePostStore((state) => state.isLoading);
 
   const { user, getToken } = useAuth()
@@ -36,7 +41,7 @@ export default function AdminPostsPage() {
       if (user) {
         const authToken = await getToken() ?? ''
         setToken(token)
-        getPosts(0, 10, authToken );
+        getPosts(page, limit, authToken );
       }
     }
     fetchToken()
@@ -61,6 +66,20 @@ export default function AdminPostsPage() {
           <>
             {/* Search and Filters */}
             <SearchFilters placeholder="Buscar posts..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
+            <div className='flex flex-row mb-4'>
+              <PaginationManager
+                totalItems={totalRecords}
+                itemsPerPage={limit}
+                currentPage={!page ? 1 : page}
+                onPageChange={async (pag) => {
+                  if (page == pag) return
+                  setPage(pag)
+                  await getPosts(pag-1, limit, '');
+                }}
+                maxVisiblePages={1}
+              />
+            </div>
 
             {/* Posts Table */}
             <PostsTable filteredPosts={filteredPosts} handleDeletePost={handleDeletePost} />

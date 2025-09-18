@@ -2,11 +2,13 @@
 
 import React, { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { PostForm, findPostAction, IPost } from "@/features"
+import { PostForm, findPostAction, IPost, usePostStore } from "@/features"
 import { useAuth } from "@/lib"
 import { LoadingPage } from "@/components"
+import NotFound from "@/app/posts/[slug]/not-found"
 
 export default function Page() {
+  const findOne = usePostStore((state) => state.findOne);
   const params = useParams<{ id: string }>()
   const router = useRouter()
   const { user, getToken } = useAuth()
@@ -20,29 +22,25 @@ export default function Page() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if ((id === 0 && !isNew) || isNaN(id)) {
-        router.replace("/404") // equivalente a notFound()
-        return
-      }
-
       if (id > 0) {
         if (user){
           const token = await getToken()
-          const response = await findPostAction(id.toString(), token ?? "")
-          if (!response || !("id" in response)) {
-              router.replace("/404")
-          } else {
-              setEntity(response)
+          const response = await findOne(id.toString(), token ?? "")
+          if (response && ("id" in response)) {
+            setEntity(response)
           }
+          setLoading(false)
         }
+      }else{
+        setLoading(false)
       }
-      setLoading(false)
     }
 
     fetchData()
   }, [id, isNew, getToken, router, user])
 
   if (loading) return <LoadingPage />
+  if (!loading && !isNew && !entity) return <NotFound />
   
 
   return (

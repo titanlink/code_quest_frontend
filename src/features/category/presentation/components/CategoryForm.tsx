@@ -83,113 +83,121 @@ export const CategoryForm = ({entity}:Props) => {
       <div className="space-y-6">
         <form onSubmit={form.handleSubmit(onSubmit)}  className="grid grid-cols-1 lg:grid-cols-1 gap-6">
         
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" asChild>
-              <Link href="/admin/categories">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Volver
-              </Link>
-            </Button>
-            <div>
-              <h1 className="text-3xl font-bold">{actionTitle} Categoria</h1>
-              {isNew && (<p className="text-muted-foreground">Crea una nueva categoria para los blogs</p>)}
+        
+
+
+        <div className="grid grid-cols-2 lg:grid-cols-2 gap-6">
+          <div className="space-y-6">
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Button variant="ghost" asChild>
+                  <Link href="/admin/categories">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Volver
+                  </Link>
+                </Button>
+                <div>
+                  <h1 className="text-3xl font-bold">{actionTitle} Categoria</h1>
+                  {isNew && (<p className="text-muted-foreground">Crea una nueva categoria para los blogs</p>)}
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline">
+                  <Eye className="mr-2 h-4 w-4" />
+                  Vista previa
+                </Button>
+                <Button type="submit" size="lg"  disabled={isPending}>
+                    {isPending ? (
+                      <> <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Guardando... </>
+                    ) : (
+                      <> <Save className="h-4 w-4 mr-2" /> Guardar </>
+                    )}
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline">
-              <Eye className="mr-2 h-4 w-4" />
-              Vista previa
-            </Button>
-            <Button type="submit" size="lg"  disabled={isPending}>
-                {isPending ? (
-                  <> <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Guardando... </>
-                ) : (
-                  <> <Save className="h-4 w-4 mr-2" /> Guardar </>
+
+            <CustomCard>
+              <CardHeader>
+                <CardTitle>Contenido Principal</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nombre</FormLabel>
+                    <FormControl>
+                      <Input 
+                      placeholder="ej: Cocina, Vehiculos"
+                      
+                      type="text"
+                      {...field} />
+                    </FormControl>
+                    <FormDescription></FormDescription>
+                    <FormMessage />
+                  </FormItem>
                 )}
-            </Button>
+              />
+              
+              <FormField
+                control={form.control}
+                name="slug"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Url slug</FormLabel>
+                    <FormControl>
+                      <Input 
+                      placeholder="ej: autos_nuevos"
+                      
+                      type="text"
+                      {...field} />
+                    </FormControl>
+                    <FormDescription></FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Descripción</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Agrega una breve descripción"
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormColorInput
+                control={form.control}
+                name="color"
+                label="Color primario"
+                placeholder="Seleccionar color"
+              />
+
+              </CardContent>
+            </CustomCard>
+
           </div>
-        </div>
 
-
-        <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
-          <CustomCard>
-            <CardHeader>
-              <CardTitle>Contenido Principal</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nombre</FormLabel>
-                  <FormControl>
-                    <Input 
-                    placeholder="ej: Cocina, Vehiculos"
-                    
-                    type="text"
-                    {...field} />
-                  </FormControl>
-                  <FormDescription></FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="slug"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Url slug</FormLabel>
-                  <FormControl>
-                    <Input 
-                    placeholder="ej: autos_nuevos"
-                    
-                    type="text"
-                    {...field} />
-                  </FormControl>
-                  <FormDescription></FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Descripción</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Agrega una breve descripción"
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormColorInput
-              control={form.control}
-              name="color"
-              label="Color primario"
-              placeholder="Seleccionar color"
-            />
-
-            </CardContent>
-          </CustomCard>
+          <div className="space-y-6">
+            <FormErrors formState={form.formState}/>
+          </div>
+          
         </div>
 
         </form>
-      </div>
-      <div className="space-y-6">
-        <FormErrors formState={form.formState}/>
       </div>
     </Form>
   )

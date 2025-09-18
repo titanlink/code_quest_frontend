@@ -18,12 +18,12 @@ export default function NotFound() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Button asChild>
+          {/* <Button asChild>
             <Link href="/posts">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Ver todos los artículos
             </Link>
-          </Button>
+          </Button> */}
           <Button variant="outline" asChild>
             <Link href="/">Ir al inicio</Link>
           </Button>

@@ -24,6 +24,7 @@ export default function AdminCategoriesPage() {
 
   const page: number = useCategoryStore( (state) => state.page ?? 0  );
   const limit: number = useCategoryStore( (state) => state.limit ?? 50  );
+  const totalRecords: number = useCategoryStore( (state) => state.total );
   const isLoading = useCategoryStore((state) => state.isLoading);
 
   const filteredCategories = categories.filter(
@@ -82,6 +83,7 @@ export default function AdminCategoriesPage() {
         <>
           {/* Search and Filters */}
           <SearchFilters placeholder="Buscar categories..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
           <CategoriesTable filteredCategories={filteredCategories} handleDeleteCategory={handleDeleteCategorie} isPending={isPending} />
           {/* <pre><b>{JSON.stringify(categories, null, 2) } </b> </pre>  */}
         </>

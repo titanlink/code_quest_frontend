@@ -9,7 +9,7 @@ export class UserDatasourceGQL implements UserDatasource {
   
 
   async all(page = 0, limit = 50, token: string) {
-    // return mockCategories
+    let retorno: ResponsePropio = { msg: 'Error desconocido', error: true}
     try {
       const peti = await makeClientGraphql(token);
 
@@ -21,12 +21,23 @@ export class UserDatasourceGQL implements UserDatasource {
           offset: page
         },
       });
-
-      return UserMapper.fromJsonList(data["allUser"]['items']);
+      const resp = data["allUser"]
+      const entities = UserMapper.fromJsonList(resp['items']);
+      if (entities) {
+        retorno.msg = 'Ok'
+        retorno.error = false
+        retorno.totalRecords = resp['total']
+        retorno.data = entities;
+      }
     } catch (e) {
-      console.error(`Error => allUserGQL -> ${e}`);
-      // throw e
-      return [];
+      console.error(`Error => allPostGQL -> ${e}`);
+      const error = e as Error;
+      if ('error' in retorno){ 
+        retorno.msg = error.message
+        retorno.devMsg = 'Error de conexión'
+      }
+    }finally{
+      return retorno
     }
   }
   async findById(id: string, token: string){
