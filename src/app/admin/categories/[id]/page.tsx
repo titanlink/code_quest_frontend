@@ -28,7 +28,6 @@ export default function Page() {
         if (user){
           const token = await getToken()
           const response = await findCategoryAction(id.toString(), token ?? "")
-          console.log("🚀 ~ fetchData ~ response:", response)
           if (!response || !("id" in response)) {
               router.replace("/404")
           } else {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Toaster } from "@/components";
+import { ClickSpark, Toaster } from "@/components";
 import { ThemeProvider } from "./ThemeProvider";
 import { useTheme } from "next-themes";
 // import { ThemeProvider } from "./theme-provider";
@@ -13,17 +13,25 @@ interface Props {
 export const Providers = ({ children }: Props) => {
   const { theme } = useTheme();
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme='dark'
-      forcedTheme='dark'
-      enableSystem
-      disableTransitionOnChange
+    <ClickSpark
+      sparkColor='#fff'
+      sparkSize={10}
+      sparkRadius={15}
+      sparkCount={8}
+      duration={400}
     >
-        {/* <SessionAuthProvider> */}
-          {children}
-          <Toaster richColors/>
-        {/* </SessionAuthProvider> */}
-    </ThemeProvider>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme='dark'
+        forcedTheme='dark'
+        enableSystem
+        disableTransitionOnChange
+      >
+          {/* <SessionAuthProvider> */}
+            {children}
+            <Toaster richColors/>
+          {/* </SessionAuthProvider> */}
+      </ThemeProvider>
+    </ClickSpark>
   );
 };

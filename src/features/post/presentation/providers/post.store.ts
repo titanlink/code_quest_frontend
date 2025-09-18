@@ -7,6 +7,7 @@ import {
   createPostAction,
   deletePostAction,
   findPostAction,
+  findPostBySlugAction,
   updatePostAction 
 } from "../..";
 import { ResponsePropio } from "@/config";
@@ -20,10 +21,10 @@ export const usePostStore = create<PostsState>()((set, get) => ({
   total: 0,
   items: [],
   isLoading: true,
-  selected: null,
+  selected: undefined,
 
 
-  setSelected(selected: IPost | null) { set({selected, isLoading: false}) },
+  setSelected(selected: IPost | undefined) { set({selected, isLoading: false}) },
 
   setPage(page?: number){ set({page: page ?? 1}) },
   setLimit(limit?: number){ set({limit: limit ?? 1}) },
@@ -34,7 +35,7 @@ export const usePostStore = create<PostsState>()((set, get) => ({
       set({ isLoading: true });      
       const resp  = await allPostAction({ page, limit}, token );
       console.log("🚀 ~ resp:", page,limit,  resp)
-      set({items: resp.data  ?? [],  isLoading: false, total: resp.totalRecords})
+      set({items: resp.data  ?? [], total: resp.totalRecords})
     }catch(error) {
       throw new Error('Posts > getData > Unauthorized')
     }finally {
@@ -45,8 +46,24 @@ export const usePostStore = create<PostsState>()((set, get) => ({
   findOne: async( id: string, token = 'NO TENGO TOKEN'): Promise<IPost | ResponsePropio> => {
     let retorno: IPost | ResponsePropio = { error: true, msg: "Error desconocido" };
     try {
+      set({ isLoading: true });
       retorno  = await findPostAction(id, token);
-      if ('data' in retorno) set({selected: retorno.data, isLoading: false})
+      console.log("🚀 ~ retorno:", retorno)
+      if ('id' in retorno) set({selected: retorno})
+    }catch(error) {
+      throw new Error('Posts > findOne > Unauthorized')
+    }finally {
+      set({ isLoading: false });
+    }
+    return retorno
+  },
+  findOneBySlug: async( slug: string, token = 'NO TENGO TOKEN'): Promise<IPost | ResponsePropio> => {
+    let retorno: IPost | ResponsePropio = { error: true, msg: "Error desconocido" };
+    try {
+      set({ isLoading: true });
+      retorno  = await findPostBySlugAction(slug, token);
+      console.log("🚀 ~ retorno:", retorno)
+      if ('id' in retorno) set({selected: retorno})
     }catch(error) {
       throw new Error('Posts > findOne > Unauthorized')
     }finally {

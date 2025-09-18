@@ -2,6 +2,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui'
 import { FileText, Users, MessageSquare, Eye, TrendingUp } from 'lucide-react'
 import React from 'react'
 import { CustomCard, NumberTicker } from '..';
+import { useCommentStore, usePostStore, useUserStore } from '@/features';
 
 
 interface Props {
@@ -14,9 +15,14 @@ interface Props {
 }
 
 const StatsCards = ({publishedPosts, totalPosts, draftPosts, totalUsers, totalComments, totalViews}: Props) => {
+
+  const postsLoading = usePostStore((state) => state.isLoading);
+  const usersLoading = useUserStore((state) => state.isLoading);
+  const commentsLoading = useCommentStore((state) => state.isLoading);
+  
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <CustomCard withHover={true}>
+      <CustomCard withHover={true} isLoading={postsLoading}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
             Total Posts
@@ -24,14 +30,16 @@ const StatsCards = ({publishedPosts, totalPosts, draftPosts, totalUsers, totalCo
           <FileText className="h-12 w-12 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{totalPosts}</div>
+          <NumberTicker value={totalPosts} delay={0.10}
+              className="whitespace-pre-wrap text-2xl font-medium tracking-tighter text-black dark:text-white"
+            />
           <p className="text-xs text-muted-foreground">
             {publishedPosts} publicados, {draftPosts} borradores
           </p>
         </CardContent>
       </CustomCard>
 
-      <CustomCard withHover={true}>
+      <CustomCard withHover={true} isLoading={usersLoading}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Usuarios</CardTitle>
           <Users className="h-12 w-12 text-muted-foreground" />
@@ -46,13 +54,15 @@ const StatsCards = ({publishedPosts, totalPosts, draftPosts, totalUsers, totalCo
         </CardContent>
       </CustomCard>
 
-      <CustomCard withHover={true}>
+      <CustomCard withHover={true} isLoading={commentsLoading}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Comentarios</CardTitle>
           <MessageSquare className="h-12 w-12 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{totalComments}</div>
+          <NumberTicker value={totalComments} delay={0.10}
+              className="whitespace-pre-wrap text-2xl font-medium tracking-tighter text-black dark:text-white"
+            />
           <p className="text-xs text-muted-foreground">Comentarios totales</p>
         </CardContent>
       </CustomCard>

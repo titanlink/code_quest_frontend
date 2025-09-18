@@ -76,7 +76,7 @@ export class PostDatasourceGQL implements PostDatasource {
       });
       
       const resp = data["postBySlug"]
-      const entity = PostMapper.fromJson(resp['item'], resp['is_like']);
+      const entity = PostMapper.fromJson(resp['item'], resp['is_like'] , resp['is_bookmark']);
       if (entity?.id) retorno = entity
     } catch (e) {
       console.error(`Error => findBySlugId -> ${e}`);

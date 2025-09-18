@@ -6,11 +6,12 @@ import React from 'react'
 
 interface Props {
   recentPosts: IPost[]
+  isLoading?:boolean
 }
 
-const RecentPosts = ({recentPosts}: Props) => {
+const RecentPosts = ({recentPosts, isLoading}: Props) => {
   return (
-    <CustomCard>
+    <CustomCard isLoading={isLoading}>
       <CardHeader>
         <CardTitle>Posts Recientes</CardTitle>
         <CardDescription>Los últimos artículos publicados</CardDescription>

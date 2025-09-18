@@ -19,14 +19,15 @@ export interface PostsState {
   items:IPost[];
   filterItems?:IPost[];
 
-  setSelected: (selected:IPost | null) => void;
-  selected?:IPost | null;
+  setSelected: (selected:IPost | undefined) => void;
+  selected?:IPost | undefined;
   
   setPage: (page: number) =>void;
   setLimit: (limit: number) =>void;
 
   getData: (page: number, limit: number, token: string) => Promise<void>;
-  findOne: (id: string) => Promise<IPost | ResponsePropio>;
+  findOne: (id: string, token: string) => Promise<IPost | ResponsePropio>;
+  findOneBySlug: (slug: string, token: string) => Promise<IPost | ResponsePropio>;
   createOrUpdate: (client: IPost, token: string) => Promise<IPost | ResponsePropio>;
   deleteOne: (id: string) => Promise<ResponsePropio>;
 }

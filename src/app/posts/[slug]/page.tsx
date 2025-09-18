@@ -3,9 +3,11 @@
 import { notFound, useParams, useRouter } from "next/navigation"
 import { Navbar } from "@/components/navbar"
 import { mockPosts } from "@/lib/mock-data"
-import { EnhancedCommentsSection, findPostBySlugAction, IPost, PostContent, PostSidebar, RelatedPosts } from "@/features"
+import { EnhancedCommentsSection, IPost, PostContent, PostSidebar, RelatedPosts, usePostStore } from "@/features"
 import { useAuth } from "@/lib"
 import { useEffect, useState } from "react"
+import { LoadingPage } from "@/components"
+import NotFound from "./not-found"
 
 
 export default  function PostPage() {
@@ -13,8 +15,12 @@ export default  function PostPage() {
   const router = useRouter()
   const { user, getToken } = useAuth()
 
+  const findOneBySlug = usePostStore((state) => state.findOneBySlug);
+  const isLoading = usePostStore((state) => state.isLoading);
+  const selected = usePostStore((state) => state.selected);
+
   const [post, setPost] = useState<IPost | undefined>()
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true)
 
   const slug = params.slug
 
@@ -22,43 +28,36 @@ export default  function PostPage() {
     const fetchData = async () => {
       let token = ''
       if (user) token = await getToken() ?? ''
-      const response = await findPostBySlugAction(slug, token)
-      console.log("🚀 ~ fetchData ~ response:", response)
-      if (!response || !("id" in response)) {
-          router.replace("/404")
-      } else {
-        setPost(response)
-      }
-      setLoading(false)
+      await findOneBySlug(slug, token)
+      setPost(selected)
     }
-
-    fetchData()
-  }, [slug, getToken, router, user])
-
-  if (loading) return <div>Cargando...</div>
-  if (!post) notFound()
+    if (selected?.slug != slug) fetchData()
+  }, [slug, getToken, router, user, post])
   
 
-  // Get related posts (same category, excluding current post)
-  const relatedPosts = mockPosts
-    .filter((p) => p.id !== post?.id && p.categoryId === post?.categoryId && p.published)
-    .slice(0, 3)
 
-  return (
-    <div className="min-h-screen bg-background">
+const relatedPosts = mockPosts
+.filter((p) => p.id !== post?.id && p.categoryId === post?.categoryId && p.published)
+.slice(0, 3)
+
+return (
+  <div className="min-h-screen bg-background">
       <Navbar />
 
-      <article className="container mx-auto max-w-7xl px-4 py-8">
+      {(!isLoading && !selected) && ( <NotFound />) }
+      {isLoading && (<LoadingPage />)}
+
+      {(!isLoading && selected) && (<article className="container mx-auto max-w-7xl px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-3">
-            <PostContent post={post} />
-            <EnhancedCommentsSection  post={post} postId={post.id ?? ''} postComments={post.comments ?? []} />
+            <PostContent post={selected} />
+            <EnhancedCommentsSection  post={selected} postId={selected.id ?? ''} postComments={selected.comments ?? []} />
           </div>
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <PostSidebar post={post} />
+            <PostSidebar post={selected} />
           </div>
         </div>
 
@@ -68,7 +67,7 @@ export default  function PostPage() {
             <RelatedPosts posts={relatedPosts} />
           </div>
         )}
-      </article>
+      </article>)}
     </div>
   )
 }

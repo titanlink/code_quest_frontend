@@ -95,6 +95,20 @@ export const findPostBySlugGQL = gql`
         createAt
         updateAt
 
+        bookmark_post {
+          id
+          user {
+            id
+            email
+            name
+          }
+          post {
+            id
+          }
+          createAt
+          updateAt
+        }
+
         like_post {
           id
           user {
@@ -136,7 +150,7 @@ export const findPostBySlugGQL = gql`
         }
       }
       is_like
-
+      is_bookmark
     }
   }
 `;

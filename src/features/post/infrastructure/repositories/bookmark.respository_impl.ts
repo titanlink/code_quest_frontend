@@ -1,16 +1,11 @@
-import { ResponsePropio } from "@/config";
-import { IPost, PostDatasource, PostRepository } from "../..";
+import { BookMarkDatasource, BookMarkRepository } from "../..";
 
 
 
 
-export class PostRepositoryImpl extends PostRepository {
-  constructor(private readonly datasource: PostDatasource, private token: string = '') {
+export class BookMarkRepositoryImpl extends BookMarkRepository {
+  constructor(private readonly datasource: BookMarkDatasource, private token: string = '') {
     super();
-  }
-
-  async findBySlugId(slug: string) {
-    return this.datasource.findBySlugId(slug, this.token);
   }
   
   async findById(id: string) {

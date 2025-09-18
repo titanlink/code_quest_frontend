@@ -1,7 +1,17 @@
 "use server";
 
 import { ResponsePropio } from "@/config";
-import { ILike, IPost, LikeDatasourceGQL, LikeRepositoryImpl, PostDatasourceGQL, PostRepositoryImpl  } from "..";
+import { 
+  BookMarkDatasourceGQL,
+  BookMarkRepositoryImpl,
+  IBookMark,
+  ILike,
+  IPost,
+  LikeDatasourceGQL,
+  LikeRepositoryImpl,
+  PostDatasourceGQL,
+  PostRepositoryImpl  
+} from "..";
 
 
 export async function allPostAction({page = 0, limit = 50}, token: string = 'No Token') {
@@ -29,6 +39,20 @@ export async function allLikeAction({page = 0, limit = 50}, token: string = 'No 
     return response;
   } catch (e) {
     console.error("Error en allLikeAction:", e);
+    // return { error: true, msg: "No se pudo obtener los likes" };
+    return []
+  }
+}
+
+export async function allBookMarkAction({page = 0, limit = 50}, token: string = 'No Token') : Promise<IBookMark[]> {
+  const datasource = new BookMarkDatasourceGQL();
+  const repo = new BookMarkRepositoryImpl(datasource, token);
+
+  try {
+    const response = await repo.all(page, limit);
+    return response;
+  } catch (e) {
+    console.error("Error en allBookMarkAction:", e);
     // return { error: true, msg: "No se pudo obtener los likes" };
     return []
   }

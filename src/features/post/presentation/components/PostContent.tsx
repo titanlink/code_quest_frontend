@@ -7,10 +7,13 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
-import { Heart, MessageCircle, Eye, Calendar, Clock, ArrowLeft, Bookmark } from "lucide-react"
+import { Heart, MessageCircle, Calendar, Clock, ArrowLeft, Bookmark } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
-import { createLikePostAction, deleteLikeAction, ILike, IPost } from "@/features"
+import { createBookMarkAction, createLikePostAction, deleteBookMarkAction, deleteLikeAction, IBookMark, ILike, IPost } from "@/features"
 import { getImageUrl } from "@/lib"
+import { motion } from "motion/react"
+import { Pointer } from "@/components/ui/pointer"
+import { RainbowButton } from "@/components"
 // import { SocialShare } from "@/components/social-share"
 
 interface Props {
@@ -20,12 +23,14 @@ interface Props {
 export function PostContent({ post }: Props) {
   const { user, getToken } = useAuth()
   const [isLiked, setIsLiked] = useState(post.isLiked)
+  const [isBookMarked, setIsBookMarked] = useState(post.isBookMarked)
   // const [post, setPost] = useState(entity)
-  const [isBookmarked, setIsBookmarked] = useState(false)
   const [likesCount, setLikesCount] = useState(post.likesCount ?? 0)
   const [likes, setLikes] = useState<ILike[]>(post.likes ?? []) 
+  const [bookmarks, setBookMarks] = useState<IBookMark[]>(post.bookmarks ?? []) 
 
   const [token, setToken] = useState<string | null>(null)
+  
   
     
   useEffect(() => {
@@ -33,10 +38,12 @@ export function PostContent({ post }: Props) {
       if (user) {
         const authToken = await getToken() ?? ''
         setToken(authToken)
+        setIsBookMarked(post.isBookMarked)
+        setIsLiked(post.isLiked)
       }
     }
     fetchToken()
-  }, [user, getToken])
+  }, [user, getToken, post])
 
   const handleLike = async () => {
     if (!user) {
@@ -44,7 +51,6 @@ export function PostContent({ post }: Props) {
       return
     }
 
-    
     let resp;
     if (isLiked){ 
       const liked = likes.find((p) => p.user?.email === user?.email)
@@ -60,18 +66,31 @@ export function PostContent({ post }: Props) {
     if (!resp) return
     if (('error' in resp) && resp['error']) return
 
-
-    setIsLiked(!isLiked)
-    
+    setIsLiked(!isLiked)    
     setLikesCount(isLiked ? likesCount - 1 : likesCount + 1)
   }
 
-  const handleBookmark = () => {
+  const handleBookmark = async () => {
     if (!user) {
       return
     }
 
-    setIsBookmarked(!isBookmarked)
+    let resp;
+    if (isBookMarked){ 
+      const marked = bookmarks.find((p) => p.user?.email === user?.email)
+      resp = await deleteBookMarkAction(marked?.id ?? '', token ?? '') 
+    }
+    
+    if (!isBookMarked){ 
+      const marked = {post: post}
+      resp = await createBookMarkAction(marked, token ?? '')
+      if ('id' in resp) setBookMarks([resp, ...bookmarks])
+    
+    }
+    if (!resp) return
+    if (('error' in resp) && resp['error']) return
+
+    setIsBookMarked(!isBookMarked)    
   }
 
   const estimatedReadTime = Math.ceil(post.content.split(" ").length / 200) // 200 words per minute
@@ -79,7 +98,6 @@ export function PostContent({ post }: Props) {
   return (
     <div className="space-y-8">
       {/* Breadcrumb */}
-      {/* <pre><b>{JSON.stringify(post, null, 2) } </b> </pre> */}
       <nav className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link href="/" className="hover:text-foreground transition-colors">
           Inicio
@@ -141,7 +159,7 @@ export function PostContent({ post }: Props) {
           </div>
 
           {/* Social Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex setIsBookMarkeditems-center gap-4">
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               {/* <div className="flex items-center gap-1">
                 <Eye className="h-4 w-4" />
@@ -154,23 +172,38 @@ export function PostContent({ post }: Props) {
             </div>
 
             <div className="flex items-center gap-2">
-              <Button
+              
+              <RainbowButton
                 variant={isLiked ? "default" : "outline"}
                 size="sm"
                 onClick={handleLike}
                 className="flex items-center gap-2"
               >
+              { !isLiked && ( <Pointer>
+                  <motion.div
+                    animate={{
+                      scale: [0.8, 2, 0.8],
+                      rotate: [0, 5, -5, 0],
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: !isLiked ? Infinity : 1,
+                      ease: "easeInOut",
+                    }}
+                  >
+                  <Heart className={`h-4 w-4 text-pink-600 fill-current`} />
+                  </motion.div>
+                </Pointer>)}
                 <Heart className={`h-4 w-4 ${isLiked ? "fill-current" : ""}`} />
                 <span>{likesCount}</span>
-              </Button>
-
+              </RainbowButton>
               <Button
-                variant={isBookmarked ? "default" : "outline"}
+                variant={isBookMarked ? "default" : "outline"}
                 size="sm"
                 onClick={handleBookmark}
                 className="flex items-center gap-2"
               >
-                <Bookmark className={`h-4 w-4 ${isBookmarked ? "fill-current" : ""}`} />
+                <Bookmark className={`h-4 w-4 ${isBookMarked ? "fill-current" : ""}`} />
               </Button>
 
               {/* <SocialShare title={post.title} url={`/posts/${post.slug}`} description={post.excerpt} /> */}

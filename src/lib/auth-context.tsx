@@ -69,7 +69,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signInWithGoogle = async () => {
     try {
       const credential = await signInWithPopup(auth, googleProvider)
-      console.log("🚀 ~ signInWithGoogle ~ credential:", credential)
     } catch (error) {
       throw error
     }

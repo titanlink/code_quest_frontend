@@ -1,5 +1,5 @@
 'use client'
-import { mockPosts, mockUsers, mockComments } from '@/lib/mock-data'
+
 import React, { useEffect, useState } from 'react'
 import DashBoardHeader from './DashBoardHeader'
 import StatsCards from './StatsCards'

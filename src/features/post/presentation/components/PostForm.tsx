@@ -1,6 +1,6 @@
 "use client"
 
-import { Input, Button, CustomCard, CardContent, CardTitle, CardHeader, CardFooter, FormColorInput, inputErrors, Card, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, TagsInput, CustomAlert, FormErrors, ImageUpload, CustomFormFile } from "@/components";
+import { Input, Button, CustomCard, CardContent, CardTitle, CardHeader, inputErrors, Card, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, TagsInput, CustomAlert, FormErrors, ImageUpload, CustomFormFile } from "@/components";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Form } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod"
@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { ArrowLeft, Eye, Loader2, Save } from "lucide-react";
 import Link from "next/link";
-import { getImageUrl, mockCategories, saveAsset, useAuth } from "@/lib";
+import { getImageUrl, useAuth } from "@/lib";
 import { useCategoryStore } from "@/features";
 
 interface Props {
