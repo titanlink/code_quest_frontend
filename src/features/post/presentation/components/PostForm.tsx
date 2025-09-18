@@ -1,6 +1,6 @@
 "use client"
 
-import { Input, Button, CustomCard, CardContent, CardTitle, CardHeader, CardFooter, FormColorInput, inputErrors, Card, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, TagsInput, CustomAlert, FormErrors } from "@/components";
+import { Input, Button, CustomCard, CardContent, CardTitle, CardHeader, CardFooter, FormColorInput, inputErrors, Card, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, TagsInput, CustomAlert, FormErrors, ImageUpload, CustomFormFile } from "@/components";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Form } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod"
@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { ArrowLeft, Eye, Loader2, Save } from "lucide-react";
 import Link from "next/link";
-import { mockCategories, useAuth } from "@/lib";
+import { getImageUrl, mockCategories, saveAsset, useAuth } from "@/lib";
 import { useCategoryStore } from "@/features";
 
 interface Props {
@@ -27,13 +27,24 @@ const formSchema = z.object({
   excerpt: z.string(inputErrors.required).min(2,inputErrors.minLength(2)),
   content: z.string(inputErrors.required).min(2,inputErrors.minLength(2)),
   categoryId: z.string(),
-  coverImage: z.string().optional(),
+  // coverImage: z.any().optional(),
+  coverImage: z.any().refine(
+    (file) => {
+      if (!file) return true; // ✅ si no hay archivo, pasa
+      return (
+        file.size <= 25 * 1024 * 1024 &&
+        ["image/jpeg", "image/png", "image/jpg", "image/gif"].includes(file.type)
+      );
+    },
+    { message: "El archivo no puede ser mayor de 25MB y solo JPG/PNG/GIF son permitidos" }
+  ).optional(),
   published: z.boolean().optional(),
   featured: z.boolean().optional(),
   tags: z.array(z.string()),
 });
 
 export const PostForm = ({entity}:Props) => {
+  const [preview, setPreview] = useState<string | null>( getImageUrl(entity?.coverImage))
   const isNew = entity ? false : true
   const actionTitle = isNew ? 'Nueva' : 'Editar'
   const { user, getToken } = useAuth()
@@ -88,7 +99,6 @@ export const PostForm = ({entity}:Props) => {
 
   return (
     <Form {...form}>
-      {/* <pre><b>{JSON.stringify(form.formState.errors, null, 2) } </b> </pre> */}
 
       <form onSubmit={form.handleSubmit(onSubmit)}  className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       
@@ -298,13 +308,48 @@ export const PostForm = ({entity}:Props) => {
             <CardHeader>
               <CardTitle>Imagen de Portada</CardTitle>
             </CardHeader>
-            {/* <CardContent>
-              <Input
-                value={formData.coverImage}
-                onChange={(e) => setFormData({ ...formData, coverImage: e.target.value })}
-                placeholder="URL de la imagen"
-              />
-            </CardContent> */}
+            <CardContent>
+
+              {/* <ImageUpload control={form.control} name="coverImage"  maxSize={15} /> */}
+              {/* <CustomFormFile control={form.control}  name="coverImage"  /> */}
+
+              <FormField
+                    control={form.control}
+                    name="coverImage"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Imagen de Portada</FormLabel>
+                        <FormControl>
+                          <Input
+                            name="coverImage"
+                            type="file"
+                            accept="*/*"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0]
+                              field.onChange(file)
+                              if (file) {
+                                console.log("🚀 ~ ...file:", file)
+                                setPreview(URL.createObjectURL(file)) 
+                              }
+                            }}
+                          />
+                        </FormControl>
+                        {preview && (
+                          <img
+                            src={preview}
+                            alt="Vista previa"
+                            className="mt-2 w-32 h-32 object-cover rounded-md border"
+                          />
+                        )}
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+              
+
+
+              
+            </CardContent>
           </CustomCard>
 
           {/* Tags */}

@@ -66,41 +66,6 @@ export function PostSidebar({ post }: PostSidebarProps) {
           </div>
         </CardContent>
       </CustomCard>
-
-      {/* Table of Contents */}
-      <CustomCard>
-        <CardHeader>
-          <CardTitle className="text-lg">Contenido</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <nav className="space-y-2">
-            <a
-              href="#introduccion"
-              className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Introducción
-            </a>
-            <a
-              href="#caracteristicas"
-              className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Nuevas características
-            </a>
-            <a
-              href="#instalacion"
-              className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Instalación
-            </a>
-            <a
-              href="#conclusion"
-              className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Conclusión
-            </a>
-          </nav>
-        </CardContent>
-      </CustomCard>
       
 
       {/* Newsletter Signup */}

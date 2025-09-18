@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -24,12 +24,25 @@ interface Props {
 }
 
 export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
-  const { user } = useAuth()
+  const { user, getToken } = useAuth()
   const [newComment, setNewComment] = useState("")
   const [replyTo, setReplyTo] = useState<string | null>(null)
   const [replyContent, setReplyContent] = useState("")
   const [comments, setComments] = useState(postComments)
   const [likedComments, setLikedComments] = useState<Set<string>>(new Set())
+
+  const [token, setToken] = useState<string | null>(null)
+    
+      
+    useEffect(() => {
+      const fetchToken = async () => {
+        if (user) {
+          const authToken = await getToken() ?? ''
+          setToken(authToken)
+        }
+      }
+      fetchToken()
+    }, [user, getToken])
 
   const currentUser:IUser = {
     id: post.author?.id ?? '',
@@ -60,7 +73,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
       updatedAt: new Date(),
     }
 
-    const resp = await createCommentAction(comment)
+    const resp = await createCommentAction(comment, token ?? '')
     if ('error' in resp) return
 
     setComments([comment, ...comments])
@@ -103,7 +116,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
     setLikedComments(newLikedComments)
   }
   
-  const topLevelComments = comments.filter((c) => !c.parentId)
+  const topLevelComments = comments.filter((c) => c.sub_comment)
   const getsub_comment = (commentId: string) => comments.filter((c) => c.parentId === commentId)
 
   return (
@@ -112,7 +125,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
         <MessageCircle className="h-5 w-5" />
         <h2 className="text-2xl font-bold">Comentarios ({comments.length})</h2>
       </div>
-
+      {/* <pre><b>{JSON.stringify(comments, null, 2) } </b> </pre> */}
       {/* Comment Form */}
       {user ? (
         <CustomCard className="mb-8">

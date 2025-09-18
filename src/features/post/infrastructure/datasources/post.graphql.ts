@@ -12,9 +12,29 @@ export const allPostGQL = gql`
       published
       featured
       likesCount
+      commentCount
       tags
       createAt
       updateAt
+
+      user {
+        id
+        email
+        createAt
+        updateAt
+        avatar
+        name
+        role
+      }
+
+      comment {
+        id
+        content
+        sub_comment {
+          id 
+          content
+        }
+      }
 
       category {
         id
@@ -41,6 +61,7 @@ export const findPostGQL = gql`
       published
       featured
       likesCount
+      commentCount
       tags
       createAt
       updateAt
@@ -69,9 +90,34 @@ export const findPostBySlugGQL = gql`
         published
         featured
         likesCount
+        commentCount
         tags
         createAt
         updateAt
+
+        like_post {
+          id
+          user {
+            id
+            email
+            createAt
+            updateAt
+            avatar
+            name
+            role
+          }
+          createAt
+        }
+
+        user {
+          id
+          email
+          createAt
+          updateAt
+          avatar
+          name
+          role
+        }
 
         category {
           id

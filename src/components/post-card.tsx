@@ -11,6 +11,7 @@ import {
   CustomCard,
 } from "."
 import { IPost } from "@/features"
+import { getImageUrl } from "@/lib"
 
 interface Props {
   post: IPost
@@ -22,12 +23,11 @@ export function PostCard({ post }: Props) {
       <CardHeader className="p-0">
         <Link href={`/posts/${post.slug}`}>
           <div className="relative aspect-video overflow-hidden">
-            {/* <Image
-              src={post.coverImage || "/placeholder.svg?height=200&width=400"}
+            <img
+              src={getImageUrl(post?.coverImage) || "/no_image_available.jpg"}
               alt={post.title}
-              fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
-            /> */}
+            />
             <div className="absolute top-4 left-4">
               <Badge style={{ backgroundColor: post?.category?.color }} className="text-white">
                 {post?.category?.name}

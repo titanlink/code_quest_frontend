@@ -4,6 +4,8 @@ export interface ICategory {
   slug: string
   description?: string
   color?: string
+  createdAt?: Date
+  updatedAt?: Date
 }
 
 
@@ -15,6 +17,8 @@ export class CategoryMapper {
       slug: json['slug'],
       description: json['description'],
       color: json['color'],
+      createdAt: new Date(json['createAt']),
+      updatedAt: new Date(json['updateAt']),
     }
   }
 

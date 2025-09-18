@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
@@ -10,18 +10,33 @@ import { Separator } from "@/components/ui/separator"
 import { Heart, MessageCircle, Eye, Calendar, Clock, ArrowLeft, Bookmark } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
 import { createLikePostAction, deleteLikeAction, ILike, IPost } from "@/features"
+import { getImageUrl } from "@/lib"
 // import { SocialShare } from "@/components/social-share"
 
-interface PostContentProps {
+interface Props {
   post: IPost
 }
 
-export function PostContent({ post }: PostContentProps) {
-  const { user } = useAuth()
+export function PostContent({ post }: Props) {
+  const { user, getToken } = useAuth()
   const [isLiked, setIsLiked] = useState(post.isLiked)
+  // const [post, setPost] = useState(entity)
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [likesCount, setLikesCount] = useState(post.likesCount ?? 0)
-  const [like, setLike] = useState<ILike>({ post: post, }) 
+  const [likes, setLikes] = useState<ILike[]>(post.likes ?? []) 
+
+  const [token, setToken] = useState<string | null>(null)
+  
+    
+  useEffect(() => {
+    const fetchToken = async () => {
+      if (user) {
+        const authToken = await getToken() ?? ''
+        setToken(authToken)
+      }
+    }
+    fetchToken()
+  }, [user, getToken])
 
   const handleLike = async () => {
     if (!user) {
@@ -30,12 +45,24 @@ export function PostContent({ post }: PostContentProps) {
     }
 
     
-    const resp = isLiked ?  await deleteLikeAction(like.id ?? '') : await createLikePostAction(like)
-    if ('error' in resp) return
-    console.log("🚀 ~ handleLike ~ resp:", resp)
-    setLike(resp)
+    let resp;
+    if (isLiked){ 
+      const liked = likes.find((p) => p.user?.email === user?.email)
+      resp = await deleteLikeAction(liked?.id ?? '', token ?? '') 
+    }
     
+    if (!isLiked){ 
+      const liked = {post: post}
+      resp = await createLikePostAction(liked, token ?? '')
+      if ('id' in resp) setLikes([resp, ...likes])
+    
+    }
+    if (!resp) return
+    if (('error' in resp) && resp['error']) return
+
+
     setIsLiked(!isLiked)
+    
     setLikesCount(isLiked ? likesCount - 1 : likesCount + 1)
   }
 
@@ -52,6 +79,7 @@ export function PostContent({ post }: PostContentProps) {
   return (
     <div className="space-y-8">
       {/* Breadcrumb */}
+      {/* <pre><b>{JSON.stringify(post, null, 2) } </b> </pre> */}
       <nav className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link href="/" className="hover:text-foreground transition-colors">
           Inicio
@@ -154,7 +182,7 @@ export function PostContent({ post }: PostContentProps) {
       {/* Cover Image */}
       {post.coverImage && (
         <div className="relative aspect-video overflow-hidden rounded-lg">
-          <Image src={post.coverImage || "/placeholder.svg"} alt={post.title} fill className="object-cover" priority />
+          <Image src={getImageUrl(post?.coverImage)|| "/no_image_available.jpg"} alt={post.title} fill className="object-cover" priority />
         </div>
       )}
 

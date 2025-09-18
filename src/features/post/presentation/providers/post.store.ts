@@ -10,13 +10,13 @@ import {
   updatePostAction 
 } from "../..";
 import { ResponsePropio } from "@/config";
-import { useAuth } from "@/lib";
+import { saveAsset, useAuth } from "@/lib";
 
 
 export const usePostStore = create<PostsState>()((set, get) => ({
   isGridView: true,
   page: 0,
-  limit: 50,
+  limit: 6,
   total: 0,
   items: [],
   isLoading: true,
@@ -26,15 +26,15 @@ export const usePostStore = create<PostsState>()((set, get) => ({
   setSelected(selected: IPost | null) { set({selected, isLoading: false}) },
 
   setPage(page?: number){ set({page: page ?? 1}) },
-  setLimit(limit?: number){ set({limit: limit ?? 50}) },
+  setLimit(limit?: number){ set({limit: limit ?? 1}) },
 
 
-  getData: async(page: number = 0, limit: number = 50, token = 'NO TENGO TOKEN') => {
+  getData: async(page: number = 0, limit: number = 1, token = 'NO TENGO TOKEN') => {
     try {
       set({ isLoading: true });      
       const resp  = await allPostAction({ page, limit}, token );
-      console.log("🚀 ~ resp:", resp)
-      if (!('error' in resp)) set({items: resp ?? [],  isLoading: false})
+      console.log("🚀 ~ resp:", page,limit,  resp)
+      set({items: resp.data  ?? [],  isLoading: false, total: resp.totalRecords})
     }catch(error) {
       throw new Error('Posts > getData > Unauthorized')
     }finally {
@@ -58,6 +58,10 @@ export const usePostStore = create<PostsState>()((set, get) => ({
   createOrUpdate: async( entitdad: IPost, token = 'NO TENGO TOKEN'): Promise<IPost | ResponsePropio> => {
     let retorno: IPost | ResponsePropio = { error: true, msg: "Error desconocido, createOrUpdate" };
     try {
+      if (entitdad.coverImage){
+        const coverImage = await saveAsset(entitdad.coverImage)
+        entitdad.coverImage = coverImage
+      }
       if (entitdad.id) retorno = await updatePostAction(entitdad, token);
       if (!entitdad.id) retorno = await createPostAction(entitdad, token);
       

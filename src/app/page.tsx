@@ -16,24 +16,21 @@ export default  function HomePage() {
 
   const getPosts = usePostStore((state) => state.getData);
   const posts = usePostStore((state) => state.items);
+  const page: number = 0;
+  const limit: number = 6;
   const isLoading = usePostStore((state) => state.isLoading);
 
   const featuredPosts = posts.filter((post) => post.featured && post.published)
   const regularPosts = posts.filter((post) => !post.featured && post.published)
-  const { user, getToken } = useAuth()
-  const [token, setToken] = useState<string | null>(null)
+
 
   
   useEffect(() => {
     const fetchToken = async () => {
-      if (user) {
-        const authToken = await getToken() ?? ''
-        setToken(authToken)
-        getPosts(0, 10, authToken );
-      }
+      getPosts(page, limit, '' );
     }
     fetchToken()
-  }, [user, getToken])
+  }, [page, limit])
 
 
   return (
@@ -129,12 +126,8 @@ export default  function HomePage() {
             </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            { isLoading && [1,2,3].map((post) => (
-              <Skeleton className="h-96 w-96 " />
-            ))}
-            {!isLoading && regularPosts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
+            { isLoading && [1,2,3].map((_, key) => ( <Skeleton key={key} className="h-96 w-96 " /> ))}
+            {!isLoading && regularPosts.map((post) => ( <PostCard key={post.id} post={post} /> ))}
             
           </div>
         </div>

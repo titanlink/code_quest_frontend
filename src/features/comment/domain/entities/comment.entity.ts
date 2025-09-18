@@ -21,8 +21,8 @@ export class CommentMapper {
       postId: json['postId'],
       sub_comment: CommentMapper.fromJsonList(json['sub_comment'] ?? []),
       author: json['user'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
+      createdAt: new Date(json['createAt']),
+      updatedAt: new Date(json['updateAt']),
     }
   }
 

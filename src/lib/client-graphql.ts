@@ -26,7 +26,6 @@ export async function makeClientGraphql(token: string = 'SIN TOKEN') {
     // getsession['headers']
 
   });
-  console.log("🚀 ~ makeClientGraphql ~ httpLink:", `${process.env.NEXT_PUBLIC_BACKEND_URL_GQL}/graphql`)
   return new ApolloClient({
     cache: new InMemoryCache(),
     link: httpLink,

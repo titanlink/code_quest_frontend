@@ -51,12 +51,12 @@ export class LikeDatasourceGQL implements LikeDatasource {
 
 
   async create ( form: ILike, token: string ) {
-    let retorno: ILike | ResponsePropio = { msg: 'Error desconocido, gql_impl', error: true }
+    let retorno: ILike | ResponsePropio = { msg: 'Error desconocido > LikeDatasourceGQL > create', error: true }
     try {
       const peti = await makeClientGraphql(token);
 
       const input = {
-        id_post: Number(form.post.id),
+        id_post: Number(form.post?.id ?? 0),
       }
 
       const { data } = await peti.mutate<any>({
@@ -67,6 +67,7 @@ export class LikeDatasourceGQL implements LikeDatasource {
         },
       });
 
+      // console.log("🚀 ~ LikeDatasourceGQL ~ create ~ data:", data)
       retorno =  LikeMapper.fromJson(data["createLikePost"]);
     } catch (e) {
       console.error(`Error => createLikePostGQL -> ${e}`);

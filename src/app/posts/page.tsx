@@ -1,21 +1,17 @@
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo } from "react"
 import { Navbar } from "@/components/navbar"
 // import { SearchFilters } from "@/components/search-filters"
 
 import type { PostFilters } from "@/lib/types"
 import { PostGrid, ResultsSummary, usePostStore } from "@/features"
-import { useAuth } from "@/lib"
 
 export default function PostsPage() {
   const getPosts = usePostStore((state) => state.getData);
   const items = usePostStore((state) => state.items);
-  const page: number = usePostStore( (state) => state.page ?? 0  );
-  const limit: number = usePostStore( (state) => state.limit ?? 50  );
   const isLoading = usePostStore((state) => state.isLoading);
-  const { user, getToken } = useAuth()
-  const [token, setToken] = useState<string | null>(null)
+  // const totalRecords = usePostStore((state) => state.total);
 
   const [filters, setFilters] = useState<PostFilters>({
     search: "",
@@ -24,16 +20,12 @@ export default function PostsPage() {
     published: false,
   })
 
-  useEffect(() => {
-    const fetchToken = async () => {
-      if (user) {
-        const authToken = await getToken() ?? ''
-        setToken(authToken)
-        getPosts(0, 10, authToken );
-      }
-    }
-    fetchToken()
-  }, [user, getToken])
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     getPosts(page, limit, token );
+  //   }
+  //   getData()
+  // }, [page, limit, getPosts])
 
   const filteredPosts = useMemo(() => {
     return items.filter((post) => {
@@ -103,7 +95,7 @@ export default function PostsPage() {
         <ResultsSummary filteredPosts={filteredPosts} clearFilters={clearFilters} filters={filters} />
 
         {/* Posts Grid */}
-        <PostGrid filteredPosts={items} clearFilters={clearFilters} isLoading={isLoading} />
+        <PostGrid clearFilters={clearFilters} isLoading={isLoading} />
       </div>
     </div>
   )

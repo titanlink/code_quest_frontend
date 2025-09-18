@@ -7,7 +7,7 @@ import { ResponsePropio } from "@/config";
 
 export class PostDatasourceGQL implements PostDatasource {
   async all(page = 0, limit = 50, token: string) {
-    let retorno: IPost[] | ResponsePropio = { msg: 'Error desconocido', error: true }
+    let retorno: ResponsePropio = { msg: 'Error desconocido', error: true}
     try {
       const peti = await makeClientGraphql(token);
 
@@ -21,7 +21,12 @@ export class PostDatasourceGQL implements PostDatasource {
       });
       const resp = data["allPost"]
       const entities = PostMapper.fromJsonList(resp['items']);
-      if (entities) retorno = entities;
+      if (entities) {
+        retorno.msg = 'Ok'
+        retorno.error = false
+        retorno.totalRecords = resp['total']
+        retorno.data = entities;
+      }
     } catch (e) {
       console.error(`Error => allPostGQL -> ${e}`);
       const error = e as Error;
@@ -47,7 +52,8 @@ export class PostDatasourceGQL implements PostDatasource {
       });
 
       console.log("🚀 ~ PostDatasourceGQL ~ findById ~ data:", data)
-      retorno = PostMapper.fromJson(data["post"]);
+      const entity = PostMapper.fromJson(data["post"]);
+      if (entity?.id) retorno = entity 
     } catch (e) {
       console.error(`Error => findPostGQL -> ${e}`);
     }finally{
@@ -70,7 +76,8 @@ export class PostDatasourceGQL implements PostDatasource {
       });
       
       const resp = data["postBySlug"]
-      retorno = PostMapper.fromJson(resp['item'], resp['is_like']);
+      const entity = PostMapper.fromJson(resp['item'], resp['is_like']);
+      if (entity?.id) retorno = entity
     } catch (e) {
       console.error(`Error => findBySlugId -> ${e}`);
     }finally{
@@ -103,7 +110,8 @@ export class PostDatasourceGQL implements PostDatasource {
         },
       });
 
-      retorno =  PostMapper.fromJson(data["createPost"]);
+      const entity = PostMapper.fromJson(data["createPost"]);
+      if (entity?.id) retorno = entity 
     } catch (e) {
       console.error(`Error => createPostGQL -> ${e}`);
     } finally {
@@ -137,7 +145,8 @@ export class PostDatasourceGQL implements PostDatasource {
           input: input,
         },
       });
-      retorno = PostMapper.fromJson(data["updatePost"]);
+      const entity = PostMapper.fromJson(data["updatePost"]);
+      if (entity?.id) retorno = entity 
     } catch (e) {
       const error = `${e}`
       console.error(error);
@@ -150,7 +159,7 @@ export class PostDatasourceGQL implements PostDatasource {
   async delete(id: string, token: string) {
     let retorno: ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
-      const peti = await makeClientGraphql();
+      const peti = await makeClientGraphql(token);
 
       const { data } = await peti.mutate<any>({
         mutation: removePostGQL,

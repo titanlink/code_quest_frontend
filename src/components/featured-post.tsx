@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Calendar, Heart, MessageCircle, Eye, Star } from "lucide-react"
 import { IPost } from "@/features"
+import { getImageUrl } from "@/lib"
 
 interface FeaturedPostProps {
   post: IPost
@@ -16,17 +17,17 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
       <CardContent className="p-0">
         <Link href={`/posts/${post.slug}`}>
           <div className="relative aspect-[16/10] overflow-hidden">
-            {/* <Image
-              src={post?.coverImage || "/placeholder.svg?height=300&width=600"}
+            <img
+              src={getImageUrl(post?.coverImage) }
               alt={post.title}
-              fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
-            /> */}
+              />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             <div className="absolute top-4 left-4 flex gap-2">
               <Badge className="bg-primary text-primary-foreground">
                 <Star className="h-3 w-3 mr-1" />
                 Destacado
+                
               </Badge>
               <Badge style={{ backgroundColor: post?.category?.color }} className="text-white">
                 {post?.category?.name}

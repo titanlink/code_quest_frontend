@@ -9,9 +9,9 @@ export interface PostsState {
   errorMsg?: string;
   isError?: boolean;
   isLastPage?: boolean;
-  page: number | undefined;
-  limit: number | undefined;
-  total: number | undefined;
+  page: number;
+  limit: number;
+  total: number;
   isLoading: boolean;
   search?: string;
 

@@ -5,7 +5,7 @@ import { ILike, IPost, LikeDatasourceGQL, LikeRepositoryImpl, PostDatasourceGQL,
 
 
 export async function allPostAction({page = 0, limit = 50}, token: string = 'No Token') {
-  let retorno: IPost[] | ResponsePropio = { msg: 'Error desconocido en allPostAction', error: true }
+  let retorno: ResponsePropio = { msg: 'Error desconocido en allPostAction', error: true }
   const datasource = new PostDatasourceGQL();
   const repo = new PostRepositoryImpl(datasource, token);
 

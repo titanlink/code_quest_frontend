@@ -34,9 +34,9 @@ export default function Page() {
           } else {
               setEntity(response)
           }
+          setLoading(false)
         }
       }
-      setLoading(false)
     }
 
     fetchData()

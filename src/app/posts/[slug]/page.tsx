@@ -1,36 +1,47 @@
-import { notFound } from "next/navigation"
+'use client'
+
+import { notFound, useParams, useRouter } from "next/navigation"
 import { Navbar } from "@/components/navbar"
 import { mockPosts } from "@/lib/mock-data"
 import { EnhancedCommentsSection, findPostBySlugAction, IPost, PostContent, PostSidebar, RelatedPosts } from "@/features"
-
-interface Props {
-  params: {
-    slug: string
-  }
-}
-
-export default async function PostPage({ params }: Props) {
-  let post: IPost | undefined
-  let isNotFound = false
-  const slug =  params.slug 
+import { useAuth } from "@/lib"
+import { useEffect, useState } from "react"
 
 
-  // const response = mockPosts[0];
-  const response = await findPostBySlugAction(slug);
-  if (response && !('id' in response)) isNotFound = true
-  if(!isNotFound && ('id' in response)) post = response;
+export default  function PostPage() {
+  const params = useParams<{ slug: string }>()
+  const router = useRouter()
+  const { user, getToken } = useAuth()
 
+  const [post, setPost] = useState<IPost | undefined>()
+  const [loading, setLoading] = useState(true)
+
+  const slug = params.slug
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let token = ''
+      if (user) token = await getToken() ?? ''
+      const response = await findPostBySlugAction(slug, token)
+      console.log("🚀 ~ fetchData ~ response:", response)
+      if (!response || !("id" in response)) {
+          router.replace("/404")
+      } else {
+        setPost(response)
+      }
+      setLoading(false)
+    }
+
+    fetchData()
+  }, [slug, getToken, router, user])
+
+  if (loading) return <div>Cargando...</div>
+  if (!post) notFound()
   
-
-  // const post = mockPosts.find((p) => p.slug === slug)
-
-  if (!post) {
-    notFound()
-  }
 
   // Get related posts (same category, excluding current post)
   const relatedPosts = mockPosts
-    .filter((p) => p.id !== post.id && p.categoryId === post.categoryId && p.published)
+    .filter((p) => p.id !== post?.id && p.categoryId === post?.categoryId && p.published)
     .slice(0, 3)
 
   return (

@@ -1,13 +1,74 @@
-import React from 'react'
-import { IPost } from '../..'
-import { PostCard, Skeleton } from '@/components'
+'use client'
+import { useEffect, useMemo, useState } from 'react'
+import { IPost, usePostStore } from '../..'
+import {  PaginationManager,  PostCard, Skeleton } from '@/components'
+import { SearchFilters } from './search-filters'
+import { PostFilters } from '@/lib'
 
 interface Props {
-  filteredPosts:IPost[],
   isLoading?:boolean,
   clearFilters: () => void
 }
-export const PostGrid = ({filteredPosts, clearFilters, isLoading}:Props) => {
+export const PostGrid = ({clearFilters, isLoading, }:Props) => {
+  const [filters, setFilters] = useState<PostFilters>({
+    search: "",
+    category: "",
+    featured: false,
+    published: true,
+  })
+  
+  const [limit,setLimit] = useState(3)
+  const [page,setPage] = useState(1)
+
+  const getPosts = usePostStore((state) => state.getData);
+  const items = usePostStore((state) => state.items);
+  const totalRecords = usePostStore((state) => state.total);
+
+  useEffect(() => {
+    getPosts(page-1, limit, '');
+  }, [page, limit, getPosts])
+
+
+   const handleFiltersChange = (newFilters: PostFilters) => {
+    setFilters(newFilters)
+  }
+
+  const filteredPosts = useMemo(() => {
+    return items.filter((post) => {
+      // Filter by published status
+      if (filters.published !== undefined && post.published !== filters.published) {
+        return false
+      }
+
+      // Filter by featured status
+      if (filters.featured !== undefined && post.featured !== filters.featured) {
+        return false
+      }
+
+      // Filter by category
+      if (filters.category && post?.category?.slug !== filters.category) {
+        return false
+      }
+
+      // Filter by search term
+      if (filters.search) {
+        const searchTerm = filters.search.toLowerCase()
+        const matchesTitle = post.title.toLowerCase().includes(searchTerm)
+        const matchesExcerpt = post.excerpt.toLowerCase().includes(searchTerm)
+        const matchesContent = post.content.toLowerCase().includes(searchTerm)
+        const matchesTags = post.tags.some((tag:string) => tag.toLowerCase().includes(searchTerm))
+        const matchesAuthor = post?.author?.name.toLowerCase().includes(searchTerm)
+
+        if (!matchesTitle && !matchesExcerpt && !matchesContent && !matchesTags && !matchesAuthor) {
+          return false
+        }
+      }
+
+      return true
+    })
+  }, [filters])
+  
+
 
   if (isLoading) {
     return( <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{ [1,2,3].map((index) => ( 
@@ -15,16 +76,30 @@ export const PostGrid = ({filteredPosts, clearFilters, isLoading}:Props) => {
     </div>
     )
   }
-
   return (
     <>
     {
-      filteredPosts.length > 0 ? (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredPosts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
-      </div>
+      totalRecords > 0 ? (
+        <>
+          <SearchFilters filters={filters} onFiltersChange={handleFiltersChange} onClearFilters={clearFilters} />
+          <div className='flex flex-row mb-4'>
+            <PaginationManager
+              totalItems={totalRecords}
+              itemsPerPage={limit}
+              currentPage={page}
+              onPageChange={async (pag) => {
+                setPage(pag)
+                await getPosts(pag-1, limit, '');
+              }}
+              maxVisiblePages={1}
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredPosts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </>
     ) : (
       <div className="text-center py-16">
         <div className="w-24 h-24 mx-auto mb-6 bg-muted rounded-full flex items-center justify-center">

@@ -43,6 +43,15 @@ export const createLikePostGQL = gql`
     post {
       id
     }
+    user {
+      id
+      email
+      createAt
+      updateAt
+      avatar
+      name
+      role
+    }
     createAt
     updateAt
   }
