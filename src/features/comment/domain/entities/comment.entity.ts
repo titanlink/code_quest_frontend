@@ -14,7 +14,8 @@ export interface IComment {
 
 
 export class CommentMapper {
-  static fromJson( json: Record<string, any> ): IComment {
+  static fromJson( json: Record<string, any> ): IComment | undefined {
+    if (!json) return
     return {
       id: json['id'],
       content: json['content'],

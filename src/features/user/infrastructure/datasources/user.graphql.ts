@@ -8,6 +8,9 @@ export const allUserGQL = gql`
         name
         email
         role
+        about
+        twitter_url
+        instagram_url
         provider
         avatar
         createAt
@@ -25,6 +28,9 @@ export const checkProfileGQL = gql`
       provider
       providerId
       role
+      about
+      twitter_url
+      instagram_url
       avatar
       name
       email
@@ -40,6 +46,9 @@ export const findUserGQL = gql`
       name
       email
       role
+      about
+      twitter_url
+      instagram_url
       avatar
       provider
       createAt
@@ -66,6 +75,9 @@ export const updateUserGQL = gql`
     name
     email
     role
+    about
+    twitter_url
+    instagram_url
     avatar
     provider
     createAt

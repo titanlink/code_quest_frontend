@@ -22,6 +22,7 @@ interface Props {
 
 export function PostContent({ post }: Props) {
   const { user, getToken } = useAuth()
+  const [src, setSrc] = useState("/no_image_available.jpg")
   const [isLiked, setIsLiked] = useState(post.isLiked)
   const [isBookMarked, setIsBookMarked] = useState(post.isBookMarked)
   // const [post, setPost] = useState(entity)
@@ -215,7 +216,16 @@ export function PostContent({ post }: Props) {
       {/* Cover Image */}
       {post.coverImage && (
         <div className="relative aspect-video overflow-hidden rounded-lg">
-          <Image src={getImageUrl(post?.coverImage)|| "/no_image_available.jpg"} alt={post.title} fill className="object-cover" priority />
+          {/* <Image src={getImageUrl(post?.coverImage)|| "/no_image_available.jpg"} alt={post.title} fill className="object-cover" priority /> */}
+          <Image
+            fill className="object-cover" priority
+            src={getImageUrl(post?.coverImage)}
+            alt={post.title}
+            onError={() => {
+              console.warn("⚠️ Imagen no encontrada:", src)
+              setSrc("/fallback.png") // cambiamos a imagen de respaldo
+            }}
+          />
         </div>
       )}
 

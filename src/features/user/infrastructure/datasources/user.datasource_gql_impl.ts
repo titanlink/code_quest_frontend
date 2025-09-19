@@ -108,18 +108,25 @@ export class UserDatasourceGQL implements UserDatasource {
     try {
       const peti = await makeClientGraphql(token);
 
+      const input = {
+        id: Number(form.id),
+        name: form.name,
+        avatar: form.avatar,
+        about: form.about,
+        twitter_url: form.twitter_url ? form.twitter_url : null,
+        instagram_url: form.instagram_url ? form.instagram_url : null,
+        role: form.role,
+      }
+      console.log("🚀 ~ UserDatasourceGQL ~ update ~ input:", input)
+
       const { data } = await peti.mutate<any>({
         mutation: updateUserGQL,
         fetchPolicy: "no-cache",
         variables: {
-          input: {
-            id: Number(form.id),
-            name: form.name,
-            avatar: form.avatar,
-            role: form.role,
-          },
+          input: input,
         },
       });
+      console.log("🚀 ~ UserDatasourceGQL ~ update ~ data:", data)
       const entity = UserMapper.fromJson(data["updateUser"]);
       if (entity) retorno = entity
     } catch (e) {
@@ -147,7 +154,7 @@ export class UserDatasourceGQL implements UserDatasource {
       if ('message' in resp) retorno =  { msg: resp['message'], error: !resp }
       
     } catch (e) {
-      const error = `Error => updateUserGQL -> ${e}`
+      const error = `Error => removeUserGQL -> ${e}`
       console.error(error, e);
       retorno.msg = error
     } finally {

@@ -1,4 +1,4 @@
-import { BookMarkMapper, CategoryMapper, CommentMapper, IBookMark, ICategory, IComment, ILike, IUser, LikeMapper, UserMapper } from "@/features"
+import { BookMarkMapper, CategoryMapper, CommentMapper, IBookMark, ICategory, IComment, IImage, ILike, ImageMapper, IUser, LikeMapper, UserMapper } from "@/features"
 
 export interface IPost {
   id?: string
@@ -18,6 +18,7 @@ export interface IPost {
   bookMarkCount?: number
   commentsCount?: number
   coverImage?: string |  File
+  image?: IImage | null
   authorId?: string
   author?: IUser
   categoryId?: string
@@ -38,12 +39,15 @@ export class PostMapper {
       const comments = CommentMapper.fromJsonList(json['comment'] ?? [])
       const likes = LikeMapper.fromJsonList(json['like_post'] ?? [])
       const bookmarks = BookMarkMapper.fromJsonList(json['bookmark_post'] ?? [])
+      
+      const coverImage = ImageMapper.fromJson(json['image'])
       retorno = {
         id: json['id'],
         title: json['title'],
         slug: json['slug'],
         content: json['content'],
-        coverImage: json['coverImage'],
+        coverImage: coverImage?.secure_url,
+        image: coverImage,
         excerpt:  json['excerpt'],
         authorId: author?.id,
         author: author,
@@ -78,6 +82,7 @@ export class PostMapper {
     if (!data) return entities
     for (const json of data) {
       const entidad = PostMapper.fromJson(json);
+      console.log("🚀 ~ PostMapper ~ fromJsonList ~ entidad:", entidad)
       if(entidad) entities.push(entidad);
     }
     return entities;

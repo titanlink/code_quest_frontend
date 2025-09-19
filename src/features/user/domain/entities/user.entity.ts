@@ -4,6 +4,9 @@ export interface IUser {
   email: string
   name: string
   role: "admin" | "user"
+  about?: string
+  twitter_url?: string
+  instagram_url?: string
   avatar?: string
   provider?: string
   discordId?: string
@@ -19,6 +22,9 @@ export class UserMapper {
       name: json['name'],
       email: json['email'],
       role: json['role'],
+      about: json['about'],
+      twitter_url: json['twitter_url'],
+      instagram_url: json['instagram_url'],
       avatar: json['avatar'],
       provider: json['provider'],
       createdAt: new Date(json['createAt']),

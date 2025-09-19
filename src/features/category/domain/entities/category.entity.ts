@@ -11,6 +11,7 @@ export interface ICategory {
 
 export class CategoryMapper {
   static fromJson( json: Record<string, any> ): ICategory {
+    // if (!json) return
     return {
       id: json['id'],
       name: json['name'],

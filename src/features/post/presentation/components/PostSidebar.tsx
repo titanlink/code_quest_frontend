@@ -4,9 +4,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Calendar, MapPin, LinkIcon, Twitter, Github } from "lucide-react"
+import { Calendar, MapPin, LinkIcon, Twitter, Github, X } from "lucide-react"
 import { CustomCard } from "@/components"
 import { IPost } from "@/features"
+import { InstagramLogoIcon } from "@radix-ui/react-icons"
 
 interface PostSidebarProps {
   post: IPost
@@ -35,8 +36,7 @@ export function PostSidebar({ post }: PostSidebarProps) {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            Desarrollador apasionado por las tecnologías web modernas y el diseño de experiencias de usuario
-            excepcionales.
+            {post?.author?.about}
           </p>
 
           <div className="space-y-2 text-sm text-muted-foreground">
@@ -53,16 +53,24 @@ export function PostSidebar({ post }: PostSidebarProps) {
           <Separator />
 
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="flex-1 bg-transparent">
-              <Twitter className="h-4 w-4 mr-2" />
-              Seguir
-            </Button>
-            <Button variant="outline" size="sm">
-              <Github className="h-4 w-4" />
-            </Button>
-            <Button variant="outline" size="sm">
+            {
+            post?.author?.twitter_url && (
+              <Button variant="outline" size="sm" className="flex-1 bg-transparent">
+                <X className="h-4 w-4 mr-2" />
+                Seguir
+              </Button>)
+            }
+            {
+              post?.author?.instagram_url && 
+              (
+                <Button variant="outline" size="sm">
+                  <InstagramLogoIcon className="h-4 w-4" />
+                </Button>
+              )
+            }
+            {/* <Button variant="outline" size="sm">
               <LinkIcon className="h-4 w-4" />
-            </Button>
+            </Button> */}
           </div>
         </CardContent>
       </CustomCard>

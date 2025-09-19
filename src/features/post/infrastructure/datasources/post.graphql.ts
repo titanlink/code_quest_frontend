@@ -8,7 +8,11 @@ export const allPostGQL = gql`
       slug
       content
       excerpt
-      coverImage
+      image {
+        id
+        secure_url
+        public_id
+      }
       published
       featured
       total_view
@@ -59,7 +63,11 @@ export const findPostGQL = gql`
       slug
       content
       excerpt
-      coverImage
+      image {
+        id
+        secure_url
+        public_id
+      }
       total_view
       viewUserCount
       published
@@ -92,7 +100,11 @@ export const findPostBySlugGQL = gql`
         excerpt
         total_view
         viewUserCount
-        coverImage
+        image {
+          id
+          secure_url
+          public_id
+        }
         published
         featured
         likesCount
@@ -169,7 +181,11 @@ export const createPostGQL = gql`
     slug
     content
     excerpt
-    coverImage
+    image {
+      id
+      secure_url
+      public_id
+    }
     published
     featured
     tags
@@ -188,7 +204,11 @@ export const updatePostGQL = gql`
     slug
     content
     excerpt
-    coverImage
+    image {
+      id
+      secure_url
+      public_id
+    }
     published
     featured
     tags

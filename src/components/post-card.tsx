@@ -22,11 +22,11 @@ interface Props {
 export function PostCard({ post }: Props) {
   const [src, setSrc] = useState("/no_image_available.jpg")
   return (
-    <CustomCard>
+    <CustomCard withHover={true}>
       <CardHeader className="p-0">
         <Link href={`/posts/${post.slug}`}>
           <div className="relative aspect-video overflow-hidden">
-            {/* <Image
+            <Image
               fill className="object-cover" priority
               src={getImageUrl(post?.coverImage)}
               alt={post.title}
@@ -34,8 +34,8 @@ export function PostCard({ post }: Props) {
                 console.warn("⚠️ Imagen no encontrada:", src)
                 setSrc("/fallback.png") // cambiamos a imagen de respaldo
               }}
-            /> */}
-            { JSON.stringify(post?.coverImage,null,2)}
+            />
+            {/* { JSON.stringify(post?.coverImage,null,2)} */}
             <div className="absolute top-4 left-4">
               <Badge style={{ backgroundColor: post?.category?.color }} className="text-white">
                 {post?.category?.name}

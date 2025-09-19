@@ -12,7 +12,7 @@ interface Props {
 export const PostGrid = ({clearFilters, isLoading, }:Props) => {
   const [filters, setFilters] = useState<PostFilters>({ search: '' })
   
-  const [limit,setLimit] = useState(3)
+  const [limit,setLimit] = useState(6)
   const [page,setPage] = useState(0)
 
   const getPosts = usePostStore((state) => state.getData);
@@ -66,9 +66,13 @@ export const PostGrid = ({clearFilters, isLoading, }:Props) => {
 
 
   if (isLoading) {
-    return( <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{ [1,2,3].map((index) => ( 
-      <Skeleton key={index} className="h-130 w-full " /> ))}
-    </div>
+    return(
+      <>
+      <Skeleton className="h-25 w-full mb-4" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">{ [1,2,3,4].map((index) => ( 
+        <Skeleton key={index} className="h-130 w-full " /> ))}
+      </div>
+      </>
     )
   }
   return (
@@ -90,7 +94,7 @@ export const PostGrid = ({clearFilters, isLoading, }:Props) => {
               maxVisiblePages={2}
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredPosts.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}

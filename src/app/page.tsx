@@ -61,9 +61,9 @@ export default  function HomePage() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" asChild>
+            {/* <Button variant="outline" size="lg" asChild>
               <Link href="/register">Únete a la Comunidad</Link>
-            </Button>
+            </Button> */}
           </div>
         </div>
       </section>
@@ -126,7 +126,7 @@ export default  function HomePage() {
             </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            { isLoading && [1,2,3].map((_, key) => ( <Skeleton key={key} className="h-96 w-96 " /> ))}
+            { isLoading && [1,2,3,4].map((_, key) => ( <Skeleton key={key} className="h-96 w-96 " /> ))}
             {!isLoading && regularPosts.map((post) => ( <PostCard key={post.id} post={post} /> ))}
             
           </div>
