@@ -13,8 +13,10 @@ import {
 } from "firebase/auth"
 import { auth, googleProvider } from "@/lib/firebase"
 import { getAuthToken } from "@/lib/auth-utils"
+import { checkProfileAction, IUser } from "@/features"
 
 interface AuthContextType {
+  session: IUser | null
   user: User | null
   loading: boolean
   signIn: (email: string, password: string) => Promise<void>
@@ -36,11 +38,19 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
+  const [role, setRole] = useState<'admin' | 'user'>('user')
   const [loading, setLoading] = useState(true)
+  const [session, setSession] = useState<IUser | null>(null)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      const token = await getToken()
+      const _session = await checkProfileAction(token ?? '')
       setUser(user)
+      if ('id' in _session){
+        setRole(_session['role'])
+        setSession(_session)
+      }
       setLoading(false)
     })
 
@@ -87,6 +97,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const value: AuthContextType = {
+    session,
     user,
     loading,
     signIn,

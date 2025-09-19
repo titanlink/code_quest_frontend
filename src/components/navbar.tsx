@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation"
 
 
 export function Navbar() {
-  const { user, logout } = useAuth()
+  const { user, logout, session } = useAuth()
   const router = useRouter()
 
 
@@ -39,8 +39,8 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           {user ? (
             <>
-              {/* {user.role === "admin" && ( */}
-              {user && (
+              {/* {user && ( */}
+              {session?.role === "admin" && (
                 <Button variant="outline" asChild>
                   <Link href="/admin">Panel Admin</Link>
                 </Button>

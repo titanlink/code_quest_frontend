@@ -14,4 +14,15 @@ export async function findUserAction(id: string, token: string) {
     return { success: false, error: "No se pudo obtener el asset" };
   }
 }
+export async function checkProfileAction(token: string) {
+  const datasource = new UserDatasourceGQL();
+  const repo = new UserRepositoryImpl(datasource, token);
+  try {
+    const response = await repo.checkProfile();
+    return response
+  } catch (e) {
+    console.error("Error en findUserAction:", e);
+    return { success: false, error: "No se pudo obtener el asset" };
+  }
+}
   

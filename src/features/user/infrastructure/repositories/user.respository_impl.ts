@@ -8,6 +8,9 @@ export class UserRepositoryImpl extends UserRepository {
     super();
   }
   
+  async checkProfile(): Promise<any> {
+    return this.datasource.checkProfile(this.token);
+  }
   async findById(id: string): Promise<any> {
     return this.datasource.findById(id, this.token);
   }

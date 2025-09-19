@@ -1,7 +1,7 @@
 import { UserDatasource, UserMapper, IUser } from "../..";
 import { makeClientGraphql } from "@/lib";
 import { ResponsePropio } from "@/config";
-import { allUserGQL, createUserGQL, findUserGQL, removeUserGQL, updateUserGQL } from "./user.graphql";
+import { allUserGQL, checkProfileGQL, createUserGQL, findUserGQL, removeUserGQL, updateUserGQL } from "./user.graphql";
 
 
 
@@ -40,6 +40,23 @@ export class UserDatasourceGQL implements UserDatasource {
       return retorno
     }
   }
+  async checkProfile(token: string){
+    let retorno: IUser | ResponsePropio = { msg: 'Error desconocido', error: true }
+    try {
+      const peti = await makeClientGraphql(token);
+
+      const { data } = await peti.query<any>({
+        query: checkProfileGQL,
+        fetchPolicy: "no-cache",
+      });
+      const entity = UserMapper.fromJson(data["checkProfile"])
+      if (entity) retorno = entity;
+    } catch (e) {
+      console.error(`Error => findUserGQL -> ${e}`);
+    }finally{
+      return retorno
+    }
+  }
   async findById(id: string, token: string){
     let retorno: IUser | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
@@ -59,7 +76,6 @@ export class UserDatasourceGQL implements UserDatasource {
     }finally{
       return retorno
     }
-  
   }
 
   async create ( form: IUser, token: string ) {

@@ -27,45 +27,6 @@ export default function PostsPage() {
   //   getData()
   // }, [page, limit, getPosts])
 
-  const filteredPosts = useMemo(() => {
-    return items.filter((post) => {
-      // Filter by published status
-      if (filters.published !== undefined && post.published !== filters.published) {
-        return false
-      }
-
-      // Filter by featured status
-      if (filters.featured !== undefined && post.featured !== filters.featured) {
-        return false
-      }
-
-      // Filter by category
-      if (filters.category && post?.category?.slug !== filters.category) {
-        return false
-      }
-
-      // Filter by search term
-      if (filters.search) {
-        const searchTerm = filters.search.toLowerCase()
-        const matchesTitle = post.title.toLowerCase().includes(searchTerm)
-        const matchesExcerpt = post.excerpt.toLowerCase().includes(searchTerm)
-        const matchesContent = post.content.toLowerCase().includes(searchTerm)
-        const matchesTags = post.tags.some((tag) => tag.toLowerCase().includes(searchTerm))
-        const matchesAuthor = post?.author?.name.toLowerCase().includes(searchTerm)
-
-        if (!matchesTitle && !matchesExcerpt && !matchesContent && !matchesTags && !matchesAuthor) {
-          return false
-        }
-      }
-
-      return true
-    })
-  }, [filters])
-
-  const handleFiltersChange = (newFilters: PostFilters) => {
-    setFilters(newFilters)
-  }
-
   const clearFilters = () => {
     setFilters({
       search: "",
@@ -92,7 +53,7 @@ export default function PostsPage() {
         {/* <SearchFilters filters={filters} onFiltersChange={handleFiltersChange} onClearFilters={clearFilters} /> */}
 
         {/* Results Summary */}
-        <ResultsSummary filteredPosts={filteredPosts} clearFilters={clearFilters} filters={filters} />
+        {/* <ResultsSummary filteredPosts={filteredPosts} clearFilters={clearFilters} filters={filters} /> */}
 
         {/* Posts Grid */}
         <PostGrid clearFilters={clearFilters} isLoading={isLoading} />

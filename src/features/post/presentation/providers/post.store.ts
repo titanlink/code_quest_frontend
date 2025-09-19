@@ -17,7 +17,7 @@ import { saveAsset, useAuth } from "@/lib";
 export const usePostStore = create<PostsState>()((set, get) => ({
   isGridView: true,
   page: 0,
-  limit: 6,
+  limit: 10,
   total: 0,
   items: [],
   isLoading: true,
@@ -26,14 +26,14 @@ export const usePostStore = create<PostsState>()((set, get) => ({
 
   setSelected(selected: IPost | undefined) { set({selected, isLoading: false}) },
 
-  setPage(page?: number){ set({page: page ?? 1}) },
-  setLimit(limit?: number){ set({limit: limit ?? 1}) },
+  setPage(page?: number){ set({page: page}) },
+  setLimit(limit?: number){ set({limit: limit}) },
 
 
-  getData: async(page: number = 0, limit: number = 1, token = 'NO TENGO TOKEN') => {
+  getData: async(_page: number = 0, _limit: number = 1, token = 'NO TENGO TOKEN') => {
     try {
       set({ isLoading: true });      
-      const resp  = await allPostAction({ page, limit}, token );
+      const resp  = await allPostAction({ page: _page, limit: _limit}, token );
       set({items: resp.data  ?? [], total: resp.totalRecords})
     }catch(error) {
       throw new Error('Posts > getData > Unauthorized')

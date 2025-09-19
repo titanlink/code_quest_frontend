@@ -15,7 +15,7 @@ export default function AdminUsersPage() {
   const changeRole = useUserStore((state) => state.changeRole);
   const users = useUserStore((state) => state.items);
 
-  const [limit,setLimit] = useState(50)
+  const [limit,setLimit] = useState(10)
   const [page,setPage] = useState(0)
 
   // const page: number = useUserStore( (state) => state.page ?? 0  );

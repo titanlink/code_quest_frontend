@@ -1,3 +1,4 @@
+'use client'
 import Link from "next/link"
 import Image from "next/image"
 import { Calendar, Heart, MessageCircle, Eye } from "lucide-react"
@@ -12,22 +13,29 @@ import {
 } from "."
 import { IPost } from "@/features"
 import { getImageUrl } from "@/lib"
+import { useState } from "react"
 
 interface Props {
   post: IPost
 }
 
 export function PostCard({ post }: Props) {
+  const [src, setSrc] = useState("/no_image_available.jpg")
   return (
     <CustomCard>
       <CardHeader className="p-0">
         <Link href={`/posts/${post.slug}`}>
           <div className="relative aspect-video overflow-hidden">
-            <img
-              src={getImageUrl(post?.coverImage) || "/no_image_available.jpg"}
+            {/* <Image
+              fill className="object-cover" priority
+              src={getImageUrl(post?.coverImage)}
               alt={post.title}
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-            />
+              onError={() => {
+                console.warn("⚠️ Imagen no encontrada:", src)
+                setSrc("/fallback.png") // cambiamos a imagen de respaldo
+              }}
+            /> */}
+            { JSON.stringify(post?.coverImage,null,2)}
             <div className="absolute top-4 left-4">
               <Badge style={{ backgroundColor: post?.category?.color }} className="text-white">
                 {post?.category?.name}

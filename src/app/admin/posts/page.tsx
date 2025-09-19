@@ -18,7 +18,7 @@ export default function AdminPostsPage() {
   // const page: number = usePostStore( (state) => state.page ?? 1  );
   // const limit: number = usePostStore( (state) => state.limit ?? 50  );
 
-  const [limit,setLimit] = useState(50)
+  const [limit,setLimit] = useState(10)
   const [page,setPage] = useState(0)
   
   const isLoading = usePostStore((state) => state.isLoading);

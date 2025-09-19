@@ -19,12 +19,12 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
             <CardContent className="p-0">
               <Link href={`/posts/${post.slug}`}>
                 <div className="relative aspect-video overflow-hidden">
-                  <Image
+                  {/* <Image
                     src={post.coverImage || "/placeholder.svg?height=200&width=400"}
                     alt={post.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+                  /> */}
                   <div className="absolute top-3 left-3">
                     <Badge style={{ backgroundColor: post?.category?.color }} className="text-white text-xs">
                       {post?.category?.name}

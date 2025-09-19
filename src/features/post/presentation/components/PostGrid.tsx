@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useMemo, useState } from 'react'
-import { IPost, usePostStore } from '../..'
+import { usePostStore } from '../..'
 import {  PaginationManager,  PostCard, Skeleton } from '@/components'
 import { SearchFilters } from './search-filters'
 import { PostFilters } from '@/lib'
@@ -10,26 +10,21 @@ interface Props {
   clearFilters: () => void
 }
 export const PostGrid = ({clearFilters, isLoading, }:Props) => {
-  const [filters, setFilters] = useState<PostFilters>({
-    search: "",
-    category: "",
-    featured: false,
-    published: true,
-  })
+  const [filters, setFilters] = useState<PostFilters>({ search: '' })
   
   const [limit,setLimit] = useState(3)
-  const [page,setPage] = useState(1)
+  const [page,setPage] = useState(0)
 
   const getPosts = usePostStore((state) => state.getData);
   const items = usePostStore((state) => state.items);
   const totalRecords = usePostStore((state) => state.total);
 
   useEffect(() => {
-    getPosts(page-1, limit, '');
-  }, [page, limit, getPosts])
+    getPosts(page, limit, '');
+  }, [])
 
 
-   const handleFiltersChange = (newFilters: PostFilters) => {
+  const handleFiltersChange = (newFilters: PostFilters) => {
     setFilters(newFilters)
   }
 
@@ -66,7 +61,7 @@ export const PostGrid = ({clearFilters, isLoading, }:Props) => {
 
       return true
     })
-  }, [filters])
+  }, [filters, items])
   
 
 
@@ -78,6 +73,7 @@ export const PostGrid = ({clearFilters, isLoading, }:Props) => {
   }
   return (
     <>
+    
     {
       totalRecords > 0 ? (
         <>
@@ -91,7 +87,7 @@ export const PostGrid = ({clearFilters, isLoading, }:Props) => {
                 setPage(pag)
                 await getPosts(pag-1, limit, '');
               }}
-              maxVisiblePages={1}
+              maxVisiblePages={2}
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -112,7 +108,7 @@ export const PostGrid = ({clearFilters, isLoading, }:Props) => {
             />
           </svg>
         </div>
-        <h3 className="text-xl font-semibold mb-2">No se encontraron artículos</h3>
+        {/* <h3 className="text-xl font-semibold mb-2">No se encontraron artículos</h3> */}
         <p className="text-muted-foreground mb-6">
           Intenta ajustar tus filtros o términos de búsqueda para encontrar lo que buscas.
         </p>

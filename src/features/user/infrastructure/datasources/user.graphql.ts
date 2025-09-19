@@ -18,6 +18,21 @@ export const allUserGQL = gql`
   }
 `;
 
+export const checkProfileGQL = gql`
+  query CheckProfile {
+    checkProfile {
+      id
+      provider
+      providerId
+      role
+      avatar
+      name
+      email
+      createAt
+      updateAt
+    }
+  }
+`;
 export const findUserGQL = gql`
   query User($userId: Int!) {
     user(id: $userId) {

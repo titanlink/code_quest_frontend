@@ -11,7 +11,7 @@ export default function Page() {
   const findOne = useCategoryStore((state) => state.findOne);
   const params = useParams<{ id: string }>()
   const router = useRouter()
-  const { user, getToken } = useAuth()
+  const { user, getToken, session } = useAuth()
 
   const [entity, setEntity] = useState<ICategory | undefined>()
   const [loading, setLoading] = useState(true)

@@ -11,7 +11,6 @@ export async function updateUserAction(entity: IUser, token: string, changeRole:
   const datasource = new UserDatasourceGQL();
   const repo = new UserRepositoryImpl(datasource, token);
   try {
-    console.log("🚀 ~ updateUserAction ~ entity:", entity)
     if(!changeRole) retorno = await repo.update(entity);
     if(changeRole) retorno = await repo.changeRole(entity);
   } catch (e) {
