@@ -1,15 +1,14 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { UserDatasourceGQL, UserRepositoryImpl } from "..";
 import { IUser } from "../domain";
 import { ResponsePropio } from "@/config";
+import { repoConfig } from "./_repo-config";
+
 
 
 export async function updateUserAction(entity: IUser, token: string, changeRole:boolean = false): Promise<IUser | ResponsePropio> {
   let retorno : IUser | ResponsePropio = { error: true, msg: "Error desconocido" };
-  const datasource = new UserDatasourceGQL();
-  const repo = new UserRepositoryImpl(datasource, token);
+  const repo = repoConfig(token)
   try {
     if(!changeRole) retorno = await repo.update(entity);
     if(changeRole) retorno = await repo.changeRole(entity);

@@ -134,7 +134,7 @@ export default  function HomePage() {
       </section>
 
       {/* Newsletter CTA */}
-      <section className="py-16 px-4 bg-primary/5">
+      {/* <section className="py-16 px-4 bg-primary/5">
         <div className="container mx-auto max-w-4xl text-center">
           <h2 className="text-3xl font-bold mb-4">Mantente al día</h2>
           <p className="text-xl text-muted-foreground mb-8">
@@ -149,7 +149,7 @@ export default  function HomePage() {
             <Button>Suscribirse</Button>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
       <footer className="py-12 px-4 border-t">

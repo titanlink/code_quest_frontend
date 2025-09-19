@@ -1,12 +1,11 @@
 "use server";
 
-import { UserDatasourceGQL, UserRepositoryImpl } from "..";
+import { repoConfig } from "./_repo-config";
 
 
-export async function deleteUserAction(id: string) : Promise<any> {
+export async function deleteUserAction(id: string, token:string) : Promise<any> {
   // throw new Error("serverAction => deleteUserAction -> NOT IMPLEMENT")
-  const datasource = new UserDatasourceGQL();
-  const repo = new UserRepositoryImpl(datasource, token);
+  const repo = repoConfig(token)
 
   try {
     return await repo.delete(id);

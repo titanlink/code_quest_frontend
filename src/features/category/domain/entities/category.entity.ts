@@ -2,6 +2,7 @@ export interface ICategory {
   id?: string
   name: string
   slug: string
+  postCount?: number
   description?: string
   color?: string
   createdAt?: Date
@@ -15,6 +16,7 @@ export class CategoryMapper {
     return {
       id: json['id'],
       name: json['name'],
+      postCount: json['postCount'],
       slug: json['slug'],
       description: json['description'],
       color: json['color'],

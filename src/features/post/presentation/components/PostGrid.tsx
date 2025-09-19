@@ -12,7 +12,7 @@ interface Props {
 export const PostGrid = ({clearFilters, isLoading, }:Props) => {
   const [filters, setFilters] = useState<PostFilters>({ search: '' })
   
-  const [limit,setLimit] = useState(6)
+  const [limit,setLimit] = useState(8)
   const [page,setPage] = useState(0)
 
   const getPosts = usePostStore((state) => state.getData);

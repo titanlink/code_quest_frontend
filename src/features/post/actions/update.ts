@@ -1,23 +1,13 @@
 "use server";
 
-import { 
-  BookMarkDatasourceGQL,
-  BookMarkRepositoryImpl,
-  IBookMark,
-  ILike,
-  IPost,
-  LikeDatasourceGQL,
-  LikeRepositoryImpl,
-  PostDatasourceGQL,
-  PostRepositoryImpl 
-} from "..";
+import { IBookMark, ILike, IPost, } from "..";
 import { ResponsePropio } from "@/config";
+import { repoConfig, repoConfigBook, repoConfigLike } from "./_repo-config";
 
 
 export async function updatePostAction(entity: IPost, token: string): Promise<IPost | ResponsePropio> {
   let retorno : IPost | ResponsePropio = { error: true, msg: "Error desconocido" };
-  const datasource = new PostDatasourceGQL();
-  const repo = new PostRepositoryImpl(datasource, token);
+  const repo = repoConfig(token);
   try {
     retorno = await repo.update(entity);
   } catch (e) {
@@ -30,8 +20,7 @@ export async function updatePostAction(entity: IPost, token: string): Promise<IP
 
 export async function updateLikeAction(entity: ILike, token: string): Promise<ILike | ResponsePropio> {
   let retorno : ILike | ResponsePropio = { error: true, msg: "Error desconocido" };
-  const datasource = new LikeDatasourceGQL();
-  const repo = new LikeRepositoryImpl(datasource, token);
+  const repo = repoConfigLike(token);
   try {
     retorno = await repo.update(entity);
   } catch (e) {
@@ -43,8 +32,7 @@ export async function updateLikeAction(entity: ILike, token: string): Promise<IL
 }
 export async function updateBookMarkAction(entity: IBookMark, token: string): Promise<IBookMark | ResponsePropio> {
   let retorno : IBookMark | ResponsePropio = { error: true, msg: "Error desconocido" };
-  const datasource = new BookMarkDatasourceGQL();
-  const repo = new BookMarkRepositoryImpl(datasource, token);
+  const repo = repoConfigBook(token);
   try {
     retorno = await repo.update(entity);
   } catch (e) {

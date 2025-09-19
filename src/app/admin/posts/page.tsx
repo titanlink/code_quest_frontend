@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { PostsTable, usePostStore } from "@/features"
+import { PostsTable, PostViewsChart, usePostStore } from "@/features"
 import { AdminFeatureHeader, LoadingPage, PaginationManager, SearchFilters } from "@/components"
 import { Plus } from "lucide-react"
 import { useAuth } from "@/lib"
@@ -63,27 +63,33 @@ export default function AdminPostsPage() {
       { isLoading ? ( 
         <LoadingPage /> 
       ) : (
-          <>
-            {/* Search and Filters */}
-            <SearchFilters placeholder="Buscar posts..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <div className="flex flex-row gap-3">
 
-            <div className='flex flex-row mb-4'>
-              <PaginationManager
-                totalItems={totalRecords}
-                itemsPerPage={limit}
-                currentPage={!page ? 1 : page}
-                onPageChange={async (pag) => {
-                  if (page == pag) return
-                  setPage(pag)
-                  await getPosts(pag-1, limit, '');
-                }}
-                maxVisiblePages={1}
-              />
+            <div className="flex flex-col gap-2 w-[60%]">
+              <SearchFilters placeholder="Buscar posts..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
+              <div className='flex flex-row'>
+                <PaginationManager
+                  totalItems={totalRecords}
+                  itemsPerPage={limit}
+                  currentPage={!page ? 1 : page}
+                  onPageChange={async (pag) => {
+                    if (page == pag) return
+                    setPage(pag)
+                    await getPosts(pag-1, limit, '');
+                  }}
+                  maxVisiblePages={1}
+                />
+              </div>
+
+              <PostsTable filteredPosts={filteredPosts} handleDeletePost={handleDeletePost} />
             </div>
 
-            {/* Posts Table */}
-            <PostsTable filteredPosts={filteredPosts} handleDeletePost={handleDeletePost} />
-          </>
+            <div className="flex flex-col gap-2 w-[40%]">
+              <PostViewsChart posts={posts} />
+            </div>
+
+          </div>
       ) }
     </div>
   )

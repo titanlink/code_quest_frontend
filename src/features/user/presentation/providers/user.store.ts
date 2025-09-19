@@ -5,6 +5,7 @@ import {
   UsersState, 
   allUserAction,
   createUserAction,
+  dashboardAction,
   deleteUserAction,
   findUserAction,
   updateUserAction 
@@ -40,9 +41,25 @@ export const useUserStore = create<UsersState>()((set, get) => ({
     }
   },
 
+  dashboard: async( token:string): Promise<IUser | null> => {
+    let retorno = null
+    try {
+      set({ isLoading: true });
+      const resp  = await dashboardAction(token);
+      retorno = resp
+      set({selected: resp, isLoading: false})
+    }catch(error) {
+      throw new Error('Users > findOne > Unauthorized')
+    }finally {
+      set({ isLoading: false });
+    }
+    return retorno ?? null
+  },
+
   findOne: async( id: string, token:string): Promise<IUser | null> => {
     let retorno = null
     try {
+      set({ isLoading: true });
       const resp  = await findUserAction(id, token);
       retorno = resp
       set({selected: resp, isLoading: false})
@@ -86,10 +103,10 @@ export const useUserStore = create<UsersState>()((set, get) => ({
   
   },
   
-  deleteOne: async( id: string ) : Promise<IUser | null> => {
+  deleteOne: async( id: string, token:string ) : Promise<IUser | null> => {
     let retorno = null
     try {
-      const resp  = await deleteUserAction(id);
+      const resp  = await deleteUserAction(id, token);
       retorno = resp
       set({selected: resp.data, isLoading: false})
     }catch(error) {

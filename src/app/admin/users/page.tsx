@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { IUser, UsersTable, useUserStore } from "@/features"
+import { IUser, UserGrowthChart, UserRoleChart, UsersTable, useUserStore } from "@/features"
 import { AdminFeatureHeader, LoadingPage, PaginationManager, SearchFilters } from "@/components"
 import { useAuth } from "@/lib"
 import { toast } from "sonner"
@@ -57,27 +57,31 @@ export default function AdminUsersPage() {
       { isLoading ? ( 
           <LoadingPage /> 
         ) : (
-          <>
-            {/* Search */}
-            <SearchFilters placeholder="Buscar usuarios..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          <div className="flex flex-row gap-2">
+            <div className="flex flex-col gap-2 w-[75%]">
+              <SearchFilters placeholder="Buscar usuarios..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-            <div className='flex flex-row mb-4'>
-              <PaginationManager
-                totalItems={totalRecords}
-                itemsPerPage={limit}
-                currentPage={!page ? 1 : page}
-                onPageChange={async (pag) => {
-                  if (page == pag) return
-                  setPage(pag)
-                  await getUsers(pag-1, limit, token);
-                }}
-                maxVisiblePages={1}
-              />
+              <div className='flex flex-row'>
+                <PaginationManager
+                  totalItems={totalRecords}
+                  itemsPerPage={limit}
+                  currentPage={!page ? 1 : page}
+                  onPageChange={async (pag) => {
+                    if (page == pag) return
+                    setPage(pag)
+                    await getUsers(pag-1, limit, token);
+                  }}
+                  maxVisiblePages={1}
+                />
+              </div>
+
+              <UsersTable filteredUsers={filteredUsers} handleToggleRole={handleToggleRole} />
             </div>
-
-            {/* Users Table */}
-            <UsersTable filteredUsers={filteredUsers} handleToggleRole={handleToggleRole} />
-          </>
+            <div className="flex flex-col gap-2 w-[25%]">
+              <UserRoleChart users={users}/>
+              <UserGrowthChart users={users}/>
+            </div>
+          </div>
         ) }
     </div>
   )

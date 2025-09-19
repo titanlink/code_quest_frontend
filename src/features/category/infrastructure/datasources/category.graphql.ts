@@ -6,6 +6,7 @@ export const allCategoryGQL = gql`
       id
       name
       description
+      postCount
       color
       slug
     }
@@ -16,10 +17,11 @@ export const findCategoryGQL = gql`
   query Category($categoryId: Int!) {
     category(id: $categoryId) {
       id
-        name
-        description
-        color
-        slug
+      name
+      description
+      postCount
+      color
+      slug
     }
   }
 `;
@@ -30,6 +32,7 @@ export const createCategoryGQL = gql`
     id
     name
     description
+    postCount
     slug
     color
   }

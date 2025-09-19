@@ -1,11 +1,10 @@
 "use server";
 
-import { UserDatasourceGQL, UserRepositoryImpl } from "..";
+import { repoConfig } from "./_repo-config";
 
 
 export async function allUserAction({page = 0, limit = 50}, token: string = 'No Token') {
-  const datasource = new UserDatasourceGQL();
-  const repo = new UserRepositoryImpl(datasource, token);
+  const repo = repoConfig(token)
 
   try {
     const response = await repo.all(page, limit);

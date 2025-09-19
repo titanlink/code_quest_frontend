@@ -1,7 +1,7 @@
 import { UserDatasource, UserMapper, IUser } from "../..";
 import { makeClientGraphql } from "@/lib";
 import { ResponsePropio } from "@/config";
-import { allUserGQL, checkProfileGQL, createUserGQL, findUserGQL, removeUserGQL, updateUserGQL } from "./user.graphql";
+import { allUserGQL, checkProfileGQL, createUserGQL, dashboardGQL, findUserGQL, removeUserGQL, updateUserGQL } from "./user.graphql";
 
 
 
@@ -40,6 +40,23 @@ export class UserDatasourceGQL implements UserDatasource {
       return retorno
     }
   }
+  async dashboard(token: string){
+    let retorno: IUser | ResponsePropio = { msg: 'Error desconocido', error: true }
+    try {
+      const peti = await makeClientGraphql(token);
+
+      const { data } = await peti.query<any>({
+        query: dashboardGQL,
+        fetchPolicy: "no-cache",
+      });
+      const entity = data["totalResponse"]
+      if (entity) retorno = entity;
+    } catch (e) {
+      console.error(`Error => findUserGQL -> ${e}`);
+    }finally{
+      return retorno
+    }
+  }
   async checkProfile(token: string){
     let retorno: IUser | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
@@ -57,6 +74,7 @@ export class UserDatasourceGQL implements UserDatasource {
       return retorno
     }
   }
+
   async findById(id: string, token: string){
     let retorno: IUser | ResponsePropio = { msg: 'Error desconocido', error: true }
     try {
@@ -126,13 +144,13 @@ export class UserDatasourceGQL implements UserDatasource {
           input: input,
         },
       });
-      console.log("🚀 ~ UserDatasourceGQL ~ update ~ data:", data)
       const entity = UserMapper.fromJson(data["updateUser"]);
       if (entity) retorno = entity
     } catch (e) {
       const error = `${e}`
-      console.error(error);
-      if ('msg' in retorno) retorno.msg = error
+      const parts = error.split(':')
+      console.error(error, e);
+      if ('msg' in retorno) retorno.msg = parts[parts.length-1]
     }finally{
       return retorno
     }

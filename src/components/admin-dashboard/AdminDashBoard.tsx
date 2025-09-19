@@ -5,7 +5,7 @@ import DashBoardHeader from './DashBoardHeader'
 import StatsCards from './StatsCards'
 import RecentPosts from './RecentPosts'
 import RecentComments from './RecentComments'
-import { useCommentStore, usePostStore, useUserStore } from '@/features'
+import { dashboardAction, useCommentStore, usePostStore, useUserStore } from '@/features'
 import { useAuth } from '@/lib'
 
 export const AdminDashBoard = () => {
@@ -14,19 +14,18 @@ export const AdminDashBoard = () => {
 
     const getPosts = usePostStore((state) => state.getData);
     const posts = usePostStore((state) => state.items);
-
-    const getUsers = useUserStore((state) => state.getData);
-    const users = useUserStore((state) => state.items);
+    const dashboard = useUserStore((state) => state.dashboard);
+    const isLoading = useUserStore((state) => state.isLoading);
 
     const getComments = useCommentStore((state) => state.getData);
     const comments = useCommentStore((state) => state.items);
     
-    const totalPosts = posts.length
-    const publishedPosts = posts.filter((p) => p?.published).length
-    const draftPosts = posts.filter((p) => !p.published).length
-    const totalUsers = users.length
-    const totalComments = comments.length
-    const totalViews = posts.reduce((sum, post) => sum + (post?.totalView ?? 0), 0)
+    const [totalPosts, setTotalPosts] = useState(0)
+    const [publishedPosts, setPublishedPosts] = useState(0)
+    const [draftPosts, setDraftPosts] = useState(0)
+    const [totalUsers, setTotalUsers] = useState(0)
+    const [totalComments, setTotalComments] = useState(0)
+    const [totalViews, setTotalViews] = useState(0)
   
     const recentPosts = posts.slice(0, 5)
     const recentComments = comments.slice(0, 5)
@@ -36,26 +35,22 @@ export const AdminDashBoard = () => {
     const fetchToken = async () => {
       if (user) {
         const authToken = await getToken() ?? ''
+        const resp = await dashboard(authToken)
+        console.warn("🚀 ~ fetchToken ~ resp:", resp)
+        setTotalPosts(resp['total_post'])
+        setTotalComments(resp['total_comment'])
+        setPublishedPosts(resp['total_post_published'])
+        setTotalUsers(resp['total_user'])
+        setTotalViews(resp['total_view'])
+
         setToken(authToken)
-        getComments(0, 1000, authToken);
-        getPosts(0, 1000, authToken );
-        getUsers(0, 1000, authToken);
+        getComments(0, 5, authToken);
+        getPosts(0, 5, authToken );
       }
     }
     fetchToken()
   }, [user, getToken])
 
-    // useEffect(() => {
-    //     getUsers(0, 50);
-    // }, [getUsers]);
-    
-    // useEffect(() => {
-    //     getPosts(0, 50);
-    // }, [getPosts]);
-
-    // useEffect(() => {
-    //     getComments(0, 50);
-    // }, [getComments]);
     
   return (
     <div className="space-y-6">
@@ -63,12 +58,14 @@ export const AdminDashBoard = () => {
       <DashBoardHeader />
 
       {/* Stats Cards */}
-      <StatsCards publishedPosts={publishedPosts}
+      <StatsCards 
         totalPosts={totalPosts}
         draftPosts={draftPosts}
         totalUsers={totalUsers}
         totalComments={totalComments}
         totalViews={totalViews}
+        publishedPosts={publishedPosts}
+        isLoading={isLoading}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -77,7 +74,6 @@ export const AdminDashBoard = () => {
 
         <RecentComments recentComments={recentComments} />
 
-        {/* <pre><b>{JSON.stringify(recentComments, null, 2) } </b> </pre>  */}
       </div>
     </div>
   )

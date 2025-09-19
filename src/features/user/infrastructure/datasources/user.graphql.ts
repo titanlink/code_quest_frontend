@@ -21,6 +21,19 @@ export const allUserGQL = gql`
   }
 `;
 
+export const dashboardGQL = gql`
+  query TotalResponse {
+  totalResponse {
+    total_post
+    total_category
+    total_user
+    total_comment
+    total_sub_comment
+    total_post_published
+    total_view
+  }
+}
+`;
 export const checkProfileGQL = gql`
   query CheckProfile {
     checkProfile {

@@ -29,4 +29,5 @@ export interface UsersState {
   changeRole: (client: IUser, token: string) => Promise<any>;
   createOrUpdate: (client: IUser, token: string) => Promise<any>;
   deleteOne: (id: string, token: string) => Promise<IUser | null>;
+  dashboard: (token: string) => Promise<any>;
 }

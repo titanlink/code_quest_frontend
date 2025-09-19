@@ -16,7 +16,7 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPen
   return (
     <CustomCard>
       <CardHeader>
-        <CardTitle>Todos los Categorias ({filteredCategories.length})</CardTitle>
+        <CardTitle>Todos las Categorias ({filteredCategories.length})</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -26,7 +26,7 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPen
               <TableHead>Descripción</TableHead>
               <TableHead>Slug</TableHead>
               <TableHead>Color</TableHead>
-              <TableHead>Fecha</TableHead>
+              <TableHead>Posts</TableHead>
               <TableHead className="w-[70px]">Acciones</TableHead>
             </TableRow>
           </TableHeader>
@@ -46,6 +46,9 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPen
                   <Badge style={{ backgroundColor: category?.color}} className="text-black/75 font-bold">
                     {category?.color}
                   </Badge>
+                </TableCell>
+                <TableCell>
+                    {category?.postCount}
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>

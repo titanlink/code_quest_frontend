@@ -82,7 +82,6 @@ export class PostMapper {
     if (!data) return entities
     for (const json of data) {
       const entidad = PostMapper.fromJson(json);
-      console.log("🚀 ~ PostMapper ~ fromJsonList ~ entidad:", entidad)
       if(entidad) entities.push(entidad);
     }
     return entities;

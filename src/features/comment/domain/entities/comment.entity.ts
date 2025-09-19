@@ -1,4 +1,4 @@
-import { IUser } from "@/features"
+import { IUser, UserMapper } from "@/features"
 
 export interface IComment {
   id?: string
@@ -21,7 +21,7 @@ export class CommentMapper {
       content: json['content'],
       postId: json['postId'],
       sub_comment: CommentMapper.fromJsonList(json['sub_comment'] ?? []),
-      author: json['user'],
+      author: UserMapper.fromJson(json['user']) ?? json['user'],
       createdAt: new Date(json['createAt']),
       updatedAt: new Date(json['updateAt']),
     }

@@ -1,12 +1,11 @@
 "use server";
 
-import { CommentDatasourceGQL, CommentRepositoryImpl } from "..";
+import { repoConfig } from "./_repo-config";
 
 
 export async function deleteCommentAction(id: string, token: string) : Promise<any> {
   // throw new Error("serverAction => deleteCommentAction -> NOT IMPLEMENT")
-  const datasource = new CommentDatasourceGQL();
-  const repo = new CommentRepositoryImpl(datasource, token);
+ const repo = repoConfig(token);
 
   try {
     return await repo.delete(id);

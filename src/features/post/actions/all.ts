@@ -12,12 +12,12 @@ import {
   PostDatasourceGQL,
   PostRepositoryImpl  
 } from "..";
+import { repoConfig, repoConfigBook, repoConfigLike } from "./_repo-config";
 
 
 export async function allPostAction({page = 0, limit = 50}, token: string = 'No Token') {
   let retorno: ResponsePropio = { msg: 'Error desconocido en allPostAction', error: true }
-  const datasource = new PostDatasourceGQL();
-  const repo = new PostRepositoryImpl(datasource, token);
+  const repo = repoConfig(token);
 
   try {
     const response = await repo.all(page, limit);
@@ -31,8 +31,7 @@ export async function allPostAction({page = 0, limit = 50}, token: string = 'No 
 }
 
 export async function allLikeAction({page = 0, limit = 50}, token: string = 'No Token') : Promise<ILike[]> {
-  const datasource = new LikeDatasourceGQL();
-  const repo = new LikeRepositoryImpl(datasource, token);
+  const repo = repoConfigLike(token);
 
   try {
     const response = await repo.all(page, limit);
@@ -45,8 +44,7 @@ export async function allLikeAction({page = 0, limit = 50}, token: string = 'No 
 }
 
 export async function allBookMarkAction({page = 0, limit = 50}, token: string = 'No Token') : Promise<IBookMark[]> {
-  const datasource = new BookMarkDatasourceGQL();
-  const repo = new BookMarkRepositoryImpl(datasource, token);
+  const repo = repoConfigBook(token);
 
   try {
     const response = await repo.all(page, limit);

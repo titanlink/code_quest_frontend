@@ -5,7 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { AdminFeatureHeader, LoadingPage, SearchFilters } from "@/components"
 import { Plus } from "lucide-react"
-import { CategoriesTable, useCategoryStore } from "@/features"
+import { CategoriesTable, CategoryPieChart, useCategoryStore } from "@/features"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib"
@@ -80,13 +80,18 @@ export default function AdminCategoriesPage() {
       {isLoading ? (
         <LoadingPage />
       ) :  (
-        <>
-          {/* Search and Filters */}
-          <SearchFilters placeholder="Buscar categories..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <div className="flex flex-row gap-2">
+          
+          <div className="flex flex-col gap-2 w-[60%]">
+            <SearchFilters placeholder="Buscar categories..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            <CategoriesTable filteredCategories={filteredCategories} handleDeleteCategory={handleDeleteCategorie} isPending={isPending} />
+          </div>
 
-          <CategoriesTable filteredCategories={filteredCategories} handleDeleteCategory={handleDeleteCategorie} isPending={isPending} />
-          {/* <pre><b>{JSON.stringify(categories, null, 2) } </b> </pre>  */}
-        </>
+          <div className="flex flex-col gap-2 w-[40%]">
+            <CategoryPieChart categories={categories} />
+          </div>
+
+        </div>
       )}
     </div>
   )

@@ -40,8 +40,8 @@ export class CommentDatasourceGQL implements CommentDatasource {
           commentId: Number(id),
         },
       });
-
-      retorno = CommentMapper.fromJson(data["comment"]);
+      const entity = CommentMapper.fromJson(data["comment"])
+      if (entity && 'id' in entity) retorno = entity
     } catch (e) {
       console.error(`Error => findCommentGQL -> ${e}`);
     }finally{
@@ -69,7 +69,8 @@ export class CommentDatasourceGQL implements CommentDatasource {
 
       console.log("🚀 ~ CommentDatasourceGQL ~ create ~ retorno:", retorno)
       console.log("🚀 ~ CommentDatasourceGQL ~ create ~ data:", data)
-      retorno =  CommentMapper.fromJson(data["createComment"]);
+      const entity = CommentMapper.fromJson(data["createComment"])
+      if (entity && 'id' in entity) retorno = entity
     } catch (e) {
       console.error(`Error => createCommentGQL -> ${e}`);
     } finally {
@@ -98,7 +99,8 @@ export class CommentDatasourceGQL implements CommentDatasource {
           },
         },
       });
-      retorno = CommentMapper.fromJson(data["updateComment"]);
+      const entity = CommentMapper.fromJson(data["updateComment"])
+      if (entity && 'id' in entity) retorno = entity
     } catch (e) {
       const error = `${e}`
       console.error(error);

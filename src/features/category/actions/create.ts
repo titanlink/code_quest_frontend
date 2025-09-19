@@ -1,13 +1,13 @@
 "use server";
 
 import { ResponsePropio } from "@/config";
-import { CategoryDatasourceGQL, CategoryRepositoryImpl, ICategory } from "..";
+import { repoConfig } from "./_repo-config";
+import { ICategory } from "..";
 
 
 
 export async function createCategoryAction(data: ICategory, token: string) : Promise<ICategory | ResponsePropio> {
-  const datasource = new CategoryDatasourceGQL();
-  const repo = new CategoryRepositoryImpl(datasource, token);
+  const repo = repoConfig(token)
 
   try {
     return await repo.create(data);

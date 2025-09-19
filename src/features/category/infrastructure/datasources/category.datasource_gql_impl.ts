@@ -122,9 +122,10 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
       if ('message' in resp) retorno =  { msg: resp['message'], error: !resp }
       
     } catch (e) {
-      const error = `Error => updateCategoryGQL -> ${e}`
+      const error = `${e}`
+      const parts = error.split(':')
       console.error(error, e);
-      retorno.msg = error
+      retorno.msg = parts[parts.length-1]
     } finally {
       return retorno
     }

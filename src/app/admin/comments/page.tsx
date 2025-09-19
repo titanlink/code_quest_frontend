@@ -1,14 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { mockComments } from "@/lib/mock-data"
-import { CommentsTable, useCommentStore } from "@/features"
+import {  CommentsOverTimeChart, CommentsTable, useCommentStore } from "@/features"
 import { AdminFeatureHeader, LoadingPage, SearchFilters } from "@/components"
+import { useAuth } from "@/lib"
 
 export default function AdminCommentsPage() {
   const [searchTerm, setSearchTerm] = useState("")
-  // const [comments, setComments] = useState(mockComments)
+  const { user, getToken } = useAuth()
+  const [token, setToken] = useState<string>('')
 
   const getComments = useCommentStore((state) => state.getData);
   const comments = useCommentStore((state) => state.items);
@@ -27,9 +27,16 @@ export default function AdminCommentsPage() {
     // setComments(comments.filter((p) => p.id !== commentId))
   }
 
-  // useEffect(() => {
-  //     getComments(page, limit);
-  // }, [page, limit, getComments]);
+  useEffect(() => {
+    const fetchToken = async () => {
+      if (user) {
+        const authToken = await getToken() ?? ''
+        setToken(authToken)
+        getComments(page, limit, token);
+      }
+    }
+    fetchToken()
+  }, [token, user, page, limit, getComments]);
 
   return (
     <div className="space-y-6">
@@ -39,13 +46,15 @@ export default function AdminCommentsPage() {
       { isLoading ? ( 
         <LoadingPage /> 
       ) : (
-        <>
-          {/* Search and Filters */}
+      <div className="flex flex-row gap-2">
+        <div className="flex flex-col gap-2 w-[60%]">
           <SearchFilters placeholder="Buscar comments..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-
-          {/* Posts Table */}
           <CommentsTable filteredComments={filteredComments} handleDeleteComment={handleDeleteComment} />
-        </>
+        </div>
+        <div className="flex flex-col gap-2 w-[40%]">
+          <CommentsOverTimeChart comments={comments}/>
+        </div>
+      </div>
       ) }
     </div>
   )

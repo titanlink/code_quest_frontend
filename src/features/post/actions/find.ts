@@ -1,13 +1,13 @@
 "use server";
 
 import { ResponsePropio } from "@/config";
-import { PostDatasourceGQL, PostRepositoryImpl, IPost } from "..";
+import { IPost } from "..";
+import { repoConfig } from "./_repo-config";
 
 
 export async function findPostAction(id: string, token: string): Promise<IPost | ResponsePropio> {
   let retorno: IPost | ResponsePropio = { error: true, msg: 'Error desconocido > findPostAction'}
-  const datasource = new PostDatasourceGQL();
-  const repo = new PostRepositoryImpl(datasource, token);
+  const repo = repoConfig(token);
   try {
     retorno = await repo.findById(id);
   } catch (e) {
@@ -19,8 +19,7 @@ export async function findPostAction(id: string, token: string): Promise<IPost |
 
 export async function findPostBySlugAction(slug: string, token: string): Promise<IPost | ResponsePropio> {
   let retorno: IPost | ResponsePropio = { error: true, msg: 'Error desconocido'}
-  const datasource = new PostDatasourceGQL();
-  const repo = new PostRepositoryImpl(datasource, token);
+  const repo = repoConfig(token);
   try {
     retorno = await repo.findBySlugId(slug);
   } catch (e) {

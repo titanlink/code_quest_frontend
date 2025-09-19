@@ -23,6 +23,7 @@ export function PostCard({ post }: Props) {
   const [src, setSrc] = useState("/no_image_available.jpg")
   return (
     <CustomCard withHover={true}>
+      
       <CardHeader className="p-0">
         <Link href={`/posts/${post.slug}`}>
           <div className="relative aspect-video overflow-hidden">
@@ -86,6 +87,13 @@ export function PostCard({ post }: Props) {
           </div>
         </div>
       </CardFooter>
+      {/* <GlowEffect
+        colors={[ '#33FF5720', '#3357FF20', '#F1C40F20']}
+        mode='colorShift'
+        blur='medium'
+        duration={3}
+        scale={0.9}
+      /> */}
     </CustomCard>
   )
 }

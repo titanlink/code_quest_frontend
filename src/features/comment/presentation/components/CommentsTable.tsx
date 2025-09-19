@@ -34,7 +34,7 @@ export const CommentsTable = ({filteredComments, handleDeleteComment}: Props) =>
               <TableRow key={comment.id}>
                 <TableCell>
                   <div className="space-y-1">
-                    <p className="font-medium">{comment.content}</p>
+                    <p className="font-medium truncate w-72">{comment.content}</p>
                     {/* <p className="text-sm text-muted-foreground line-clamp-1">{comment.excerpt}</p> */}
                   </div>
                 </TableCell>

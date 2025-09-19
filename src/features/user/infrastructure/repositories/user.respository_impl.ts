@@ -8,6 +8,9 @@ export class UserRepositoryImpl extends UserRepository {
     super();
   }
   
+  async dashboard(): Promise<any> {
+    return this.datasource.dashboard(this.token);
+  }
   async checkProfile(): Promise<any> {
     return this.datasource.checkProfile(this.token);
   }

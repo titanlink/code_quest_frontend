@@ -1,11 +1,10 @@
 "use server";
 
-import { CommentDatasourceGQL, CommentRepositoryImpl } from "..";
+import { repoConfig } from "./_repo-config";
 
 
 export async function allCommentAction({page = 0, limit = 50}, token: string = 'No Token') {
-  const datasource = new CommentDatasourceGQL();
-  const repo = new CommentRepositoryImpl(datasource, token);
+  const repo = repoConfig(token);
 
   try {
     const response = await repo.all(page, limit);

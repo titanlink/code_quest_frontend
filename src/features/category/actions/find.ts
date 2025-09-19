@@ -1,13 +1,13 @@
 "use server";
 
 import { ResponsePropio } from "@/config";
-import { CategoryDatasourceGQL, CategoryRepositoryImpl, ICategory } from "..";
+import { ICategory } from "..";
+import { repoConfig } from "./_repo-config";
 
 
 export async function findCategoryAction(id: string, token: string): Promise<ICategory | ResponsePropio> {
   let retorno: ICategory | ResponsePropio = { error: true, msg: 'Error desconocido'}
-  const datasource = new CategoryDatasourceGQL();
-  const repo = new CategoryRepositoryImpl(datasource, token);
+  const repo = repoConfig(token)
   try {
     retorno = await repo.findById(id);
   } catch (e) {

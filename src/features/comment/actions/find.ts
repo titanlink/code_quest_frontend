@@ -1,11 +1,10 @@
 "use server";
 
-import { CommentDatasourceGQL, CommentRepositoryImpl } from "..";
+import { repoConfig } from "./_repo-config";
 
 
 export async function findCommentAction(id: string, token: string) {
-  const datasource = new CommentDatasourceGQL();
-  const repo = new CommentRepositoryImpl(datasource, token);
+ const repo = repoConfig(token);
   try {
     const response = await repo.findById(id);
     return response;

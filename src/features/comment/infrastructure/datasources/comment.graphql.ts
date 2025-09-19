@@ -12,18 +12,28 @@ export const allCommentGQL = gql`
       }
       post {
         id
+        category {
+          id
+          name
+          description
+          postCount
+          color
+          slug
+        }
       }
       sub_comment {
         id 
         content
       }
+      createAt
+      updateAt
     }
   }
 `;
 
 export const findCommentGQL = gql`
-  query Comment($categoryId: Int!) {
-    category(id: $categoryId) {
+  query Comment($commentId: Int!) {
+    comment(id: $commentId) {
       id
       content
       postId
@@ -31,8 +41,8 @@ export const findCommentGQL = gql`
       author
       parentId
       # sub_comment
-      createdAt
-      updatedAt
+      createAt
+      updateAt
     }
   }
 `;

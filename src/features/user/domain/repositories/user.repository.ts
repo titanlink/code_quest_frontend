@@ -1,6 +1,7 @@
 
 
 export abstract class UserRepository {
+  abstract dashboard(): Promise<any>;
   abstract checkProfile(): Promise<any>;
   abstract findById(id: string): Promise<any>;
   abstract create(entity: any): Promise<any>;

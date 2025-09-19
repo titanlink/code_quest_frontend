@@ -1,23 +1,13 @@
 "use server";
 
 import { ResponsePropio } from "@/config";
-import { 
-  PostDatasourceGQL,
-  PostRepositoryImpl,
-  IPost,
-  LikeDatasourceGQL,
-  ILike,
-  LikeRepositoryImpl,
-  BookMarkDatasourceGQL,
-  IBookMark, 
-  BookMarkRepositoryImpl
-} from "..";
+import { IPost, ILike, IBookMark, } from "..";
+import { repoConfig, repoConfigBook, repoConfigLike } from "./_repo-config";
 
 
 
 export async function createPostAction(data: IPost, token: string) : Promise<IPost | ResponsePropio> {
-  const datasource = new PostDatasourceGQL();
-  const repo = new PostRepositoryImpl(datasource, token);
+  const repo = repoConfig(token);
 
   try {
     return await repo.create(data);
@@ -28,9 +18,7 @@ export async function createPostAction(data: IPost, token: string) : Promise<IPo
 }
 
 export async function createLikePostAction(data: ILike, token: string) : Promise<ILike | ResponsePropio> {
-  const datasource = new LikeDatasourceGQL();
-  const repo = new LikeRepositoryImpl(datasource, token);
-
+  const repo = repoConfigLike(token);
   try {
     return await repo.create(data);
   } catch (e) {
@@ -40,8 +28,7 @@ export async function createLikePostAction(data: ILike, token: string) : Promise
 }
 
 export async function createBookMarkAction(data: IBookMark, token: string) : Promise<IBookMark | ResponsePropio> {
-  const datasource = new BookMarkDatasourceGQL();
-  const repo = new BookMarkRepositoryImpl(datasource, token);
+  const repo = repoConfigBook(token);
 
   try {
     return await repo.create(data);

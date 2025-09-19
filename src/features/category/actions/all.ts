@@ -1,11 +1,10 @@
 "use server";
 
-import { CategoryDatasourceGQL, CategoryRepositoryImpl } from "..";
+import { repoConfig } from "./_repo-config";
 
 
 export async function allCategoryAction({page = 0, limit = 50}, token: string = 'No Token') {
-  const datasource = new CategoryDatasourceGQL();
-  const repo = new CategoryRepositoryImpl(datasource, token);
+  const repo = repoConfig(token)
 
   try {
     const response = await repo.all(page, limit);

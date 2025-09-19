@@ -1,12 +1,11 @@
 "use server";
 
-import { UserDatasourceGQL, UserRepositoryImpl } from "..";
+import { repoConfig } from "./_repo-config";
 
 
 
 export async function createUserAction(data: any, token:string ) {
-  const datasource = new UserDatasourceGQL();
-  const repo = new UserRepositoryImpl(datasource, token);
+  const repo = repoConfig(token)
   throw new Error("serverAction => createUserAction -> NOT IMPLEMENT")
   // const entity = new User(0, data.path, data.type, true);
 

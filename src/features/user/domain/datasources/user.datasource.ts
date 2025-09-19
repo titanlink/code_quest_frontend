@@ -1,6 +1,7 @@
 
 
 export interface UserDatasource {
+  dashboard(token: string): Promise<any>;
   checkProfile(token: string): Promise<any>;
   findById(id: string, token: string): Promise<any>;
   create(entity: any, token: string): Promise<any>;
