@@ -22,10 +22,10 @@ export const CommentsTable = ({filteredComments, handleDeleteComment}: Props) =>
             <TableRow>
               <TableHead>Título</TableHead>
               <TableHead>Autor</TableHead>
-              <TableHead>Categoría</TableHead>
-              <TableHead>Estado</TableHead>
+              {/* <TableHead>Categoría</TableHead>
+              <TableHead>Estado</TableHead> */}
               <TableHead>Fecha</TableHead>
-              <TableHead>Estadísticas</TableHead>
+              {/* <TableHead>Estadísticas</TableHead> */}
               <TableHead className="w-[70px]">Acciones</TableHead>
             </TableRow>
           </TableHeader>
@@ -34,11 +34,12 @@ export const CommentsTable = ({filteredComments, handleDeleteComment}: Props) =>
               <TableRow key={comment.id}>
                 <TableCell>
                   <div className="space-y-1">
-                    <p className="font-medium truncate w-72">{comment.content}</p>
+                    <p className="font-medium truncate w-64">{comment.content}</p>
                     {/* <p className="text-sm text-muted-foreground line-clamp-1">{comment.excerpt}</p> */}
                   </div>
                 </TableCell>
                 <TableCell>{comment?.author?.name}</TableCell>
+                <TableCell>{}</TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

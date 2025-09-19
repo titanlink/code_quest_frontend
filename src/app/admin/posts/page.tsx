@@ -65,7 +65,7 @@ export default function AdminPostsPage() {
       ) : (
           <div className="flex flex-row gap-3">
 
-            <div className="flex flex-col gap-2 w-[60%]">
+            <div className="flex flex-col gap-2 w-[70%]">
               <SearchFilters placeholder="Buscar posts..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
               <div className='flex flex-row'>
@@ -85,7 +85,7 @@ export default function AdminPostsPage() {
               <PostsTable filteredPosts={filteredPosts} handleDeletePost={handleDeletePost} />
             </div>
 
-            <div className="flex flex-col gap-2 w-[40%]">
+            <div className="flex flex-col gap-2 w-[30%]">
               <PostViewsChart posts={posts} />
             </div>
 

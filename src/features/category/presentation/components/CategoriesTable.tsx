@@ -35,11 +35,11 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPen
               <TableRow key={category.id}>
                 <TableCell>
                   <div className="space-y-1">
-                    <p className="font-medium ">{category.name}</p>
+                    <p className="font-medium truncate w-30">{category.name}</p>
                   </div>
                 </TableCell>
                 <TableCell>
-                    <p className="text-sm text-muted-foreground line-clamp-1">{category.description}</p>
+                    <p className="text-sm text-muted-foreground line-clamp-1 truncate w-64">{category.description}</p>
                 </TableCell>
                 <TableCell>{category.slug}</TableCell>
                 <TableCell>

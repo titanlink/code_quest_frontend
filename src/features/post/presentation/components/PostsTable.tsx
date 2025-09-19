@@ -35,8 +35,8 @@ export const PostsTable = ({filteredPosts, handleDeletePost}: Props) => {
               <TableRow key={post.id}>
                 <TableCell>
                   <div className="space-y-1">
-                    <p className="font-medium">{post.title}</p>
-                    <p className="text-sm text-muted-foreground line-clamp-1">{post.excerpt}</p>
+                    <p className="font-medium truncate w-64">{post.title}</p>
+                    <p className="text-sm text-muted-foreground line-clamp-1 truncate w-64">{post.excerpt}</p>
                   </div>
                 </TableCell>
                 <TableCell>{post?.author?.name}</TableCell>

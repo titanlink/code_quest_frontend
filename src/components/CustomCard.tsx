@@ -14,6 +14,7 @@ export const CustomCard = <T,>({children, className, isActive , withHover, isLoa
 
   const hover = withHover ? 'group hover:shadow-lg transition-all duration-300 hover:-translate-y-4' : ''
   return (
+    <div className="relative">
     <MagicCard className={`bg-card rounded-xl ${className} ${hover}`}>
       { isLoading && (
         <LoadingPage className={'h-full'} label="" detail=""/>
@@ -31,13 +32,14 @@ export const CustomCard = <T,>({children, className, isActive , withHover, isLoa
         </div> 
       </ClickSpark>
       )}
+    </MagicCard>
       {withGlowEffect && (<GlowEffect
-        colors={[ '#33FF5720', '#3357FF20', '#F1C40F20']}
-        mode='colorShift'
+        colors={[ '#33FF5730', '#3357FF30', '#F1C40F30']}
+        mode='pulse'
         blur='medium'
-        duration={3}
+        duration={12}
         scale={0.9}
       />)}
-    </MagicCard>
+    </div>
   )
 }
