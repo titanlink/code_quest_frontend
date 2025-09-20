@@ -1,6 +1,6 @@
 "use client"
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { CustomCard, CardHeader, CardTitle, CardContent } from "@/components"
 import { IComment } from "@/features"
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
 
@@ -22,7 +22,7 @@ export function CommentsOverTimeChart({ comments }: CommentsOverTimeProps) {
   }))
 
   return (
-    <Card className="w-full max-w-3xl">
+    <CustomCard className="w-full max-w-3xl" withGlowEffect>
       <CardHeader>
         <CardTitle>Comentarios en el Tiempo</CardTitle>
       </CardHeader>
@@ -36,6 +36,6 @@ export function CommentsOverTimeChart({ comments }: CommentsOverTimeProps) {
           </LineChart>
         </ResponsiveContainer>
       </CardContent>
-    </Card>
+    </CustomCard>
   )
 }

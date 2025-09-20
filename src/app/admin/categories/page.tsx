@@ -3,7 +3,7 @@
 import { useEffect, useState, useTransition } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { AdminFeatureHeader, LoadingPage, SearchFilters } from "@/components"
+import { AdminFeatureHeader, LoadingPage, ResizableHandle, ResizablePanel, ResizablePanelGroup, SearchFilters } from "@/components"
 import { Plus } from "lucide-react"
 import { CategoriesTable, CategoryPieChart, useCategoryStore } from "@/features"
 import { toast } from "sonner"
@@ -38,11 +38,11 @@ export default function AdminCategoriesPage() {
       if (user) {
         const authToken = await getToken() ?? ''
         setToken(authToken)
-        getCategories(page, limit, token);
+        if (token) getCategories(page-1, limit, token);
       }
     }
     fetchToken()
-  }, [page, limit, getCategories, isPending]);
+  }, [page, limit, isPending]);
   
 
   const handleDeleteCategorie = async (categorieId: string) => {
@@ -66,7 +66,7 @@ export default function AdminCategoriesPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <AdminFeatureHeader title="Categorias" subTitle="Gestiona todos los artículos del blog" >
+      <AdminFeatureHeader title="Categorias" subTitle="Gestion de categorias" >
         <Button asChild>
           <Link href="/admin/categories/new">
             <Plus className="mr-2 h-4 w-4" />
@@ -80,18 +80,26 @@ export default function AdminCategoriesPage() {
       {isLoading ? (
         <LoadingPage />
       ) :  (
-        <div className="flex flex-row gap-2">
-          
-          <div className="flex flex-col gap-2 w-[60%]">
-            <SearchFilters placeholder="Buscar categories..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-            <CategoriesTable filteredCategories={filteredCategories} handleDeleteCategory={handleDeleteCategorie} isPending={isPending} />
-          </div>
+        <ResizablePanelGroup direction="horizontal" className=" gap-4">
+          <ResizablePanel defaultSize={70}>
+            <div className="flex flex-col gap-4 w-full">
+              <SearchFilters placeholder="Buscar categories..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+              <CategoriesTable 
+                filteredCategories={filteredCategories} 
+                handleDeleteCategory={handleDeleteCategorie} 
+                isPending={isPending} 
+                totalRecords={totalRecords} />
+            </div>
+          </ResizablePanel>
 
-          <div className="flex flex-col gap-2 w-[40%]">
-            <CategoryPieChart categories={categories} />
-          </div>
+          <ResizableHandle />
 
-        </div>
+          <ResizablePanel>
+            <div className="flex flex-col gap-4 w-full">
+              <CategoryPieChart categories={categories} />
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       )}
     </div>
   )

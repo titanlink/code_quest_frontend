@@ -9,7 +9,7 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
   
 
   async all(page = 0, limit = 50, token: string) {
-    // return mockCategories
+    let retorno: ResponsePropio = { msg: 'Error desconocido', error: true}
     try {
       const peti = await makeClientGraphql(token);
 
@@ -22,11 +22,19 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
         },
       });
 
-      return CategoryMapper.fromJsonList(data["allCategory"]);
+      const resp = data["allCategory"]
+      const entities = CategoryMapper.fromJsonList(resp['items']);
+      if (entities) {
+        retorno.msg = 'Ok'
+        retorno.error = false
+        retorno.totalRecords = resp['total']
+        retorno.data = entities;
+      }
     } catch (e) {
       console.error(`Error => allCategoryGQL -> ${e}`);
-      // throw e
-      return [];
+      throw e
+    }finally{
+      return retorno
     }
   }
   async findById(id: string, token: string){

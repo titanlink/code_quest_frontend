@@ -74,7 +74,7 @@ export const PostForm = ({entity}:Props) => {
       }
     }
     fetchToken()
-  }, [user, getToken])
+  }, [user, token])
 
   async function onSubmit(values: z.infer < typeof formSchema > ) {
     // toast.info( <pre><b>{JSON.stringify(values, null, 2) } </b> </pre>)

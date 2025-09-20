@@ -44,7 +44,7 @@ export function PostContent({ post }: Props) {
       }
     }
     fetchToken()
-  }, [user, getToken, post])
+  }, [user, token, post])
 
   const handleLike = async () => {
     if (!user) {

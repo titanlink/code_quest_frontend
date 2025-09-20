@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useMemo, useState } from 'react'
 import { usePostStore } from '../..'
-import {  PaginationManager,  PostCard, Skeleton } from '@/components'
+import {  PaginationManager,  PostCard, Skeleton, TextEffect } from '@/components'
 import { SearchFilters } from './search-filters'
 import { PostFilters } from '@/lib'
 
@@ -13,15 +13,15 @@ export const PostGrid = ({clearFilters, isLoading, }:Props) => {
   const [filters, setFilters] = useState<PostFilters>({ search: '' })
   
   const [limit,setLimit] = useState(8)
-  const [page,setPage] = useState(0)
+  const [page,setPage] = useState(1)
 
   const getPosts = usePostStore((state) => state.getData);
   const items = usePostStore((state) => state.items);
   const totalRecords = usePostStore((state) => state.total);
 
   useEffect(() => {
-    getPosts(page, limit, '');
-  }, [])
+    getPosts(page-1, limit, '');
+  }, [page, limit])
 
 
   const handleFiltersChange = (newFilters: PostFilters) => {
@@ -83,22 +83,45 @@ export const PostGrid = ({clearFilters, isLoading, }:Props) => {
         <>
           <SearchFilters filters={filters} onFiltersChange={handleFiltersChange} onClearFilters={clearFilters} />
           <div className='flex flex-row mb-4'>
-            <PaginationManager
-              totalItems={totalRecords}
-              itemsPerPage={limit}
-              currentPage={page}
-              onPageChange={async (pag) => {
-                setPage(pag)
-                await getPosts(pag-1, limit, '');
-              }}
-              maxVisiblePages={2}
-            />
+            {filteredPosts.length > 0 &&(
+              <PaginationManager
+                totalItems={totalRecords}
+                itemsPerPage={limit}
+                currentPage={page}
+                onPageChange={async (pag) => {
+                  setPage(pag)
+                }}
+                maxVisiblePages={2}
+              />
+            )}
           </div>
+          {filteredPosts.length == 0 && ( <div className="grid place-items-center w-full h-100">
+            <TextEffect per='word' as='h3' preset='blur' className='text-4xl'>
+              NO HAY RESULTADOS
+            </TextEffect>
+          </div>)}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredPosts.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
           </div>
+
+
+          <div className='flex flex-row mt-4'>
+            {filteredPosts.length > 0 &&(
+              <PaginationManager
+                totalItems={totalRecords}
+                itemsPerPage={limit}
+                currentPage={page}
+                onPageChange={async (pag) => {
+                  setPage(pag)
+                }}
+                maxVisiblePages={2}
+              />
+            )}
+          </div>
+
+          
         </>
     ) : (
       <div className="text-center py-16">

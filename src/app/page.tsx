@@ -7,7 +7,7 @@ import { mockPosts } from "@/lib/mock-data"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, BookOpen, Users, TrendingUp } from "lucide-react"
 import Link from "next/link"
-import { LoadingPage, Skeleton, TextType } from "@/components"
+import { Footer, LoadingPage, Skeleton, TextType } from "@/components"
 import { usePostStore } from "@/features"
 import { useEffect, useState } from "react"
 import { useAuth } from "@/lib"
@@ -17,7 +17,7 @@ export default  function HomePage() {
   const getPosts = usePostStore((state) => state.getData);
   const posts = usePostStore((state) => state.items);
   const page: number = 0;
-  const limit: number = 6;
+  const limit: number = 20;
   const isLoading = usePostStore((state) => state.isLoading);
 
   const featuredPosts = posts.filter((post) => post.featured && post.published)
@@ -108,7 +108,7 @@ export default  function HomePage() {
               </Button>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {featuredPosts.map((post) => (
+              {featuredPosts.slice(0,4).map((post) => (
                 <FeaturedPost key={post.id} post={post} />
               ))}
             </div>
@@ -126,8 +126,10 @@ export default  function HomePage() {
             </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            { isLoading && [1,2,3,4].map((_, key) => ( <Skeleton key={key} className="h-96 w-96 " /> ))}
-            {!isLoading && regularPosts.map((post) => ( <PostCard key={post.id} post={post} /> ))}
+            { isLoading && [1,2,3,4,5,6].map((_, key) => ( <Skeleton key={key} className="h-96 w-96 " /> ))}
+            {!isLoading && regularPosts.slice(0,3).map((post) => ( 
+              <PostCard key={post.id} post={post} /> 
+              ))}
             
           </div>
         </div>
@@ -152,11 +154,6 @@ export default  function HomePage() {
       </section> */}
 
       {/* Footer */}
-      <footer className="py-12 px-4 border-t">
-        <div className="container mx-auto max-w-6xl text-center">
-          <p className="text-muted-foreground">© 2025 DevCaribe</p>
-        </div>
-      </footer>
     </div>
   )
 }

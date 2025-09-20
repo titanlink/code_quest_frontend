@@ -1,26 +1,35 @@
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge, CustomCard } from '@/components'
+import { Card, CardHeader, CardTitle, CardContent, Button, Badge, CustomCard, Tooltip, TooltipTrigger, TooltipContent } from '@/components'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Edit, Trash2, Eye } from "lucide-react"
+import { MoreHorizontal, Edit, Trash2, Eye, Heart, MessageCircle } from "lucide-react"
 import React from 'react'
 import { IPost } from '../..'
 import Link from 'next/link'
 
 interface Props {
+  totalRecords?:number,
   filteredPosts:IPost[],
   handleDeletePost: (postId: string) => void
 }
 
-export const PostsTable = ({filteredPosts, handleDeletePost}: Props) => {
+export const PostsTable = ({filteredPosts, handleDeletePost, totalRecords}: Props) => {
   return (
     <CustomCard>
       <CardHeader>
-        <CardTitle>Todos los Posts ({filteredPosts.length})</CardTitle>
+        <CardTitle>
+          <div className='grid grid-cols-2'>
+            <div className='flex flex-row w-full'>Filtrados ({filteredPosts.length})</div>
+            <div className='flex flex-row w-full  justify-end'> 
+              {totalRecords && ( <>Total de Registros ({totalRecords}) </> )} 
+            </div>
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>#</TableHead>
               <TableHead>Título</TableHead>
               <TableHead>Autor</TableHead>
               <TableHead>Categoría</TableHead>
@@ -31,8 +40,9 @@ export const PostsTable = ({filteredPosts, handleDeletePost}: Props) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredPosts.map((post) => (
+            {filteredPosts.map((post, indx) => (
               <TableRow key={post.id}>
+                <TableCell>{indx+1}</TableCell>
                 <TableCell>
                   <div className="space-y-1">
                     <p className="font-medium truncate w-64">{post.title}</p>
@@ -56,9 +66,24 @@ export const PostsTable = ({filteredPosts, handleDeletePost}: Props) => {
                 <TableCell className="text-sm text-muted-foreground">{post?.createdAt?.toLocaleDateString()}</TableCell>
                 <TableCell>
                   <div className="flex gap-4 text-sm text-muted-foreground">
-                    <span>{post.totalView} vistas</span>
-                    <span>{post.likesCount} likes</span>
-                    <span>{post.commentsCount} comentarios</span>
+                    <Tooltip>
+                      <TooltipTrigger><Eye className="h-4 w-4" /></TooltipTrigger>
+                      <TooltipContent>
+                        <span>{post.totalView}</span>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger><Heart className="h-4 w-4" /></TooltipTrigger>
+                      <TooltipContent>
+                        <span>{post.likesCount}</span>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger><MessageCircle className="h-4 w-4" /></TooltipTrigger>
+                      <TooltipContent>
+                        <span>{post.commentsCount}</span>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                 </TableCell>
                 <TableCell>

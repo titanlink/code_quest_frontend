@@ -55,7 +55,7 @@ export const CategoryForm = ({entity}:Props) => {
       }
     }
     fetchToken()
-  }, [user, getToken])
+  }, [user, token])
 
   async function onSubmit(values: z.infer < typeof formSchema > ) {
     // toast.info( <pre><b>{JSON.stringify(values, null, 2) } </b> </pre>)
@@ -103,10 +103,6 @@ export const CategoryForm = ({entity}:Props) => {
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline">
-                  <Eye className="mr-2 h-4 w-4" />
-                  Vista previa
-                </Button>
                 <Button type="submit" size="lg"  disabled={isPending}>
                     {isPending ? (
                       <> <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Guardando... </>

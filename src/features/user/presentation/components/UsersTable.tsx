@@ -9,18 +9,27 @@ import { IUser } from '../..'
 interface Props {
   filteredUsers: IUser[],
   handleToggleRole: (user: IUser) => void
+  totalRecords?:number
 }
 
-export const UsersTable = ({filteredUsers, handleToggleRole}: Props) => {
+export const UsersTable = ({filteredUsers, handleToggleRole, totalRecords}: Props) => {
   return (
     <CustomCard>
       <CardHeader>
-        <CardTitle>Todos los Usuarios ({filteredUsers.length})</CardTitle>
+        <CardTitle>
+          <div className='grid grid-cols-2'>
+            <div className='flex flex-row w-full'>Filtrados ({filteredUsers.length})</div>
+            <div className='flex flex-row w-full  justify-end'> 
+              {totalRecords && ( <>Total de Registros ({totalRecords}) </> )} 
+            </div>
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>#</TableHead>
               <TableHead>Usuario</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Rol</TableHead>
@@ -30,8 +39,9 @@ export const UsersTable = ({filteredUsers, handleToggleRole}: Props) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredUsers.map((user) => (
+            {filteredUsers.map((user,indx) => (
               <TableRow key={user.id}>
+                <TableCell>{indx+1}</TableCell>
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <Avatar className="h-10 w-10">
@@ -72,10 +82,10 @@ export const UsersTable = ({filteredUsers, handleToggleRole}: Props) => {
                         <UserCheck className="mr-2 h-4 w-4" />
                         Ver perfil
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="text-destructive">
+                      {/* <DropdownMenuItem className="text-destructive">
                         <UserX className="mr-2 h-4 w-4" />
                         Suspender
-                      </DropdownMenuItem>
+                      </DropdownMenuItem> */}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

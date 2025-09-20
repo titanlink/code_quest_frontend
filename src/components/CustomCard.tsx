@@ -1,5 +1,6 @@
-import { ClickSpark, LoadingPage, MagicCard, Skeleton } from ".";
-import { GlowEffect } from "../../components/motion-primitives/glow-effect";
+'use client'
+import { useState } from "react";
+import { ClickSpark, GlowEffect, LoadingPage, MagicCard, Skeleton } from ".";
 
 interface Props {
   children: React.ReactNode
@@ -8,13 +9,21 @@ interface Props {
   isActive?: boolean
   withHover?: boolean
   withGlowEffect?: boolean
+  
 }
 
 export const CustomCard = <T,>({children, className, isActive , withHover, isLoading, withGlowEffect}: Props) => {
+  const defaultColors = [ '#33FF5730', '#3357FF30', '#F1C40F30']
+  const activeColors = [ '#33FF5790', '#3357FF80', '#F1C40F70']
+  const [isHovered, setIsHovered] = useState(false);
+  const [colors,setColors] = useState(defaultColors)
 
   const hover = withHover ? 'group hover:shadow-lg transition-all duration-300 hover:-translate-y-4' : ''
   return (
-    <div className="relative">
+    <div className="relative"  
+      onMouseEnter={() =>{ setIsHovered(true); setColors(activeColors)}}
+      onMouseLeave={() =>{ setIsHovered(false); setColors(defaultColors)}}
+    >
     <MagicCard className={`bg-card rounded-xl ${className} ${hover}`}>
       { isLoading && (
         <LoadingPage className={'h-full'} label="" detail=""/>
@@ -33,8 +42,8 @@ export const CustomCard = <T,>({children, className, isActive , withHover, isLoa
       </ClickSpark>
       )}
     </MagicCard>
-      {withGlowEffect && (<GlowEffect
-        colors={[ '#33FF5730', '#3357FF30', '#F1C40F30']}
+      {withGlowEffect  && (<GlowEffect
+        colors={colors}
         mode='pulse'
         blur='medium'
         duration={12}

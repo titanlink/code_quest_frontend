@@ -37,7 +37,7 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
               <h3 className="text-2xl font-bold mb-2 group-hover:text-primary-foreground transition-colors">
                 {post.title}
               </h3>
-              <p className="text-white/90 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+              <p className="text-white/90 text-sm mb-4 line-clamp-2 truncate w-[90%]">{post.excerpt}</p>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">

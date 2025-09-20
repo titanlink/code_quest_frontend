@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { PostsTable, PostViewsChart, usePostStore } from "@/features"
-import { AdminFeatureHeader, LoadingPage, PaginationManager, SearchFilters } from "@/components"
+import { AdminFeatureHeader, LoadingPage, PaginationManager, ResizableHandle, ResizablePanel, ResizablePanelGroup, SearchFilters } from "@/components"
 import { Plus } from "lucide-react"
 import { useAuth } from "@/lib"
 
@@ -19,7 +19,7 @@ export default function AdminPostsPage() {
   // const limit: number = usePostStore( (state) => state.limit ?? 50  );
 
   const [limit,setLimit] = useState(10)
-  const [page,setPage] = useState(0)
+  const [page,setPage] = useState(1)
   
   const isLoading = usePostStore((state) => state.isLoading);
 
@@ -41,17 +41,17 @@ export default function AdminPostsPage() {
       if (user) {
         const authToken = await getToken() ?? ''
         setToken(token)
-        getPosts(page, limit, authToken );
+        getPosts(page-1, limit, authToken );
       }
     }
     fetchToken()
-  }, [user, getToken])
+  }, [user, token, page])
 
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <AdminFeatureHeader title="Posts" subTitle="Gestiona todos los artículos del blog" >
+      <AdminFeatureHeader title="Posts" subTitle="Gestiona todos los artículos" >
         <Button asChild>
           <Link href="/admin/posts/new">
             <Plus className="mr-2 h-4 w-4" />
@@ -63,33 +63,36 @@ export default function AdminPostsPage() {
       { isLoading ? ( 
         <LoadingPage /> 
       ) : (
-          <div className="flex flex-row gap-3">
-
-            <div className="flex flex-col gap-2 w-[70%]">
+        <ResizablePanelGroup direction="horizontal" className=" gap-4">
+          <ResizablePanel defaultSize={70}>
+            <div className="flex flex-col gap-4 w-full">
               <SearchFilters placeholder="Buscar posts..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-
+              
               <div className='flex flex-row'>
                 <PaginationManager
                   totalItems={totalRecords}
                   itemsPerPage={limit}
-                  currentPage={!page ? 1 : page}
+                  currentPage={page}
                   onPageChange={async (pag) => {
                     if (page == pag) return
                     setPage(pag)
-                    await getPosts(pag-1, limit, '');
                   }}
                   maxVisiblePages={1}
                 />
               </div>
 
-              <PostsTable filteredPosts={filteredPosts} handleDeletePost={handleDeletePost} />
+              <PostsTable filteredPosts={filteredPosts} handleDeletePost={handleDeletePost} totalRecords={totalRecords} />
             </div>
+          </ResizablePanel>
 
-            <div className="flex flex-col gap-2 w-[30%]">
+          <ResizableHandle />
+
+          <ResizablePanel>
+            <div className="flex flex-col gap-4 w-full">
               <PostViewsChart posts={posts} />
             </div>
-
-          </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       ) }
     </div>
   )

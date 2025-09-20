@@ -3,30 +3,33 @@ import { gql } from "@apollo/client";
 export const allCommentGQL = gql`
   query allComment($limit: Int, $offset: Int) {
     allComment(limit: $limit, offset: $offset) {
-      id
-      content
-      user {
+      items {
         id
-        name
-        email
-      }
-      post {
-        id
-        category {
+        content
+        user {
           id
           name
-          description
-          postCount
-          color
-          slug
+          email
         }
+        # post {
+        #   id
+        #   category {
+        #     id
+        #     name
+        #     description
+        #     postCount
+        #     color
+        #     slug
+        #   }
+        # }
+        # sub_comment {
+        #   id 
+        #   content
+        # }
+        createAt
+        updateAt
       }
-      sub_comment {
-        id 
-        content
-      }
-      createAt
-      updateAt
+      total
     }
   }
 `;

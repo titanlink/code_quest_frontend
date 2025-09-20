@@ -25,11 +25,12 @@ export const dashboardGQL = gql`
   query TotalResponse {
   totalResponse {
     total_post
+    total_post_published
     total_category
     total_user
+    total_user_admin
     total_comment
     total_sub_comment
-    total_post_published
     total_view
   }
 }

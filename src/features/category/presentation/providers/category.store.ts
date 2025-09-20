@@ -32,8 +32,10 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
     try {
       set({ isLoading: true });
       const resp  = await allCategoryAction({ page, limit}, token );
-      set({items: resp ?? [],  isLoading: false})
+      console.log("🚀 ~ resp:", resp)
+      set({items: resp.data  ?? [], total: resp.totalRecords})
     }catch(error) {
+      set({ isLoading: false });
       throw new Error('Categorys > getData > Unauthorized')
     }finally {
       set({ isLoading: false });

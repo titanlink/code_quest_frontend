@@ -1,17 +1,7 @@
 "use server";
 
 import { ResponsePropio } from "@/config";
-import { 
-  BookMarkDatasourceGQL,
-  BookMarkRepositoryImpl,
-  IBookMark,
-  ILike,
-  IPost,
-  LikeDatasourceGQL,
-  LikeRepositoryImpl,
-  PostDatasourceGQL,
-  PostRepositoryImpl  
-} from "..";
+import { IBookMark, ILike, } from "..";
 import { repoConfig, repoConfigBook, repoConfigLike } from "./_repo-config";
 
 

@@ -3,12 +3,15 @@ import { gql } from "@apollo/client";
 export const allCategoryGQL = gql`
   query allCategories($limit: Int, $offset: Int) {
     allCategory(limit: $limit, offset: $offset) {
-      id
-      name
-      description
-      postCount
-      color
-      slug
+      items {
+        id
+        name
+        description
+        postCount
+        color
+        slug
+      }
+      total
     }
   }
 `;

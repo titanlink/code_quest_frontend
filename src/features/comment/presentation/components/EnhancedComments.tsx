@@ -42,7 +42,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
         }
       }
       fetchToken()
-    }, [user, getToken])
+    }, [user, token])
 
   const currentUser:IUser = {
     id: post.author?.id ?? '',

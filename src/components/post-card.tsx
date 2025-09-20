@@ -48,11 +48,11 @@ export function PostCard({ post }: Props) {
 
       <CardContent className="p-6">
         <Link href={`/posts/${post.slug}`}>
-          <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-2">
+          <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-2 truncate w-[90%]">
             {post.title}
           </h3>
         </Link>
-        <p className="text-muted-foreground text-sm mb-4 line-clamp-3">{post.excerpt}</p>
+        <p className="text-muted-foreground text-sm mb-4 line-clamp-3 truncate w-[90%]">{post.excerpt}</p>
 
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">

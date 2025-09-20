@@ -21,6 +21,7 @@ export const AdminDashBoard = () => {
     const comments = useCommentStore((state) => state.items);
     
     const [totalPosts, setTotalPosts] = useState(0)
+    const [totalAdmins, setTotalAdmins] = useState(0)
     const [publishedPosts, setPublishedPosts] = useState(0)
     const [draftPosts, setDraftPosts] = useState(0)
     const [totalUsers, setTotalUsers] = useState(0)
@@ -35,21 +36,23 @@ export const AdminDashBoard = () => {
     const fetchToken = async () => {
       if (user) {
         const authToken = await getToken() ?? ''
-        const resp = await dashboard(authToken)
-        console.warn("🚀 ~ fetchToken ~ resp:", resp)
-        setTotalPosts(resp['total_post'])
-        setTotalComments(resp['total_comment'])
-        setPublishedPosts(resp['total_post_published'])
-        setTotalUsers(resp['total_user'])
-        setTotalViews(resp['total_view'])
+        if (authToken){
+          const resp = await dashboard(authToken)
+          setTotalPosts(resp['total_post'])
+          setTotalComments(resp['total_comment'])
+          setPublishedPosts(resp['total_post_published'])
+          setTotalAdmins(resp['total_user_admin'])
+          setTotalUsers(resp['total_user'])
+          setTotalViews(resp['total_view'])
 
-        setToken(authToken)
-        getComments(0, 5, authToken);
-        getPosts(0, 5, authToken );
+          setToken(authToken)
+          getComments(0, 5, authToken);
+          getPosts(0, 5, authToken );
+        }
       }
     }
     fetchToken()
-  }, [user, getToken])
+  }, [user, token])
 
     
   return (
@@ -62,6 +65,7 @@ export const AdminDashBoard = () => {
         totalPosts={totalPosts}
         draftPosts={draftPosts}
         totalUsers={totalUsers}
+        totalAdmins={totalAdmins}
         totalComments={totalComments}
         totalViews={totalViews}
         publishedPosts={publishedPosts}

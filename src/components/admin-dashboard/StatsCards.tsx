@@ -10,13 +10,22 @@ interface Props {
   totalPosts: number;
   draftPosts: number;
   totalUsers: number;
+  totalAdmins: number;
   totalComments: number;
   totalViews: number;
   isLoading?:boolean  
 
 }
 
-const StatsCards = ({publishedPosts, totalPosts, draftPosts, totalUsers, totalComments, totalViews, isLoading}: Props) => {
+const StatsCards = ({ 
+  totalAdmins,
+  publishedPosts,
+  totalPosts,
+  draftPosts,
+  totalUsers,
+  totalComments,
+  totalViews,
+  isLoading}: Props) => {
 
   
   return (
@@ -40,7 +49,7 @@ const StatsCards = ({publishedPosts, totalPosts, draftPosts, totalUsers, totalCo
 
       <CustomCard withHover={true} isLoading={isLoading}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Usuarios</CardTitle>
+          <CardTitle className="text-sm font-medium">Total de Usuarios</CardTitle>
           <Users className="h-12 w-12 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -49,7 +58,7 @@ const StatsCards = ({publishedPosts, totalPosts, draftPosts, totalUsers, totalCo
               className="whitespace-pre-wrap text-2xl font-medium tracking-tighter text-black dark:text-white"
             />
           </div>
-          <p className="text-xs text-muted-foreground">Usuarios registrados</p>
+          <p className="text-xs text-muted-foreground">{totalAdmins} Administradores, {totalUsers-totalAdmins} Usuarios</p>
         </CardContent>
       </CustomCard>
 

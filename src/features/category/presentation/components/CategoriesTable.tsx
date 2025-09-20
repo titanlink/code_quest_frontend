@@ -10,18 +10,27 @@ interface Props {
   filteredCategories:ICategory[],
   handleDeleteCategory: (categoryId: string) => void
   isPending?: boolean
+  totalRecords?: number
 }
 
-export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPending = false}: Props) => {
+export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPending = false, totalRecords}: Props) => {
   return (
     <CustomCard>
       <CardHeader>
-        <CardTitle>Todos las Categorias ({filteredCategories.length})</CardTitle>
+        <CardTitle>
+          <div className='grid grid-cols-2'>
+            <div className='flex flex-row w-full'>Filtrados ({filteredCategories.length})</div>
+            <div className='flex flex-row w-full  justify-end'> 
+              {totalRecords && ( <>Total de Registros ({totalRecords}) </> )} 
+            </div>
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>#</TableHead>
               <TableHead>Nombre</TableHead>
               <TableHead>Descripción</TableHead>
               <TableHead>Slug</TableHead>
@@ -31,8 +40,10 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPen
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredCategories.map((category) => (
+            {filteredCategories.map((category,indx) => (
               <TableRow key={category.id}>
+                
+                <TableCell>{indx+1}</TableCell>
                 <TableCell>
                   <div className="space-y-1">
                     <p className="font-medium truncate w-30">{category.name}</p>
@@ -59,12 +70,12 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPen
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       
-                      <DropdownMenuItem asChild>
+                      {/* <DropdownMenuItem asChild>
                         <Link href={`/categories/${category.slug}`}>
                           <Eye className="mr-2 h-4 w-4" />
                           Ver
                         </Link>
-                      </DropdownMenuItem>
+                      </DropdownMenuItem> */}
                       <DropdownMenuItem asChild>
                         <Link href={`/admin/categories/${category.id}`}>
                           <Edit className="mr-2 h-4 w-4" />
