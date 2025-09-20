@@ -25,7 +25,7 @@ export function UserRoleChart({ users }: UserRoleChartProps) {
   const COLORS = ["#0088FE", "#FF8042"]
 
   return (
-    <CustomCard className="w-full" withGlowEffect={true}>
+    <CustomCard className="w-full" withGlowEffect withBlur withOpacity>
       <CardHeader>
         <CardTitle>Distribución de Roles</CardTitle>
       </CardHeader>

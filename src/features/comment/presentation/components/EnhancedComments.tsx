@@ -42,7 +42,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
         }
       }
       fetchToken()
-    }, [user, token])
+    }, [user, token, newComment])
 
   const currentUser:IUser = {
     id: post.author?.id ?? '',
@@ -82,21 +82,22 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
 
   const handleSubmitReply = async (e: React.FormEvent, parentId: string) => {
     e.preventDefault()
+    const isSubComment =true
     if (!user || !replyContent.trim()) return
 
     const reply: IComment = {
       id: Date.now().toString(),
       content: replyContent,
       postId,
-      authorId: user.providerId,
-      author: author,
       parentId,
+      authorId: currentUser.id,
+      author: currentUser,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
     // console.log("🚀 ~ handleSubmitReply ~ reply:", reply)
 
-    const resp = await createCommentAction(reply)
+    const resp = await createCommentAction(reply, token ?? '', isSubComment)
     if ('error' in resp) return
 
     setComments([reply, ...comments])
@@ -116,7 +117,13 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
     setLikedComments(newLikedComments)
   }
   
-  const topLevelComments = comments.filter((c) => c.sub_comment)
+  const topLevelComments = comments
+    .sort((b, a) => {
+      const aTime = a?.createdAt instanceof Date ? a.createdAt.getTime() : typeof a?.createdAt === "number" ? a.createdAt : 0
+      const bTime = b?.createdAt instanceof Date ? b.createdAt.getTime() : typeof b?.createdAt === "number" ? b.createdAt : 0
+      return aTime - bTime
+    })
+    .filter((c) => c.sub_comment)
   const getsub_comment = (commentId: string) => comments.filter((c) => c.parentId === commentId)
 
   return (
@@ -179,8 +186,8 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
 
       {/* Comments List */}
       <div className="space-y-6 mt-4">
-        {topLevelComments.length > 0 ? (
-          topLevelComments.map((comment) => {
+        {comments.length > 0 ? (
+          comments.map((comment) => {
             const sub_comment:IComment[] = comment.sub_comment ?? [] //getsub_comment(comment?.id ?? '')
             const isLiked = likedComments.has(comment?.id ?? '')
 

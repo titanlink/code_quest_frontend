@@ -31,7 +31,7 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
         retorno.data = entities;
       }
     } catch (e) {
-      console.error(`Error => allCategoryGQL -> ${e}`);
+      console.error(`Error => allCategoryGQL -> ${page} // ${e}`);
       throw e
     }finally{
       return retorno
@@ -49,8 +49,8 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
           categoryId: Number(id),
         },
       });
-
-      retorno = CategoryMapper.fromJson(data["category"]);
+      const entity = CategoryMapper.fromJson(data["category"])
+      if (entity) retorno = entity
     } catch (e) {
       console.error(`Error => findCategoryGQL -> ${e}`);
     }finally{
@@ -77,7 +77,8 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
         },
       });
 
-      retorno =  CategoryMapper.fromJson(data["createCategory"]);
+      const entity =  CategoryMapper.fromJson(data["createCategory"]);
+      if (entity) retorno = entity
     } catch (e) {
       console.error(`Error => createCategoryGQL -> ${e}`);
     } finally {
@@ -104,7 +105,8 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
           },
         },
       });
-      retorno = CategoryMapper.fromJson(data["updateCategory"]);
+      const entity = CategoryMapper.fromJson(data["updateCategory"]);
+      if (entity) retorno = entity
     } catch (e) {
       const error = `${e}`
       console.error(error);

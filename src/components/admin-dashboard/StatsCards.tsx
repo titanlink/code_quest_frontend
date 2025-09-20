@@ -30,7 +30,7 @@ const StatsCards = ({
   
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <CustomCard withHover={true} isLoading={isLoading}>
+      <CustomCard withHover={true} isLoading={isLoading} withOpacity>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
             Total Posts
@@ -47,7 +47,7 @@ const StatsCards = ({
         </CardContent>
       </CustomCard>
 
-      <CustomCard withHover={true} isLoading={isLoading}>
+      <CustomCard withHover={true} isLoading={isLoading} withOpacity>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total de Usuarios</CardTitle>
           <Users className="h-12 w-12 text-muted-foreground" />
@@ -62,7 +62,7 @@ const StatsCards = ({
         </CardContent>
       </CustomCard>
 
-      <CustomCard withHover={true} isLoading={isLoading}>
+      <CustomCard withHover={true} isLoading={isLoading} withOpacity>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Comentarios</CardTitle>
           <MessageSquare className="h-12 w-12 text-muted-foreground" />
@@ -75,7 +75,7 @@ const StatsCards = ({
         </CardContent>
       </CustomCard>
 
-      <CustomCard withHover={true} isLoading={isLoading}>
+      <CustomCard withHover={true} isLoading={isLoading} withOpacity>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Visualizaciones</CardTitle>
           <Eye className="h-12 w-12 text-muted-foreground" />

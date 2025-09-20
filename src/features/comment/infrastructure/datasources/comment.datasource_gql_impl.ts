@@ -1,6 +1,6 @@
 import { CommentDatasource, CommentMapper, IComment } from "../..";
 import { makeClientGraphql } from "@/lib";
-import { allCommentGQL, createCommentGQL, findCommentGQL, removeCommentGQL, updateCommentGQL } from "./comment.graphql";
+import { allCommentGQL, createCommentGQL, createSubCommentGQL, findCommentGQL, removeCommentGQL, updateCommentGQL } from "./comment.graphql";
 import { ResponsePropio } from "@/config";
 
 
@@ -58,25 +58,21 @@ export class CommentDatasourceGQL implements CommentDatasource {
   
   }
 
-  async create ( form: IComment, token: string ) {
-    let retorno: IComment | ResponsePropio = { msg: 'Error desconocido gql_impl', error: true }
+  async create ( form: IComment, token: string, isSubComment: boolean = false ) {
+    let retorno: IComment | ResponsePropio = { msg: 'Error desconocido > CommentDatasourceGQL > create', error: true }
     try {
       const peti = await makeClientGraphql(token);
 
+      let input:any = { content: form.content, id_post: Number(form.postId), }
+      if (isSubComment) input = { content: form.content, id_comment: Number(form.parentId), }
+      console.log("🚀 ~ CommentDatasourceGQL ~ create ~ input:", input)
+
       const { data } = await peti.mutate<any>({
-        mutation: createCommentGQL,
+        mutation: isSubComment ? createSubCommentGQL : createCommentGQL ,
         fetchPolicy: "no-cache",
-        variables: {
-          input: {
-            content: form.content,
-            id_post: Number(form.postId),
-            // parent_id: form.parentId,
-          },
-        },
+        variables: { input:input },
       });
 
-      console.log("🚀 ~ CommentDatasourceGQL ~ create ~ retorno:", retorno)
-      console.log("🚀 ~ CommentDatasourceGQL ~ create ~ data:", data)
       const entity = CommentMapper.fromJson(data["createComment"])
       if (entity && 'id' in entity) retorno = entity
     } catch (e) {

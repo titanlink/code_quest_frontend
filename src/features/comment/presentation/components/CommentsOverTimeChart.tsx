@@ -22,7 +22,7 @@ export function CommentsOverTimeChart({ comments }: CommentsOverTimeProps) {
   }))
 
   return (
-    <CustomCard className="w-full max-w-3xl" withGlowEffect>
+    <CustomCard className="w-full max-w-3xl" withGlowEffect withOpacity>
       <CardHeader>
         <CardTitle>Comentarios en el Tiempo</CardTitle>
       </CardHeader>

@@ -25,7 +25,7 @@ export function UserGrowthChart({ users }: UserGrowthChartProps) {
   }))
 
   return (
-    <CustomCard className="w-full max-w-3xl" withGlowEffect={true}>
+    <CustomCard className="w-full max-w-3xl" withGlowEffect withOpacity>
       <CardHeader>
         <CardTitle>Crecimiento de Usuarios</CardTitle>
       </CardHeader>

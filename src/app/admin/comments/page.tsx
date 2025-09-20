@@ -62,7 +62,7 @@ export default function AdminCommentsPage() {
                     if (page == pag) return
                     setPage(pag)
                   }}
-                  maxVisiblePages={1}
+                  maxVisiblePages={2}
                 />
               </div>
 

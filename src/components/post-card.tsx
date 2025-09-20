@@ -22,7 +22,7 @@ interface Props {
 export function PostCard({ post }: Props) {
   const [src, setSrc] = useState("/no_image_available.jpg")
   return (
-    <CustomCard withHover={true}>
+    <CustomCard withHover withOpacity>
       
       <CardHeader className="p-0">
         <Link href={`/posts/${post.slug}`}>

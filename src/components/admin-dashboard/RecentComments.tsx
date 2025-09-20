@@ -9,7 +9,7 @@ interface Props {
 }
 const RecentComments = ({recentComments}: Props) => {
   return (
-    <CustomCard>
+    <CustomCard withBlur withOpacity>
       <CardHeader>
         <CardTitle>Comentarios Recientes</CardTitle>
         <CardDescription>Los últimos comentarios de usuarios</CardDescription>

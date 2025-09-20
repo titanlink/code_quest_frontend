@@ -11,21 +11,36 @@ export const allCommentGQL = gql`
           name
           email
         }
-        # post {
-        #   id
-        #   category {
-        #     id
-        #     name
-        #     description
-        #     postCount
-        #     color
-        #     slug
-        #   }
-        # }
-        # sub_comment {
-        #   id 
-        #   content
-        # }
+        post {
+          id
+          slug
+          category {
+            id
+            name
+            description
+            postCount
+            color
+            slug
+          }
+        }
+        sub_comment {
+          id
+          content
+          likesCount
+          createAt
+          updateAt
+          user {
+            id
+            name
+            email
+            createAt
+            updateAt
+          }
+          comment {
+            id
+            content
+          }
+        }
         createAt
         updateAt
       }
@@ -55,7 +70,38 @@ export const createCommentGQL = gql`
   createComment(createCommentInput: $input) {
     id
     content
-    # parent_id
+    likesCount
+    createAt
+    updateAt
+    user {
+      id
+      name
+      email
+      createAt
+      updateAt
+    }
+  }
+}
+`;
+export const createSubCommentGQL = gql`
+mutation CreateSubComment($input: CreateSubCommentInput!) {
+  createSubComment(createSubCommentInput: $input) {
+    id
+    content
+    likesCount
+    createAt
+    updateAt
+    user {
+      id
+      name
+      email
+      createAt
+      updateAt
+    }
+    comment {
+      id
+      content
+    }
   }
 }
 `;

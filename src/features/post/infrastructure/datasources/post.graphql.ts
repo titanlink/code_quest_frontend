@@ -160,10 +160,28 @@ export const findPostBySlugGQL = gql`
         }
         comment {
           id
+          likesCount
+          commentCount
           content
+          createAt
+          updateAt
           sub_comment {
-            id 
+            id
             content
+            likesCount
+            createAt
+            updateAt
+            user {
+              id
+              name
+              email
+              createAt
+              updateAt
+            }
+            comment {
+              id
+              content
+            }
           }
         }
       }

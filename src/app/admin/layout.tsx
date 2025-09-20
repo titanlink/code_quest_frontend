@@ -14,7 +14,7 @@ export default function AdminLayout({
           <div className="flex">
             <AdminSidebar />
 
-            <main className="flex-1 p-6">{children}</main>
+            <main className="flex-1 p-6 bg-gradient-to-b from-sky-800/10 to-mured/10">{children}</main>
           </div>
         </div>
       </AuthGuard>

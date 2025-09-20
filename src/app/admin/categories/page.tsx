@@ -3,7 +3,7 @@
 import { useEffect, useState, useTransition } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { AdminFeatureHeader, LoadingPage, ResizableHandle, ResizablePanel, ResizablePanelGroup, SearchFilters } from "@/components"
+import { AdminFeatureHeader, LoadingPage, PaginationManager, ResizableHandle, ResizablePanel, ResizablePanelGroup, SearchFilters } from "@/components"
 import { Plus } from "lucide-react"
 import { CategoriesTable, CategoryPieChart, useCategoryStore } from "@/features"
 import { toast } from "sonner"
@@ -22,8 +22,9 @@ export default function AdminCategoriesPage() {
   const removeCategory = useCategoryStore((state) => state.deleteOne);
   const categories = useCategoryStore((state) => state.items);
 
-  const page: number = useCategoryStore( (state) => state.page ?? 0  );
-  const limit: number = useCategoryStore( (state) => state.limit ?? 50  );
+  const [limit,setLimit] = useState(10)
+  const [page,setPage] = useState(1)
+
   const totalRecords: number = useCategoryStore( (state) => state.total );
   const isLoading = useCategoryStore((state) => state.isLoading);
 
@@ -38,11 +39,11 @@ export default function AdminCategoriesPage() {
       if (user) {
         const authToken = await getToken() ?? ''
         setToken(authToken)
-        if (token) getCategories(page-1, limit, token);
+        getCategories(page-1, limit, token);
       }
     }
     fetchToken()
-  }, [page, limit, isPending]);
+  }, [page, limit, isPending, user]);
   
 
   const handleDeleteCategorie = async (categorieId: string) => {
@@ -84,6 +85,20 @@ export default function AdminCategoriesPage() {
           <ResizablePanel defaultSize={70}>
             <div className="flex flex-col gap-4 w-full">
               <SearchFilters placeholder="Buscar categories..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+
+              <div className='flex flex-row'>
+                <PaginationManager
+                  totalItems={totalRecords}
+                  itemsPerPage={limit}
+                  currentPage={page}
+                  onPageChange={async (pag) => {
+                    if (page == pag) return
+                    setPage(pag)
+                  }}
+                  maxVisiblePages={2}
+                />
+              </div>
+
               <CategoriesTable 
                 filteredCategories={filteredCategories} 
                 handleDeleteCategory={handleDeleteCategorie} 

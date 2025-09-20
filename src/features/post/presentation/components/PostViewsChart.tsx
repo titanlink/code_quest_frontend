@@ -15,7 +15,7 @@ export function PostViewsChart({ posts }: Props) {
   }))
 
   return (
-    <CustomCard className="w-full max-w-4xl" withGlowEffect={true}>
+    <CustomCard className="w-full max-w-4xl" withGlowEffect={true} withOpacity>
       <CardHeader>
         <CardTitle>Vistas de Posts en el Tiempo</CardTitle>
       </CardHeader>

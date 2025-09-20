@@ -11,7 +11,7 @@ interface Props {
 
 const RecentPosts = ({recentPosts, isLoading}: Props) => {
   return (
-    <CustomCard isLoading={isLoading}>
+    <CustomCard isLoading={isLoading} withOpacity>
       <CardHeader>
         <CardTitle>Posts Recientes</CardTitle>
         <CardDescription>Los últimos artículos publicados</CardDescription>

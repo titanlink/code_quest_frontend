@@ -8,7 +8,6 @@ export async function allCategoryAction({page = 0, limit = 50}, token: string = 
 
   try {
     const response = await repo.all(page, limit);
-    console.log("🚀 ~ allCategoryAction ~ response:", response)
     return response;
   } catch (e) {
     console.error("Error en allCategoryAction:", e);

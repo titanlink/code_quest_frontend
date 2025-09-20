@@ -18,7 +18,7 @@ export function CategoryPieChart({ categories }: CategoryPieProps) {
   }))
 
   return (
-    <CustomCard className="w-full " withGlowEffect={true}>
+    <CustomCard className="w-full " withGlowEffect withBlur withOpacity>
       <CardHeader>
         <CardTitle>Categorías por Posts</CardTitle>
       </CardHeader>

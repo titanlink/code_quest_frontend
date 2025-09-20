@@ -77,7 +77,7 @@ export default function AdminPostsPage() {
                     if (page == pag) return
                     setPage(pag)
                   }}
-                  maxVisiblePages={1}
+                  maxVisiblePages={2}
                 />
               </div>
 
