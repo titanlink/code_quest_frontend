@@ -4,6 +4,7 @@ import { usePostStore } from '../..'
 import {  PaginationManager,  PostCard, Skeleton, TextEffect } from '@/components'
 import { SearchFilters } from './search-filters'
 import { PostFilters } from '@/lib'
+import { useCategoryStore } from '@/features'
 
 interface Props {
   isLoading?:boolean,
@@ -15,6 +16,10 @@ export const PostGrid = ({clearFilters, isLoading, }:Props) => {
   const [limit,setLimit] = useState(8)
   const [page,setPage] = useState(1)
 
+  const getCategories = useCategoryStore((state) => state.getData);
+  const categories = useCategoryStore((state) => state.items);
+  const isLoadingCat = useCategoryStore((state) => state.isLoading);
+
   const getPosts = usePostStore((state) => state.getData);
   const items = usePostStore((state) => state.items);
   const totalRecords = usePostStore((state) => state.total);
@@ -22,6 +27,10 @@ export const PostGrid = ({clearFilters, isLoading, }:Props) => {
   useEffect(() => {
     getPosts(page-1, limit, '');
   }, [page, limit])
+  
+  useEffect(() => {
+    getCategories(0, 100, '')
+  }, [])
 
 
   const handleFiltersChange = (newFilters: PostFilters) => {
@@ -81,7 +90,7 @@ export const PostGrid = ({clearFilters, isLoading, }:Props) => {
     {
       totalRecords > 0 ? (
         <>
-          <SearchFilters filters={filters} onFiltersChange={handleFiltersChange} onClearFilters={clearFilters} />
+          <SearchFilters categories={categories} filters={filters} onFiltersChange={handleFiltersChange} onClearFilters={clearFilters} />
           <div className='flex flex-row mb-4'>
             {filteredPosts.length > 0 &&(
               <PaginationManager

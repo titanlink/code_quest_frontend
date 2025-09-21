@@ -7,16 +7,17 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Search, Filter, X, Star } from "lucide-react"
-import { mockCategories } from "@/lib/mock-data"
 import type { PostFilters } from "@/lib/types"
+import { ICategory } from "@/features/category"
 
 interface Props {
   filters: PostFilters
+  categories?: ICategory[]
   onFiltersChange: (filters: PostFilters) => void
   onClearFilters: () => void
 }
 
-export function SearchFilters({ filters, onFiltersChange, onClearFilters }: Props) {
+export function SearchFilters({ filters, onFiltersChange, onClearFilters, categories }: Props) {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   const handleSearchChange = (value: string) => {
@@ -72,7 +73,11 @@ export function SearchFilters({ filters, onFiltersChange, onClearFilters }: Prop
               <div className="flex items-center justify-between">
                 <h4 className="font-medium">Filtros</h4>
                 {activeFiltersCount > 0 && (
-                  <Button variant="ghost" size="sm" onClick={onClearFilters}>
+                  <Button variant="ghost" size="sm" onClick={() => {
+                      // onClearFilters(); 
+                      handleFeaturedChange("all");
+                      handleCategoryChange("all");
+                    }}>
                     <X className="h-4 w-4 mr-1" />
                     Limpiar
                   </Button>
@@ -88,7 +93,7 @@ export function SearchFilters({ filters, onFiltersChange, onClearFilters }: Prop
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todas las categorías</SelectItem>
-                    {mockCategories.map((category) => (
+                    {categories?.map((category) => (
                       <SelectItem key={category.id} value={category.slug}>
                         <div className="flex items-center gap-2">
                           <div className="w-3 h-3 rounded-full" style={{ backgroundColor: category.color }} />
@@ -144,7 +149,7 @@ export function SearchFilters({ filters, onFiltersChange, onClearFilters }: Prop
 
           {filters.category && (
             <Badge variant="secondary" className="flex items-center gap-1">
-              {mockCategories.find((c) => c.slug === filters.category)?.name}
+              {categories?.find((c) => c.slug === filters.category)?.name}
               <button
                 onClick={() => handleCategoryChange("all")}
                 className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"
