@@ -1,19 +1,23 @@
 "use client"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { Calendar, MapPin, LinkIcon, Twitter, Github, X } from "lucide-react"
-import { CustomCard } from "@/components"
-import { IPost } from "@/features"
+import { Calendar,  X } from "lucide-react"
+import { Badge, CustomCard, PostCard } from "@/components"
+import { ICategory, IPost, usePostStore } from "@/features"
 import { InstagramLogoIcon } from "@radix-ui/react-icons"
 
-interface PostSidebarProps {
+
+interface Props {
   post: IPost
+  relateds?: IPost[]
+  categories?: ICategory[]
 }
 
-export function PostSidebar({ post }: PostSidebarProps) {
+export function PostSidebar({ post, categories, relateds }: Props) {
+
   return (
     <div className="space-y-6">
       {/* Author Card */}
@@ -79,24 +83,18 @@ export function PostSidebar({ post }: PostSidebarProps) {
       {/* Newsletter Signup */}
       <CustomCard className="bg-primary/5">
         <CardHeader>
-          <CardTitle className="text-lg pb-2">Mantente actualizado</CardTitle>
+          <CardTitle className="text-lg">Categorias</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            Recibe los últimos artículos y tutoriales directamente en tu email.
-          </p>
-          <div className="space-y-2">
-            <input
-              type="email"
-              placeholder="tu@email.com"
-              className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background"
-            />
-            <Button size="sm" className="w-full">
-              Suscribirse
-            </Button>
-          </div>
+        <CardContent className="space-y-4 justify-between">
+          { categories?.map((category) => (
+            <Badge key={category.id} style={{ backgroundColor: category?.color }} className="text-white">
+              {category?.name} - {category.id}
+            </Badge>
+
+          ))}
         </CardContent>
       </CustomCard>
+
     </div>
   )
 }

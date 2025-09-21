@@ -13,7 +13,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useAuth } from "@/lib/auth-context"
 import { mockComments } from "@/lib/mock-data"
 import type { Comment } from "@/lib/types"
-import { CustomCard, ShineBorder } from "@/components"
+import { CustomCard, ScrollArea, ShineBorder } from "@/components"
 import { createCommentAction, IComment, IPost, IUser } from "@/features"
 import { toast } from "sonner"
 
@@ -185,6 +185,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
       )}
 
       {/* Comments List */}
+      <ScrollArea className="h-200 w-full rounded-md border p-4">
       <div className="space-y-6 mt-4">
         {comments.length > 0 ? (
           comments.map((comment) => {
@@ -327,6 +328,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
           </div>
         )}
       </div>
+      </ScrollArea>
     </section>
   )
 }

@@ -42,3 +42,18 @@ export class UserMapper {
     return entities;
   }
 }
+
+export const userGQLFields =`
+  id
+  provider
+  providerId
+  about
+  twitter_url
+  instagram_url
+  role
+  avatar
+  name
+  email
+  createAt
+  updateAt
+`;

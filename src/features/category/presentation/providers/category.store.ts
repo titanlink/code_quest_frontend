@@ -15,7 +15,7 @@ import { ResponsePropio } from "@/config";
 export const useCategoryStore = create<CategorysState>()((set, get) => ({
   isGridView: true,
   page: 0,
-  limit: 99999,
+  limit: 100,
   total: 0,
   items: [],
   isLoading: true,

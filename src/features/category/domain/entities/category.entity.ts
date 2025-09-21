@@ -35,3 +35,14 @@ export class CategoryMapper {
     return entities;
   }
 }
+
+export const categoryGQLFields =`
+  id
+  name
+  description
+  postCount
+  color
+  slug
+  createAt
+  updateAt
+`;

@@ -63,7 +63,7 @@ export class PostMapper {
         totalView: json['total_view'] ?? 0,
         viewUserCount: json['viewUserCount'] ?? 0,
         bookMarkCount: json['bookMarkCount'] ?? bookmarks.length,
-        commentsCount: json['commentsCount'] ?? comments.length,
+        commentsCount: json['commentCount'] ?? comments.length,
   
         createdAt: new Date(json['createAt']),
         updatedAt: new Date(json['updateAt']),
@@ -87,3 +87,26 @@ export class PostMapper {
     return entities;
   }
 }
+
+export const postGQLFields =`
+  id
+  title
+  slug
+  content
+  excerpt
+  published
+  featured
+  total_view
+  likesCount
+  bookmarkCount
+  viewUserCount
+  commentCount
+  tags
+  createAt
+  updateAt
+  image {
+    id
+    secure_url
+    public_id
+  }
+`;

@@ -1,54 +1,13 @@
 import { gql } from "@apollo/client";
+import { bookMarkGQLFields, categoryGQLFields, postGQLFields, userGQLFields } from "@/features";
 
 export const allPostGQL = gql`
-  query allPosts($limit: Int, $offset: Int) {
-    allPost(limit: $limit, offset: $offset) {
-    items { id
-      title
-      slug
-      content
-      excerpt
-      image {
-        id
-        secure_url
-        public_id
-      }
-      published
-      featured
-      total_view
-      viewUserCount
-      likesCount
-      commentCount
-      tags
-      createAt
-      updateAt
-
-      user {
-        id
-        email
-        createAt
-        updateAt
-        avatar
-        name
-        role
-      }
-
-      comment {
-        id
-        content
-        sub_comment {
-          id 
-          content
-        }
-      }
-
-      category {
-        id
-        name
-        slug
-        description
-        color
-      }
+    query AllPost($idCategory: Int, $limit: Int, $offset: Int) {
+    allPost(id_category: $idCategory, limit: $limit, offset: $offset) {
+    items {
+      ${postGQLFields}
+      user { ${userGQLFields} }
+      category { ${categoryGQLFields} }
     },
     total
     }
@@ -58,33 +17,8 @@ export const allPostGQL = gql`
 export const findPostGQL = gql`
   query Post($postId: Int!) {
     post(id: $postId) {
-      id
-      title
-      slug
-      content
-      excerpt
-      image {
-        id
-        secure_url
-        public_id
-      }
-      total_view
-      viewUserCount
-      published
-      featured
-      likesCount
-      commentCount
-      tags
-      createAt
-      updateAt
-
-      category {
-        id
-        name
-        slug
-        description
-        color
-      }
+      ${postGQLFields}
+      category { ${categoryGQLFields} }
 
     }
   }
@@ -93,98 +27,38 @@ export const findPostBySlugGQL = gql`
   query Post($slug: String!) {
     postBySlug(slug: $slug) {
       item {
-        id
-        title
-        slug
-        content
-        excerpt
-        total_view
-        viewUserCount
-        image {
-          id
-          secure_url
-          public_id
-        }
-        published
-        featured
-        likesCount
-        commentCount
-        tags
-        createAt
-        updateAt
+        ${postGQLFields}
 
         bookmark_post {
-          id
-          user {
-            id
-            email
-            name
-          }
-          post {
-            id
-          }
-          createAt
-          updateAt
+          ${bookMarkGQLFields}
+          user { ${userGQLFields} }
+          post { ${postGQLFields} }
         }
 
         like_post {
           id
-          user {
-            id
-            email
-            createAt
-            updateAt
-            avatar
-            name
-            role
-          }
+          user { ${userGQLFields} }
           createAt
         }
 
-        user {
-          id
-          email
-          createAt
-          updateAt
-          avatar
-          name
-          role
-        }
+        user { ${userGQLFields} }
 
-        category {
-          id
-          name
-          slug
-          description
-          color
-        }
+        category { ${categoryGQLFields} }
         comment {
           id
           likesCount
           commentCount
           content
-          user {
-            id
-            name
-            email
-            createAt
-            updateAt
-          }
           createAt
           updateAt
+          user { ${userGQLFields} }
           sub_comment {
             id
             content
             likesCount
             createAt
             updateAt
-            user {
-              id
-              name
-              email
-              createAt
-              updateAt
-            }
+            user { ${userGQLFields} }
             comment {
               id
               content
@@ -201,22 +75,8 @@ export const findPostBySlugGQL = gql`
 export const createPostGQL = gql`
   mutation CreatePost($input: CreatePostInput!) {
   createPost(createPostInput: $input) {
-    id
-    title
-    slug
-    content
-    excerpt
-    image {
-      id
-      secure_url
-      public_id
-    }
-    published
-    featured
-    tags
-    category {
-      id
-    }
+    ${postGQLFields}
+    category { ${categoryGQLFields} }
   }
 }
 `;
@@ -224,22 +84,8 @@ export const createPostGQL = gql`
 export const updatePostGQL = gql`
   mutation UpdatePost($input: UpdatePostInput!) {
   updatePost(updatePostInput: $input) {
-    id
-    title
-    slug
-    content
-    excerpt
-    image {
-      id
-      secure_url
-      public_id
-    }
-    published
-    featured
-    tags
-    category {
-      id
-    }
+    ${postGQLFields}
+    category { ${categoryGQLFields} }
   }
 }
 `;

@@ -65,7 +65,6 @@ export class CommentDatasourceGQL implements CommentDatasource {
 
       let input:any = { content: form.content, id_post: Number(form.postId), }
       if (isSubComment) input = { content: form.content, id_comment: Number(form.parentId), }
-      console.log("🚀 ~ CommentDatasourceGQL ~ create ~ input:", input)
 
       const { data } = await peti.mutate<any>({
         mutation: isSubComment ? createSubCommentGQL : createCommentGQL ,

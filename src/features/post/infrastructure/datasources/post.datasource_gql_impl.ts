@@ -6,7 +6,7 @@ import { ResponsePropio } from "@/config";
 
 
 export class PostDatasourceGQL implements PostDatasource {
-  async all(page = 0, limit = 50, token: string) {
+  async all(page = 0, limit = 50, token: string, categoryId?:number) {
     let retorno: ResponsePropio = { msg: 'Error desconocido', error: true}
     try {
       const peti = await makeClientGraphql(token);
@@ -16,7 +16,8 @@ export class PostDatasourceGQL implements PostDatasource {
         fetchPolicy: "no-cache",
         variables: {
           limit: limit,
-          offset: page
+          offset: page,
+          idCategory: categoryId
         },
       });
       const resp = data["allPost"]

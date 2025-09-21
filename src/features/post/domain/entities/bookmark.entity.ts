@@ -1,4 +1,4 @@
-import { CategoryMapper, CommentMapper, ICategory, IComment, ILike, IPost, IUser, LikeMapper, PostMapper, UserMapper } from "@/features"
+import { CategoryMapper, CommentMapper, ICategory, IComment, ILike, IPost, IUser, LikeMapper, postGQLFields, PostMapper, userGQLFields, UserMapper } from "@/features"
 
 export interface IBookMark {
   id?: string
@@ -39,3 +39,9 @@ export class BookMarkMapper {
     return entities;
   }
 }
+
+export const bookMarkGQLFields =`
+id
+createAt
+updateAt
+`;

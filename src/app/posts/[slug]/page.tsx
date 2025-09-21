@@ -3,10 +3,10 @@
 import { notFound, useParams, useRouter } from "next/navigation"
 import { Navbar } from "@/components/navbar"
 import { mockPosts } from "@/lib/mock-data"
-import { EnhancedCommentsSection, IPost, PostContent, PostSidebar, RelatedPosts, usePostStore } from "@/features"
+import { EnhancedCommentsSection, IPost, PostContent, PostSidebar, RelatedPosts, useCategoryStore, usePostStore } from "@/features"
 import { useAuth } from "@/lib"
 import { useEffect, useState } from "react"
-import { LoadingPage } from "@/components"
+import { LoadingPage, ScrollArea } from "@/components"
 import NotFound from "./not-found"
 
 
@@ -15,30 +15,33 @@ export default  function PostPage() {
   const router = useRouter()
   const { user, getToken } = useAuth()
 
+  const getCategories = useCategoryStore((state) => state.getData);
+  const categories = useCategoryStore((state) => state.items);
   const findOneBySlug = usePostStore((state) => state.findOneBySlug);
   const isLoading = usePostStore((state) => state.isLoading);
   const selected = usePostStore((state) => state.selected);
+  
+  const getPosts = usePostStore((state) => state.getData);
+  const relateds = usePostStore((state) => state.items);
+  
 
-  const [post, setPost] = useState<IPost | undefined>()
-  // const [loading, setLoading] = useState(true)
 
   const slug = params.slug
-
+  
   useEffect(() => {
     const fetchData = async () => {
       let token = ''
       if (user) token = await getToken() ?? ''
-      await findOneBySlug(slug, token)
-      setPost(selected)
+        const resp = await findOneBySlug(slug, token)
+        await getCategories(0, 100, token)
+        if ('id' in resp){ 
+          await getPosts(0, 4, '',  Number(resp?.category?.id), false )
+        }
     }
     if (selected?.slug != slug) fetchData()
-  }, [slug, getToken, router, user, post])
-  
+  }, [])
 
 
-const relatedPosts = mockPosts
-.filter((p) => p.id !== post?.id && p.categoryId === post?.categoryId && p.published)
-.slice(0, 3)
 
 return (
   <div className="min-h-screen bg-background">
@@ -57,16 +60,14 @@ return (
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <PostSidebar post={selected} />
+            <PostSidebar post={selected}  categories={categories} relateds={relateds}/>
           </div>
         </div>
 
         {/* Related Posts */}
-        {relatedPosts.length > 0 && (
           <div className="mt-16 pt-16 border-t">
-            <RelatedPosts posts={relatedPosts} />
+            <RelatedPosts posts={relateds} />
           </div>
-        )}
       </article>)}
     </div>
   )

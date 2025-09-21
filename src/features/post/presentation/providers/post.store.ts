@@ -30,10 +30,10 @@ export const usePostStore = create<PostsState>()((set, get) => ({
   setLimit(limit?: number){ set({limit: limit}) },
 
 
-  getData: async(_page: number = 0, _limit: number = 1, token = 'NO TENGO TOKEN') => {
+  getData: async(_page: number = 0, _limit: number = 1, token = 'NO TENGO TOKEN', categoriId?: number, notLoading?:boolean ) => {
     try {
-      set({ isLoading: true });      
-      const resp  = await allPostAction({ page: _page, limit: _limit}, token );
+      set({ isLoading: notLoading ?? true });      
+      const resp  = await allPostAction({ page: _page, limit: _limit}, token, categoriId );
       set({items: resp.data  ?? [], total: resp.totalRecords})
     }catch(error) {
       throw new Error('Posts > getData > Unauthorized')
@@ -55,12 +55,11 @@ export const usePostStore = create<PostsState>()((set, get) => ({
     }
     return retorno
   },
-  findOneBySlug: async( slug: string, token = 'NO TENGO TOKEN'): Promise<IPost | ResponsePropio> => {
+  findOneBySlug: async( slug: string, token = 'NO TENGO TOKEN', notLoading?:boolean ): Promise<IPost | ResponsePropio> => {
     let retorno: IPost | ResponsePropio = { error: true, msg: "Error desconocido" };
     try {
-      set({ isLoading: true });
+      set({ isLoading: notLoading ?? true });
       retorno  = await findPostBySlugAction(slug, token);
-      console.log("🚀 ~ retorno:", retorno)
       if ('id' in retorno) set({selected: retorno})
     }catch(error) {
       throw new Error('Posts > findOne > Unauthorized')

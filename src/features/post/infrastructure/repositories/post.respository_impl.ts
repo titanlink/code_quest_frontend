@@ -22,8 +22,8 @@ export class PostRepositoryImpl extends PostRepository {
   async update(entity: any) {
     return this.datasource.update(entity, this.token);
   }
-  async all(page: number, limit: number) {
-    return this.datasource.all(page, limit, this.token);
+  async all(page: number, limit: number, _token?:string, categoriId?:number) {
+    return this.datasource.all(page, limit, this.token, categoriId);
   }
   async delete(id: string) {
     return this.datasource.delete(id, this.token);

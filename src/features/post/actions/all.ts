@@ -5,12 +5,12 @@ import { IBookMark, ILike, } from "..";
 import { repoConfig, repoConfigBook, repoConfigLike } from "./_repo-config";
 
 
-export async function allPostAction({page = 0, limit = 50}, token: string = 'No Token') {
+export async function allPostAction({page = 0, limit = 50}, token: string = 'No Token', categoriId?: number) {
   let retorno: ResponsePropio = { msg: 'Error desconocido en allPostAction', error: true }
   const repo = repoConfig(token);
 
   try {
-    const response = await repo.all(page, limit);
+    const response = await repo.all(page, limit, token, categoriId);
     retorno = response
   } catch (e) {
     console.error("Error en allPostAction:", e);

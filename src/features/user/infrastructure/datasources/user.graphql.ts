@@ -1,20 +1,11 @@
 import { gql } from "@apollo/client";
+import { userGQLFields } from "../..";
 
 export const allUserGQL = gql`
   query allUsers($limit: Int, $offset: Int) {
     allUser(limit: $limit, offset: $offset) {
       items {
-        id
-        name
-        email
-        role
-        about
-        twitter_url
-        instagram_url
-        provider
-        avatar
-        createAt
-        updateAt
+        ${userGQLFields}
       }
       total
     }
@@ -35,38 +26,24 @@ export const dashboardGQL = gql`
   }
 }
 `;
+
 export const checkProfileGQL = gql`
   query CheckProfile {
     checkProfile {
-      id
-      provider
-      providerId
-      role
-      about
-      twitter_url
-      instagram_url
-      avatar
-      name
-      email
-      createAt
-      updateAt
+      ${userGQLFields}
+      bookmark_post {
+        id
+        createAt
+        updateAt
+      }
+
     }
   }
 `;
 export const findUserGQL = gql`
   query User($userId: Int!) {
     user(id: $userId) {
-      id
-      name
-      email
-      role
-      about
-      twitter_url
-      instagram_url
-      avatar
-      provider
-      createAt
-      updateAt
+      ${userGQLFields}
     }
   }
 `;
@@ -74,10 +51,7 @@ export const findUserGQL = gql`
 export const createUserGQL = gql`
   mutation CreateUser($input: CreateUserInput!) {
   createUser(createUserInput: $input) {
-    id
-    name
-    email
-    role
+    ${userGQLFields}
   }
 }
 `;
@@ -85,17 +59,7 @@ export const createUserGQL = gql`
 export const updateUserGQL = gql`
   mutation UpdateUser($input: UpdateUserInput!) {
   updateUser(updateUserInput: $input) {
-    id
-    name
-    email
-    role
-    about
-    twitter_url
-    instagram_url
-    avatar
-    provider
-    createAt
-    updateAt
+    ${userGQLFields}
   }
 }
 `;

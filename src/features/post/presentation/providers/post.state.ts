@@ -25,7 +25,7 @@ export interface PostsState {
   setPage: (page: number) =>void;
   setLimit: (limit: number) =>void;
 
-  getData: (page: number, limit: number, token: string) => Promise<void>;
+  getData: (page: number, limit: number, token: string, categoriId?:number, notLoading?:boolean) => Promise<void>;
   findOne: (id: string, token: string) => Promise<IPost | ResponsePropio>;
   findOneBySlug: (slug: string, token: string) => Promise<IPost | ResponsePropio>;
   createOrUpdate: (client: IPost, token: string) => Promise<IPost | ResponsePropio>;

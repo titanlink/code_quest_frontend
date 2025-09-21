@@ -1,4 +1,4 @@
-import { IUser, UserMapper } from "@/features"
+import { IUser, userGQLFields, UserMapper } from "@/features"
 
 export interface IComment {
   id?: string
@@ -76,3 +76,28 @@ export class SubCommentMapper {
     return entities;
   }
 }
+
+export const subCommentGQLFields =`
+  id
+  content
+  likesCount
+  createAt
+  updateAt
+  user { ${userGQLFields} }
+  comment {
+    id
+    content
+  }
+`;
+
+
+export const commentGQLFields =`
+  id
+  likesCount
+  commentCount
+  content
+  createAt
+  updateAt
+  user { ${userGQLFields} }
+  sub_comment { ${subCommentGQLFields} }
+`;

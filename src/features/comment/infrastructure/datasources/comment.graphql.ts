@@ -1,48 +1,27 @@
+import { 
+  categoryGQLFields, 
+  commentGQLFields, 
+  postGQLFields, 
+  subCommentGQLFields, 
+  userGQLFields 
+} from "@/features";
 import { gql } from "@apollo/client";
 
 export const allCommentGQL = gql`
   query allComment($limit: Int, $offset: Int) {
     allComment(limit: $limit, offset: $offset) {
       items {
-        id
-        content
-        user {
-          id
-          name
-          email
-        }
+        ${commentGQLFields}
+        user { ${userGQLFields}}
         post {
-          id
-          slug
-          category {
-            id
-            name
-            description
-            postCount
-            color
-            slug
-          }
+          ${postGQLFields}
+          category { ${categoryGQLFields} }
         }
         sub_comment {
-          id
-          content
-          likesCount
-          createAt
-          updateAt
-          user {
-            id
-            name
-            email
-            createAt
-            updateAt
-          }
-          comment {
-            id
-            content
-          }
+          ${subCommentGQLFields}
+          user { ${userGQLFields} }
+          comment { ${commentGQLFields} }
         }
-        createAt
-        updateAt
       }
       total
     }
@@ -52,15 +31,7 @@ export const allCommentGQL = gql`
 export const findCommentGQL = gql`
   query Comment($commentId: Int!) {
     comment(id: $commentId) {
-      id
-      content
-      postId
-      authorId
-      author
-      parentId
-      # sub_comment
-      createAt
-      updateAt
+      ${commentGQLFields}
     }
   }
 `;
@@ -68,40 +39,17 @@ export const findCommentGQL = gql`
 export const createCommentGQL = gql`
   mutation CreateComment($input: CreateCommentInput!) {
   createComment(createCommentInput: $input) {
-    id
-    content
-    likesCount
-    createAt
-    updateAt
-    user {
-      id
-      name
-      email
-      createAt
-      updateAt
-    }
+    ${commentGQLFields}
+    user { ${userGQLFields}}
   }
 }
 `;
 export const createSubCommentGQL = gql`
 mutation CreateSubComment($input: CreateSubCommentInput!) {
   createSubComment(createSubCommentInput: $input) {
-    id
-    content
-    likesCount
-    createAt
-    updateAt
-    user {
-      id
-      name
-      email
-      createAt
-      updateAt
-    }
-    comment {
-      id
-      content
-    }
+    ${subCommentGQLFields}
+    user { ${userGQLFields}}
+    comment { ${commentGQLFields} } 
   }
 }
 `;
@@ -109,15 +57,7 @@ mutation CreateSubComment($input: CreateSubCommentInput!) {
 export const updateCommentGQL = gql`
   mutation UpdateComment($input: UpdateCommentInput!) {
   updateComment(updateCommentInput: $input) {
-    id
-    content
-    postId
-    authorId
-    author
-    parentId
-    # sub_comment
-    createdAt
-    updatedAt
+    ${commentGQLFields}
   }
 }
 `;

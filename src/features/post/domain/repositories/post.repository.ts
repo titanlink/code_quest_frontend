@@ -3,7 +3,7 @@ import { IPost } from "..";
 
 
 export abstract class PostRepository {
-  abstract all(page:number, limit:number, token: string): Promise<IPost[] | ResponsePropio>;
+  abstract all(page:number, limit:number, token: string, categoriId?:number): Promise<IPost[] | ResponsePropio>;
   abstract findById(id: string, token: string): Promise<IPost | ResponsePropio>;
   abstract findBySlugId(slug: string, token: string): Promise<IPost | ResponsePropio>;
   abstract create(entity: any, token: string): Promise<IPost | ResponsePropio>;
