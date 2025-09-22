@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CODE QUEST 2025 - Frontend
 
-## Getting Started
+**DevCaribe** presenta el **frontend** del proyecto **Blog Comunitario** para el desafío **CODE QUEST 2025**, organizado por **Fernando Herrera**.
 
-First, run the development server:
+La aplicación está desarrollada con **Next.js** y **TypeScript**, con **TailwindCSS** para estilos, **Zustand** para estado global y **Firebase** para autenticación. Los datos se consumen mediante **GraphQL**.
 
+> ⚠️ Este repositorio corresponde únicamente al **frontend** del proyecto.
+> Asegúrate de que el **backend** esté levantado antes de iniciar el frontend.
+
+---
+
+## 🚀 Instrucciones de instalación
+
+### 1. Clonar el repositorio
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/carlosdiazz/code_quest_backend
+cd code_quest_backend
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Instalar dependencias
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Configurar variables de entorno
+- Copia `.env.template` → `.env`
+- Configura:
+  - `NEXT_PUBLIC_API_URL` → endpoint del backend
+  - Configuración Firebase (`apiKey`, `authDomain`, `projectId`, etc.)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Levantar el proyecto en desarrollo
+```bash
+npm run dev
+# o
+yarn dev
+```
 
-## Learn More
+### 5. Abrir en el navegador
+[http://localhost:3000](http://localhost:3000)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Tecnologías principales
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Tecnología | Propósito |
+|------------|-----------|
+| Next.js | Framework React |
+| TypeScript | Tipado estático |
+| TailwindCSS | Estilos utilitarios |
+| Zustand | Estado global |
+| Firebase | Auth y DB |
+| GraphQL | Consulta de datos |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📜 Scripts disponibles
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Script | Descripción |
+|--------|------------|
+| npm run dev | Levanta el proyecto en desarrollo |
+| npm run build | Compila para producción |
+| npm start | Ejecuta producción |
+
+---
+
+## 🎨 Estilos y componentes
+
+- **TailwindCSS** para clases utilitarias
+- **Componentes reutilizables** con props tipadas en TypeScript
+- **Dark mode** opcional con `class` en body
+
+---
+
+## 📦 Deployment
+
+- Se recomienda **Vercel** para desplegar Next.js
+- Configura variables de entorno en el panel de Vercel
+- Build automático al hacer push a main/master
+
+---
