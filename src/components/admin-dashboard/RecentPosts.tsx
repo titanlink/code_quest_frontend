@@ -38,9 +38,6 @@ const RecentPosts = ({recentPosts, isLoading}: Props) => {
             </div>
           </div>
         ))}
-        <Button variant="outline" className="w-full bg-transparent" asChild>
-          <Link href="/admin/posts">Ver todos los posts</Link>
-        </Button>
       </CardContent>
     </CustomCard>
   )

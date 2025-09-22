@@ -41,9 +41,6 @@ const RecentComments = ({ recentComments }: Props) => {
             </div>
           </div>
         ))}
-        <Button variant="outline" className="w-full bg-transparent" asChild>
-          <Link href="/admin/comments">Ver todos los comentarios</Link>
-        </Button>
       </CardContent>
     </CustomCard>
   );
