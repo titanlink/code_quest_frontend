@@ -7,6 +7,7 @@ import { deletePostAction } from "../../actions/delete";
 import { findPostAction, findPostBySlugAction } from "../../actions/find";
 import { updatePostAction } from "../../actions/update";
 import { IPost } from "../../domain/entities/post.entity";
+import { saveAsset } from "@/lib/server-utils";
 
 //import { saveAsset, useAuth } from "@/lib";
 
@@ -98,12 +99,12 @@ export const usePostStore = create<PostsState>()((set) => ({
   ): Promise<IPost | ResponsePropio> => {
     let retorno: IPost | ResponsePropio = {
       error: true,
-      msg: "Error desconocido, createOrUpdate",
+      msg: "Error desconocido, usePostStore > createOrUpdate",
     };
     try {
       if (entitdad.coverImage) {
-        //TODO const coverImage = await saveAsset(entitdad.coverImage)
-        //TODO entitdad.coverImage = coverImage
+        const cloudImageId = await saveAsset(entitdad.coverImage, token)
+        entitdad.id_image = cloudImageId
       }
       if (entitdad.id) retorno = await updatePostAction(entitdad, token);
       if (!entitdad.id) retorno = await createPostAction(entitdad, token);

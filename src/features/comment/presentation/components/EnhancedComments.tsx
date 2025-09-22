@@ -29,6 +29,7 @@ import { IUser } from "@/features/user/domain/entities/user.entity";
 import { createCommentAction } from "../../actions/create";
 import { IComment } from "../../domain/entities/comment.entity";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { toast } from "sonner";
 
 
 
@@ -105,9 +106,11 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
     // console.log("🚀 ~ handleSubmitReply ~ reply:", reply)
 
     const resp = await createCommentAction(reply, token ?? "", isSubComment);
+    console.log("🚀 ~ handleSubmitReply ~ resp:", resp)
+    toast.info(<pre><b>{JSON.stringify(resp,null,2)}</b></pre>)
     if ("error" in resp) return;
-
-    setComments([reply, ...comments]);
+    
+    // setComments([reply, ...comments]);
     setReplyContent("");
     setReplyTo(null);
   };
@@ -265,7 +268,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                       </p>
 
                       <div className="flex items-center gap-4 text-sm">
-                        <Button
+                        {/* <Button
                           variant="ghost"
                           size="sm"
                           className={`h-auto p-0 ${
@@ -279,7 +282,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                             }`}
                           />
                           Me gusta
-                        </Button>
+                        </Button> */}
                         <Button
                           variant="ghost"
                           size="sm"
@@ -381,7 +384,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                               </p>
 
                               <div className="flex items-center gap-4 text-xs">
-                                <Button
+                                {/* <Button
                                   variant="ghost"
                                   size="sm"
                                   className={`h-auto p-0 ${
@@ -399,7 +402,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                                     }`}
                                   />
                                   Me gusta
-                                </Button>
+                                </Button> */}
                               </div>
                             </div>
                           </div>
@@ -409,7 +412,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                   )}
 
                   {comment.id !==
-                    topLevelComments[topLevelComments.length - 1].id && (
+                    topLevelComments[topLevelComments.length - 1]?.id && (
                     <Separator />
                   )}
                 </div>

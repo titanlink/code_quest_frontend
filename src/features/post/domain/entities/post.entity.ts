@@ -29,6 +29,7 @@ export interface IPost {
   bookMarkCount?: number;
   commentsCount?: number;
   coverImage?: string | File;
+  id_image?: number;
   image?: IImage | null;
   authorId?: string;
   author?: IUser;

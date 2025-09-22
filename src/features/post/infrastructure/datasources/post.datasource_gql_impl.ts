@@ -116,12 +116,13 @@ export class PostDatasourceGQL implements PostDatasource {
         slug: form.slug,
         excerpt: form.excerpt,
         content: form.content,
-        coverImage: form.coverImage ?? "",
+        id_image: form.id_image,
         published: form.published ?? false,
         featured: form.featured ?? false,
         tags: form.tags,
         id_category: Number(form.categoryId),
       };
+      console.log("🚀 ~ PostDatasourceGQL ~ create ~ input:", input)
 
       const { data } = await peti.mutate<any>({
         mutation: createPostGQL,

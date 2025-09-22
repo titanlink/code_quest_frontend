@@ -106,7 +106,7 @@ export default function HomePage() {
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold">Artículos Destacados</h2>
               <Button variant="ghost" asChild>
-                <Link href="#all-posts">Ver todos</Link>
+                <Link href="/posts">Ver todos</Link>
               </Button>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
