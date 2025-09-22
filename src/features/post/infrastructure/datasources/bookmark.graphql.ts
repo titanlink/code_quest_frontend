@@ -1,5 +1,6 @@
-import { postGQLFields, userGQLFields } from "@/features";
 import { gql } from "@apollo/client";
+import { postGQLFields } from "../../domain/entities/post.entity";
+import { userGQLFields } from "@/features/user/domain/entities/user.entity";
 
 export const allBookMarkGQL = gql`
   query allBookmark($limit: Int, $offset: Int) {
@@ -28,7 +29,6 @@ export const findBookMarkGQL = gql`
   }
 `;
 
-
 export const createBookMarkGQL = gql`
   mutation CreateBookmark($input: CreateBookmarkInput!) {
   createBookmark(createBookmarkInput: $input) {
@@ -54,10 +54,10 @@ export const updateBookMarkGQL = gql`
 `;
 export const removeBookMarkPostGQL = gql`
   mutation RemoveBookmark($removeBookmarkId: Int!) {
-  removeBookmark(id: $removeBookmarkId) {
-    error
-    message
-    statusCode
+    removeBookmark(id: $removeBookmarkId) {
+      error
+      message
+      statusCode
+    }
   }
-}
 `;

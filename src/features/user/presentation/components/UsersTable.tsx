@@ -1,10 +1,14 @@
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge, CustomCard } from '@/components'
+"user client";
+
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Shield, UserCheck, UserX } from 'lucide-react'
-import React from 'react'
-import { IUser } from '../..'
+import {  MoreHorizontal, Shield, UserCheck, } from 'lucide-react'
+import { CustomCard } from '@/components/CustomCard';
+import { Button } from '@/components/ui/button';
+import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { IUser } from '../../domain/entities/user.entity';
+import { Badge } from '@/components/ui/badge';
 
 interface Props {
   filteredUsers: IUser[],

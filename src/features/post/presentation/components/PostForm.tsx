@@ -1,20 +1,32 @@
 "use client"
 
-import { Input, Button, CustomCard, CardContent, CardTitle, CardHeader, inputErrors, Card, Switch, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, TagsInput, CustomAlert, FormErrors, ImageUpload, CustomFormFile } from "@/components";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Form } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { IPost, usePostStore } from "../..";
+
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { ArrowLeft, Eye, Loader2, Save } from "lucide-react";
 import Link from "next/link";
-import { getImageUrl, useAuth } from "@/lib";
-import { useCategoryStore } from "@/features";
+import { CustomCard } from "@/components/CustomCard";
+import { FormErrors } from "@/components/FormErrors";
+import { inputErrors } from "@/components/input-errors";
+import { Button } from "@/components/ui/button";
+import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { TagsInput } from "@/components/ui/tags-input";
+import { useCategoryStore } from "@/features/category/presentation/providers/category.store";
+import { useAuth } from "@/lib/auth-context";
+import { getImageUrl } from "@/lib/utils";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@radix-ui/react-select";
+import { Switch } from "@radix-ui/react-switch";
+import { IPost } from "../../domain/entities/post.entity";
+import { usePostStore } from "../providers/post.store";
+
 
 interface Props {
   entity?: IPost;
@@ -79,7 +91,7 @@ export const PostForm = ({entity}:Props) => {
   async function onSubmit(values: z.infer < typeof formSchema > ) {
     // toast.info( <pre><b>{JSON.stringify(values, null, 2) } </b> </pre>)
     let isCreated = false
-    let actioned = isNew ? 'Registrado' : 'Actualizado'
+    const actioned = isNew ? 'Registrado' : 'Actualizado'
     startTransition(async () => {
       try {
         const resp = await createOrUpdate(values, token)

@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const Footer = () => {
   return (
     <div className="py-12 px-4 border-t">

@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { userGQLFields } from "../..";
+import { userGQLFields } from "../../domain/entities/user.entity";
 
 export const allUserGQL = gql`
   query allUsers($limit: Int, $offset: Int) {
@@ -14,17 +14,17 @@ export const allUserGQL = gql`
 
 export const dashboardGQL = gql`
   query TotalResponse {
-  totalResponse {
-    total_post
-    total_post_published
-    total_category
-    total_user
-    total_user_admin
-    total_comment
-    total_sub_comment
-    total_view
+    totalResponse {
+      total_post
+      total_post_published
+      total_category
+      total_user
+      total_user_admin
+      total_comment
+      total_sub_comment
+      total_view
+    }
   }
-}
 `;
 
 export const checkProfileGQL = gql`
@@ -65,10 +65,10 @@ export const updateUserGQL = gql`
 `;
 export const removeUserGQL = gql`
   mutation RemoveUser($removeUserId: Int!) {
-  removeUser(id: $removeUserId) {
-    error
-    message
-    statusCode
+    removeUser(id: $removeUserId) {
+      error
+      message
+      statusCode
+    }
   }
-}
 `;

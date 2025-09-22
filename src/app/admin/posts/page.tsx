@@ -3,10 +3,18 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { PostsTable, PostViewsChart, usePostStore } from "@/features"
-import { AdminFeatureHeader, LoadingPage, PaginationManager, ResizableHandle, ResizablePanel, ResizablePanelGroup, SearchFilters } from "@/components"
+
 import { Plus } from "lucide-react"
-import { useAuth } from "@/lib"
+import { AdminFeatureHeader } from "@/components/AdminFeatureHeader"
+import { LoadingPage } from "@/components/LoadingPage"
+import { PaginationManager } from "@/components/PaginationManager"
+import { SearchFilters } from "@/components/SearchFilters"
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable"
+import { PostsTable } from "@/features/post/presentation/components/PostsTable"
+import { PostViewsChart } from "@/features/post/presentation/components/PostViewsChart"
+import { usePostStore } from "@/features/post/presentation/providers/post.store"
+import { useAuth } from "@/lib/auth-context"
+
 
 export default function AdminPostsPage() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -18,7 +26,7 @@ export default function AdminPostsPage() {
   // const page: number = usePostStore( (state) => state.page ?? 1  );
   // const limit: number = usePostStore( (state) => state.limit ?? 50  );
 
-  const [limit,setLimit] = useState(10)
+  const [limit] = useState(10)
   const [page,setPage] = useState(1)
   
   const isLoading = usePostStore((state) => state.isLoading);
@@ -32,7 +40,7 @@ export default function AdminPostsPage() {
     // || post.author.name.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
-  const handleDeletePost = (postId: string) => {
+  const handleDeletePost = () => {
     // setPosts(posts.filter((p) => p.id !== postId))
   }
 
@@ -45,7 +53,7 @@ export default function AdminPostsPage() {
       }
     }
     fetchToken()
-  }, [user, token, page])
+  }, [user, token, page, getPosts, getToken, limit])
 
 
   return (

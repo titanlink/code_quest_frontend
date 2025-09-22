@@ -1,13 +1,14 @@
 "use server";
 
-import { ResponsePropio } from "@/config";
+import { ResponsePropio } from "@/config/response-propio";
+import { ICategory } from "../domain/entities/category.entity";
 import { repoConfig } from "./_repo-config";
-import { ICategory } from "..";
 
-
-
-export async function createCategoryAction(data: ICategory, token: string) : Promise<ICategory | ResponsePropio> {
-  const repo = repoConfig(token)
+export async function createCategoryAction(
+  data: ICategory,
+  token: string
+): Promise<ICategory | ResponsePropio> {
+  const repo = repoConfig(token);
 
   try {
     return await repo.create(data);

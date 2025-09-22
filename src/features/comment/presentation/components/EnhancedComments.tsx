@@ -1,67 +1,74 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useEffect, useState } from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Textarea } from "@/components/ui/textarea"
-import { Separator } from "@/components/ui/separator"
-import { MessageCircle, Reply, Heart, MoreHorizontal, Flag } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { useAuth } from "@/lib/auth-context"
-import { mockComments } from "@/lib/mock-data"
-import type { Comment } from "@/lib/types"
-import { CustomCard, ScrollArea, ShineBorder } from "@/components"
-import { createCommentAction, IComment, IPost, IUser } from "@/features"
-import { toast } from "sonner"
+import { useEffect, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
+import {
+  MessageCircle,
+  Reply,
+  Heart,
+  MoreHorizontal,
+  Flag,
+} from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/lib/auth-context";
+import { CustomCard } from "@/components/CustomCard";
+import { ShineBorder } from "@/components/magicui/shine-border";
+import { IPost } from "@/features/post/domain/entities/post.entity";
+import { IUser } from "@/features/user/domain/entities/user.entity";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import { createCommentAction } from "../../actions/create";
+import { IComment } from "../../domain/entities/comment.entity";
+
+
 
 interface Props {
-  post: IPost,
-  postId: string,
-  postComments: IComment[],
+  post: IPost;
+  postId: string;
+  postComments: IComment[];
 }
 
 export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
-  const { user, getToken } = useAuth()
-  const [newComment, setNewComment] = useState("")
-  const [replyTo, setReplyTo] = useState<string | null>(null)
-  const [replyContent, setReplyContent] = useState("")
-  const [comments, setComments] = useState(postComments)
-  const [likedComments, setLikedComments] = useState<Set<string>>(new Set())
+  const { user, getToken } = useAuth();
+  const [newComment, setNewComment] = useState("");
+  const [replyTo, setReplyTo] = useState<string | null>(null);
+  const [replyContent, setReplyContent] = useState("");
+  const [comments, setComments] = useState(postComments);
+  const [likedComments, setLikedComments] = useState<Set<string>>(new Set());
 
-  const [token, setToken] = useState<string | null>(null)
-    
-      
-    useEffect(() => {
-      const fetchToken = async () => {
-        if (user) {
-          const authToken = await getToken() ?? ''
-          setToken(authToken)
-        }
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      if (user) {
+        const authToken = (await getToken()) ?? "";
+        setToken(authToken);
       }
-      fetchToken()
-    }, [user, token, newComment])
+    };
+    fetchToken();
+  }, [user, token, newComment, getToken]);
 
-  const currentUser:IUser = {
-    id: post.author?.id ?? '',
-    email: user?.email ?? '',
-    name: user?.displayName ?? '',
-    role: 'user',
-  }
-
-  const author:IUser = {
-    id: post.author?.id ?? '',
-    email: post.author?.email ?? '',
-    name: post.author?.name ?? '',
-    role: post.author?.role ?? 'user',
-  }
+  const currentUser: IUser = {
+    id: post.author?.id ?? "",
+    email: user?.email ?? "",
+    name: user?.displayName ?? "",
+    role: "user",
+  };
 
   const handleSubmitComment = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!user || !newComment.trim()) return
-    
+    e.preventDefault();
+    if (!user || !newComment.trim()) return;
+
     // console.log("🚀 ~ handleSubmitComment ~ user:", user)
     const comment: IComment = {
       id: Date.now().toString(),
@@ -71,19 +78,19 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
       author: currentUser,
       createdAt: new Date(),
       updatedAt: new Date(),
-    }
+    };
 
-    const resp = await createCommentAction(comment, token ?? '')
-    if ('error' in resp) return
+    const resp = await createCommentAction(comment, token ?? "");
+    if ("error" in resp) return;
 
-    setComments([comment, ...comments])
-    setNewComment("")
-  }
+    setComments([comment, ...comments]);
+    setNewComment("");
+  };
 
   const handleSubmitReply = async (e: React.FormEvent, parentId: string) => {
-    e.preventDefault()
-    const isSubComment =true
-    if (!user || !replyContent.trim()) return
+    e.preventDefault();
+    const isSubComment = true;
+    if (!user || !replyContent.trim()) return;
 
     const reply: IComment = {
       id: Date.now().toString(),
@@ -94,37 +101,46 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
       author: currentUser,
       createdAt: new Date(),
       updatedAt: new Date(),
-    }
+    };
     // console.log("🚀 ~ handleSubmitReply ~ reply:", reply)
 
-    const resp = await createCommentAction(reply, token ?? '', isSubComment)
-    if ('error' in resp) return
+    const resp = await createCommentAction(reply, token ?? "", isSubComment);
+    if ("error" in resp) return;
 
-    setComments([reply, ...comments])
-    setReplyContent("")
-    setReplyTo(null)
-  }
+    setComments([reply, ...comments]);
+    setReplyContent("");
+    setReplyTo(null);
+  };
 
   const handleLikeComment = (commentId: string) => {
-    if (!user) return
+    if (!user) return;
 
-    const newLikedComments = new Set(likedComments)
+    const newLikedComments = new Set(likedComments);
     if (likedComments.has(commentId)) {
-      newLikedComments.delete(commentId)
+      newLikedComments.delete(commentId);
     } else {
-      newLikedComments.add(commentId)
+      newLikedComments.add(commentId);
     }
-    setLikedComments(newLikedComments)
-  }
-  
+    setLikedComments(newLikedComments);
+  };
+
   const topLevelComments = comments
     .sort((b, a) => {
-      const aTime = a?.createdAt instanceof Date ? a.createdAt.getTime() : typeof a?.createdAt === "number" ? a.createdAt : 0
-      const bTime = b?.createdAt instanceof Date ? b.createdAt.getTime() : typeof b?.createdAt === "number" ? b.createdAt : 0
-      return aTime - bTime
+      const aTime =
+        a?.createdAt instanceof Date
+          ? a.createdAt.getTime()
+          : typeof a?.createdAt === "number"
+          ? a.createdAt
+          : 0;
+      const bTime =
+        b?.createdAt instanceof Date
+          ? b.createdAt.getTime()
+          : typeof b?.createdAt === "number"
+          ? b.createdAt
+          : 0;
+      return aTime - bTime;
     })
-    .filter((c) => c.sub_comment)
-  const getsub_comment = (commentId: string) => comments.filter((c) => c.parentId === commentId)
+    .filter((c) => c.sub_comment);
 
   return (
     <section className="mt-16 pt-16 border-t">
@@ -143,8 +159,13 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
             <form onSubmit={handleSubmitComment} className="space-y-4">
               <div className="flex gap-3">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={user.photoURL || "/placeholder.svg"} alt={user?.displayName ?? ''} />
-                  <AvatarFallback>{user?.displayName?.charAt(0)}</AvatarFallback>
+                  <AvatarImage
+                    src={user.photoURL || "/placeholder.svg"}
+                    alt={user?.displayName ?? ""}
+                  />
+                  <AvatarFallback>
+                    {user?.displayName?.charAt(0)}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
                   <Textarea
@@ -162,15 +183,19 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
               </div>
             </form>
           </CardContent>
-            <ShineBorder shineColor={["#FE8FB5", "#FFBE7B"]} />
+          <ShineBorder shineColor={["#FE8FB5", "#FFBE7B"]} />
         </CustomCard>
       ) : (
         <Card className="mb-8 bg-muted/30">
           <CardContent className="pt-6">
             <div className="text-center">
               <MessageCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-semibold mb-2">Únete a la conversación</h3>
-              <p className="text-muted-foreground mb-4">Inicia sesión para comentar y participar en la discusión.</p>
+              <h3 className="text-lg font-semibold mb-2">
+                Únete a la conversación
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Inicia sesión para comentar y participar en la discusión.
+              </p>
               <div className="flex gap-2 justify-center">
                 <Button asChild>
                   <a href="/login">Iniciar Sesión</a>
@@ -186,149 +211,223 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
 
       {/* Comments List */}
       <ScrollArea className="h-200 w-full rounded-md border p-4">
-      <div className="space-y-6 mt-4">
-        {comments.length > 0 ? (
-          comments.map((comment) => {
-            const sub_comment:IComment[] = comment.sub_comment ?? [] //getsub_comment(comment?.id ?? '')
-            const isLiked = likedComments.has(comment?.id ?? '')
+        <div className="space-y-6 mt-4">
+          {comments.length > 0 ? (
+            comments.map((comment) => {
+              const sub_comment: IComment[] = comment.sub_comment ?? []; //getsub_comment(comment?.id ?? '')
+              const isLiked = likedComments.has(comment?.id ?? "");
 
-            return (
-              <div key={comment.id} className="space-y-4">
-                <div className="flex gap-4">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src={comment?.author?.avatar || "/placeholder.svg"} alt={comment?.author?.name} />
-                    <AvatarFallback>{comment?.author?.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
+              return (
+                <div key={comment.id} className="space-y-4">
+                  <div className="flex gap-4">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage
+                        src={comment?.author?.avatar || "/placeholder.svg"}
+                        alt={comment?.author?.name}
+                      />
+                      <AvatarFallback>
+                        {comment?.author?.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
 
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{comment?.author?.name}</span>
-                        <span className="text-sm text-muted-foreground">{comment?.createdAt?.toLocaleDateString()}</span>
+                    <div className="flex-1 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">
+                            {comment?.author?.name}
+                          </span>
+                          <span className="text-sm text-muted-foreground">
+                            {comment?.createdAt?.toLocaleDateString()}
+                          </span>
+                        </div>
+
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                            >
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem>
+                              <Flag className="mr-2 h-4 w-4" />
+                              Reportar
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
 
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <Flag className="mr-2 h-4 w-4" />
-                            Reportar
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
+                      <p className="text-sm leading-relaxed">
+                        {comment.content}
+                      </p>
 
-                    <p className="text-sm leading-relaxed">{comment.content}</p>
+                      <div className="flex items-center gap-4 text-sm">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className={`h-auto p-0 ${
+                            isLiked ? "text-red-500" : "text-muted-foreground"
+                          } hover:text-red-500`}
+                          onClick={() => handleLikeComment(comment?.id ?? "")}
+                        >
+                          <Heart
+                            className={`h-4 w-4 mr-1 ${
+                              isLiked ? "fill-current" : ""
+                            }`}
+                          />
+                          Me gusta
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-auto p-0 text-muted-foreground hover:text-foreground"
+                          onClick={() =>
+                            setReplyTo(
+                              replyTo === comment?.id ? null : comment?.id ?? ""
+                            )
+                          }
+                        >
+                          <Reply className="h-4 w-4 mr-1" />
+                          Responder
+                        </Button>
+                      </div>
 
-                    <div className="flex items-center gap-4 text-sm">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className={`h-auto p-0 ${isLiked ? "text-red-500" : "text-muted-foreground"} hover:text-red-500`}
-                        onClick={() => handleLikeComment(comment?.id ?? '')}
-                      >
-                        <Heart className={`h-4 w-4 mr-1 ${isLiked ? "fill-current" : ""}`} />
-                        Me gusta
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-auto p-0 text-muted-foreground hover:text-foreground"
-                        onClick={() => setReplyTo(replyTo === comment?.id  ? null : comment?.id ?? '')}
-                      >
-                        <Reply className="h-4 w-4 mr-1" />
-                        Responder
-                      </Button>
-                    </div>
-
-                    {/* Reply Form */}
-                    {replyTo === comment.id && user && (
-                      <form onSubmit={(e) => handleSubmitReply(e, comment?.id ?? '')} className="mt-4 space-y-3">
-                        <div className="flex gap-3">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src={user.photoURL || "/placeholder.svg"} alt={user.displayName ?? ''} />
-                            <AvatarFallback>{user?.displayName?.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <Textarea
-                              placeholder={`Responder a ${comment?.author?.name}...`}
-                              value={replyContent}
-                              onChange={(e) => setReplyContent(e.target.value)}
-                              className="min-h-[80px]"
-                            />
+                      {/* Reply Form */}
+                      {replyTo === comment.id && user && (
+                        <form
+                          onSubmit={(e) =>
+                            handleSubmitReply(e, comment?.id ?? "")
+                          }
+                          className="mt-4 space-y-3"
+                        >
+                          <div className="flex gap-3">
+                            <Avatar className="h-8 w-8">
+                              <AvatarImage
+                                src={user.photoURL || "/placeholder.svg"}
+                                alt={user.displayName ?? ""}
+                              />
+                              <AvatarFallback>
+                                {user?.displayName?.charAt(0)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <Textarea
+                                placeholder={`Responder a ${comment?.author?.name}...`}
+                                value={replyContent}
+                                onChange={(e) =>
+                                  setReplyContent(e.target.value)
+                                }
+                                className="min-h-[80px]"
+                              />
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex justify-end gap-2">
-                          <Button type="button" variant="outline" size="sm" onClick={() => setReplyTo(null)}>
-                            Cancelar
-                          </Button>
-                          <Button type="submit" size="sm" disabled={!replyContent.trim()}>
-                            Responder
-                          </Button>
-                        </div>
-                      </form>
-                    )}
+                          <div className="flex justify-end gap-2">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setReplyTo(null)}
+                            >
+                              Cancelar
+                            </Button>
+                            <Button
+                              type="submit"
+                              size="sm"
+                              disabled={!replyContent.trim()}
+                            >
+                              Responder
+                            </Button>
+                          </div>
+                        </form>
+                      )}
+                    </div>
                   </div>
+
+                  {/* sub_comment */}
+                  {sub_comment.length > 0 && (
+                    <div className="ml-14 space-y-4 border-l-2 border-muted pl-4">
+                      {sub_comment.map((reply) => {
+                        const isReplyLiked = likedComments.has(reply?.id ?? "");
+
+                        return (
+                          <div key={reply.id} className="flex gap-3">
+                            <Avatar className="h-8 w-8">
+                              <AvatarImage
+                                src={
+                                  reply?.author?.avatar || "/placeholder.svg"
+                                }
+                                alt={reply?.author?.name}
+                              />
+                              <AvatarFallback>
+                                {reply?.author?.name.charAt(0)}
+                              </AvatarFallback>
+                            </Avatar>
+
+                            <div className="flex-1 space-y-2">
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium text-sm">
+                                  {reply?.author?.name}
+                                </span>
+                                <span className="text-xs text-muted-foreground">
+                                  {reply?.createdAt?.toLocaleDateString()}
+                                </span>
+                              </div>
+
+                              <p className="text-sm leading-relaxed">
+                                {reply.content}
+                              </p>
+
+                              <div className="flex items-center gap-4 text-xs">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className={`h-auto p-0 ${
+                                    isReplyLiked
+                                      ? "text-red-500"
+                                      : "text-muted-foreground"
+                                  } hover:text-red-500`}
+                                  onClick={() =>
+                                    handleLikeComment(reply?.id ?? "")
+                                  }
+                                >
+                                  <Heart
+                                    className={`h-3 w-3 mr-1 ${
+                                      isReplyLiked ? "fill-current" : ""
+                                    }`}
+                                  />
+                                  Me gusta
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {comment.id !==
+                    topLevelComments[topLevelComments.length - 1].id && (
+                    <Separator />
+                  )}
                 </div>
-
-                {/* sub_comment */}
-                {sub_comment.length > 0 && (
-                  <div className="ml-14 space-y-4 border-l-2 border-muted pl-4">
-                    {sub_comment.map((reply) => {
-                      const isReplyLiked = likedComments.has(reply?.id ?? '')
-
-                      return (
-                        <div key={reply.id} className="flex gap-3">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src={reply?.author?.avatar || "/placeholder.svg"} alt={reply?.author?.name} />
-                            <AvatarFallback>{reply?.author?.name.charAt(0)}</AvatarFallback>
-                          </Avatar>
-
-                          <div className="flex-1 space-y-2">
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium text-sm">{reply?.author?.name}</span>
-                              <span className="text-xs text-muted-foreground">
-                                {reply?.createdAt?.toLocaleDateString()}
-                              </span>
-                            </div>
-
-                            <p className="text-sm leading-relaxed">{reply.content}</p>
-
-                            <div className="flex items-center gap-4 text-xs">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className={`h-auto p-0 ${isReplyLiked ? "text-red-500" : "text-muted-foreground"} hover:text-red-500`}
-                                onClick={() => handleLikeComment(reply?.id ?? '')}
-                              >
-                                <Heart className={`h-3 w-3 mr-1 ${isReplyLiked ? "fill-current" : ""}`} />
-                                Me gusta
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
-
-                {comment.id !== topLevelComments[topLevelComments.length - 1].id && <Separator />}
-              </div>
-            )
-          })
-        ) : (
-          <div className="text-center py-8">
-            <MessageCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">No hay comentarios aún</h3>
-            <p className="text-muted-foreground">Sé el primero en comentar este artículo.</p>
-          </div>
-        )}
-      </div>
+              );
+            })
+          ) : (
+            <div className="text-center py-8">
+              <MessageCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-semibold mb-2">
+                No hay comentarios aún
+              </h3>
+              <p className="text-muted-foreground">
+                Sé el primero en comentar este artículo.
+              </p>
+            </div>
+          )}
+        </div>
       </ScrollArea>
     </section>
-  )
+  );
 }

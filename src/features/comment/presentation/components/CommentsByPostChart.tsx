@@ -1,8 +1,9 @@
 "use client"
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { IComment } from "@/features"
+
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
+import { IComment } from "../../domain/entities/comment.entity"
 
 interface CommentsByPostProps {
   comments: IComment[]
@@ -10,7 +11,7 @@ interface CommentsByPostProps {
 
 export function CommentsByPostChart({ comments }: CommentsByPostProps) {
   const grouped = comments.reduce((acc, c) => {
-    acc[c.postId] = (acc[c.postId] ?? 0) + 1
+    acc[c?.postId??""] = (acc[c?.postId??""] ?? 0) + 1
     return acc
   }, {} as Record<string, number>)
 

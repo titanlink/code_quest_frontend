@@ -1,12 +1,13 @@
 import React from 'react'
-import { FormState } from 'react-hook-form'
-import { CustomAlert } from '.'
+import { FieldValues, FormState } from 'react-hook-form'
+import { CustomAlert } from './CustomAlert'
 
-interface Props {
-  formState: FormState<any>
+
+interface Props<T extends FieldValues> {
+  formState: FormState<T>
 }
 
-export const FormErrors = ({formState}:Props) => {
+export const FormErrors = <T extends FieldValues,>({formState}: Props<T>) => {
   return (
     <>
     { Object.entries(formState.errors).length > 0 && (

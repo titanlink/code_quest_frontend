@@ -1,14 +1,14 @@
-import { ResponsePropio } from "@/config";
-import { ILike, LikeDatasource, LikeRepository } from "../..";
-
-
-
+import { LikeDatasource } from "../../domain/datasources/like.datasource";
+import { LikeRepository } from "../../domain/repositories/like.repository";
 
 export class LikeRepositoryImpl extends LikeRepository {
-  constructor(private readonly datasource: LikeDatasource, private token: string = '') {
+  constructor(
+    private readonly datasource: LikeDatasource,
+    private token: string = ""
+  ) {
     super();
   }
-  
+
   async findById(id: string) {
     return this.datasource.findById(id, this.token);
   }
@@ -25,4 +25,3 @@ export class LikeRepositoryImpl extends LikeRepository {
     return this.datasource.delete(id, this.token);
   }
 }
-

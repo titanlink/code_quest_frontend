@@ -1,44 +1,44 @@
-'use client'
-import Link from "next/link"
-import Image from "next/image"
-import { Calendar, Heart, MessageCircle, Eye } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-  Badge,
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CustomCard,
-} from "."
-import { IPost } from "@/features"
-import { getImageUrl } from "@/lib"
-import { useState } from "react"
+"use client";
+import Link from "next/link";
+import Image from "next/image";
+import { Calendar, Heart, MessageCircle, Eye, Badge } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+
+import { useState } from "react";
+import { IPost } from "@/features/post/domain/entities/post.entity";
+import { getImageUrl } from "@/lib/utils";
+import { CustomCard } from "./CustomCard";
+import { CardHeader, CardContent, CardFooter } from "./ui/card";
 
 interface Props {
-  post: IPost
+  post: IPost;
 }
 
 export function PostCard({ post }: Props) {
-  const [src, setSrc] = useState("/no_image_available.jpg")
+  const [src, setSrc] = useState("/no_image_available.jpg");
   return (
     <CustomCard withHover withOpacity>
-      
       <CardHeader className="p-0">
         <Link href={`/posts/${post.slug}`}>
           <div className="relative aspect-video overflow-hidden">
             <Image
-              fill className="object-cover" priority
+              fill
+              className="object-cover"
+              priority
               src={getImageUrl(post?.coverImage)}
               alt={post.title}
               onError={() => {
-                console.warn("⚠️ Imagen no encontrada:", src)
-                setSrc("/fallback.png") // cambiamos a imagen de respaldo
+                console.warn("⚠️ Imagen no encontrada:", src);
+                setSrc("/fallback.png"); // cambiamos a imagen de respaldo
               }}
             />
             {/* { JSON.stringify(post?.coverImage,null,2)} */}
             <div className="absolute top-4 left-4">
-              <Badge style={{ backgroundColor: post?.category?.color }} className="text-white">
+              <Badge
+                style={{ backgroundColor: post?.category?.color }}
+                className="text-white"
+              >
                 {post?.category?.name}
               </Badge>
             </div>
@@ -52,7 +52,9 @@ export function PostCard({ post }: Props) {
             {post.title}
           </h3>
         </Link>
-        <p className="text-muted-foreground text-sm mb-4 line-clamp-3 truncate w-[90%]">{post.excerpt}</p>
+        <p className="text-muted-foreground text-sm mb-4 line-clamp-3 truncate w-[90%]">
+          {post.excerpt}
+        </p>
 
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
@@ -74,7 +76,10 @@ export function PostCard({ post }: Props) {
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-3">
             <Avatar className="h-8 w-8">
-              <AvatarImage src={post?.author?.avatar || "/placeholder.svg"} alt={post?.author?.name} />
+              <AvatarImage
+                src={post?.author?.avatar || "/placeholder.svg"}
+                alt={post?.author?.name}
+              />
               <AvatarFallback>{post?.author?.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
@@ -95,5 +100,5 @@ export function PostCard({ post }: Props) {
         scale={0.9}
       /> */}
     </CustomCard>
-  )
+  );
 }

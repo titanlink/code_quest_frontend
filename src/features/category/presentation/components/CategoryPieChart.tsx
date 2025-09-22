@@ -1,10 +1,11 @@
 "use client"
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { CustomCard } from "@/components/CustomCard";
+import {  CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
-import { ICategory } from "../.."
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
-import { CustomCard } from "@/components";
+import { ICategory } from "../../domain/entities/category.entity";
+
 
 interface CategoryPieProps {
   categories: ICategory[]

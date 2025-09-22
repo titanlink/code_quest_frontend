@@ -11,7 +11,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { ReactNode } from "react";
-import { ShineBorder } from ".";
+import { ShineBorder } from "./magicui/shine-border";
+
 
 
 interface Props {

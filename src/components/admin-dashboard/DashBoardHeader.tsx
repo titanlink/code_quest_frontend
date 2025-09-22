@@ -1,10 +1,14 @@
-import { Button } from '@/components/ui'
+"use client";
+
+
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
-import { AdminFeatureHeader } from '..'
+import { AdminFeatureHeader } from '../AdminFeatureHeader';
+import { Button } from '../ui/button';
 
-const DashBoardHeader = () => {
+
+
+export const DashBoardHeader = () => {
   return (
     <AdminFeatureHeader title="Dashboard" subTitle="Bienvenido al panel de administración" >
       <Button asChild>
@@ -16,5 +20,3 @@ const DashBoardHeader = () => {
     </AdminFeatureHeader>
   )
 }
-
-export default DashBoardHeader

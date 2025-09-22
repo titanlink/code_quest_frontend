@@ -1,6 +1,5 @@
-import { IUser } from "../..";
-
-
+import { ResponsePropio } from "@/config/response-propio";
+import { IUser } from "../../domain/entities/user.entity";
 
 export interface UsersState {
   isGridView?: boolean;
@@ -14,20 +13,23 @@ export interface UsersState {
   isLoading: boolean;
   search?: string;
 
+  items: IUser[];
+  filterItems?: IUser[];
 
-  items:IUser[];
-  filterItems?:IUser[];
+  setSelected: (selected: IUser | null) => void;
+  selected?: IUser | null;
 
-  setSelected: (selected:IUser | null) => void;
-  selected?:IUser | null;
-  
-  setPage: (page: number) =>void;
-  setLimit: (limit: number) =>void;
+  setPage: (page: number) => void;
+  setLimit: (limit: number) => void;
 
   getData: (page: number, limit: number, token: string) => Promise<void>;
   findOne: (id: string, token: string) => Promise<IUser | null>;
-  changeRole: (client: IUser, token: string) => Promise<any>;
-  createOrUpdate: (client: IUser, token: string) => Promise<any>;
+  changeRole: (client: IUser, token: string) => Promise<void>;
+  createOrUpdate: (
+    client: IUser,
+    token: string
+  ) => Promise<IUser | ResponsePropio>;
   deleteOne: (id: string, token: string) => Promise<IUser | null>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dashboard: (token: string) => Promise<any>;
 }

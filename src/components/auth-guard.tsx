@@ -29,7 +29,7 @@ export function AuthGuard({ children, requireAdmin = false, redirectTo = "/login
         return
       }
     }
-  }, [user, loading, requireAdmin, redirectTo, router])
+  }, [user, loading, requireAdmin, redirectTo, router, session?.role])
 
   if (loading) {
     return (

@@ -1,1 +1,0 @@
-export * from './comment.respository_impl'

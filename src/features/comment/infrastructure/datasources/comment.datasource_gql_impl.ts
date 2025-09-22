@@ -1,15 +1,19 @@
-import { CommentDatasource, CommentMapper, IComment } from "../..";
-import { makeClientGraphql } from "@/lib";
-import { allCommentGQL, createCommentGQL, createSubCommentGQL, findCommentGQL, removeCommentGQL, updateCommentGQL } from "./comment.graphql";
-import { ResponsePropio } from "@/config";
-
-
+import { ResponsePropio } from "@/config/response-propio";
+import { makeClientGraphql } from "@/lib/client-graphql";
+import { CommentDatasource } from "../../domain/datasources/comment.datasource";
+import { CommentMapper, IComment } from "../../domain/entities/comment.entity";
+import {
+  allCommentGQL,
+  findCommentGQL,
+  createSubCommentGQL,
+  createCommentGQL,
+  updateCommentGQL,
+  removeCommentGQL,
+} from "./comment.graphql";
 
 export class CommentDatasourceGQL implements CommentDatasource {
-  
-
   async all(page = 0, limit = 50, token: string) {
-    let retorno: ResponsePropio = { msg: 'Error desconocido', error: true}
+    let retorno: ResponsePropio = { msg: "Error desconocido", error: true };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -18,26 +22,29 @@ export class CommentDatasourceGQL implements CommentDatasource {
         fetchPolicy: "no-cache",
         variables: {
           limit: limit,
-          offset: page
+          offset: page,
         },
       });
-      const resp = data["allComment"]
-      const entities = CommentMapper.fromJsonList(resp['items']);
+      const resp = data["allComment"];
+      const entities = CommentMapper.fromJsonList(resp["items"]);
       if (entities) {
-        retorno.msg = 'Ok'
-        retorno.error = false
-        retorno.totalRecords = resp['total']
+        retorno.msg = "Ok";
+        retorno.error = false;
+        retorno.totalRecords = resp["total"];
         retorno.data = entities;
       }
     } catch (e) {
       console.error(`Error => allCommentGQL -> ${e}`);
-      throw e
-    }finally{
-      return retorno
+      throw e;
+    } finally {
+      return retorno;
     }
   }
-  async findById(id: string, token: string){
-    let retorno: IComment | ResponsePropio = { msg: 'Error desconocido', error: true }
+  async findById(id: string, token: string) {
+    let retorno: IComment | ResponsePropio = {
+      msg: "Error desconocido",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -48,42 +55,47 @@ export class CommentDatasourceGQL implements CommentDatasource {
           commentId: Number(id),
         },
       });
-      const entity = CommentMapper.fromJson(data["comment"])
-      if (entity && 'id' in entity) retorno = entity
+      const entity = CommentMapper.fromJson(data["comment"]);
+      if (entity && "id" in entity) retorno = entity;
     } catch (e) {
       console.error(`Error => findCommentGQL -> ${e}`);
-    }finally{
-      return retorno
+    } finally {
+      return retorno;
     }
-  
   }
 
-  async create ( form: IComment, token: string, isSubComment: boolean = false ) {
-    let retorno: IComment | ResponsePropio = { msg: 'Error desconocido > CommentDatasourceGQL > create', error: true }
+  async create(form: IComment, token: string, isSubComment: boolean = false) {
+    let retorno: IComment | ResponsePropio = {
+      msg: "Error desconocido > CommentDatasourceGQL > create",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
-      let input:any = { content: form.content, id_post: Number(form.postId), }
-      if (isSubComment) input = { content: form.content, id_comment: Number(form.parentId), }
+      let input: any = { content: form.content, id_post: Number(form.postId) };
+      if (isSubComment)
+        input = { content: form.content, id_comment: Number(form.parentId) };
 
       const { data } = await peti.mutate<any>({
-        mutation: isSubComment ? createSubCommentGQL : createCommentGQL ,
+        mutation: isSubComment ? createSubCommentGQL : createCommentGQL,
         fetchPolicy: "no-cache",
-        variables: { input:input },
+        variables: { input: input },
       });
 
-      const entity = CommentMapper.fromJson(data["createComment"])
-      if (entity && 'id' in entity) retorno = entity
+      const entity = CommentMapper.fromJson(data["createComment"]);
+      if (entity && "id" in entity) retorno = entity;
     } catch (e) {
       console.error(`Error => createCommentGQL -> ${e}`);
     } finally {
-      return retorno
+      return retorno;
     }
-    
-  };
+  }
 
-  async update(form: IComment, token: string){
-    let retorno: IComment | ResponsePropio = { msg: 'Error desconocido', error: true }
+  async update(form: IComment, token: string) {
+    let retorno: IComment | ResponsePropio = {
+      msg: "Error desconocido",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -102,19 +114,19 @@ export class CommentDatasourceGQL implements CommentDatasource {
           },
         },
       });
-      const entity = CommentMapper.fromJson(data["updateComment"])
-      if (entity && 'id' in entity) retorno = entity
+      const entity = CommentMapper.fromJson(data["updateComment"]);
+      if (entity && "id" in entity) retorno = entity;
     } catch (e) {
-      const error = `${e}`
+      const error = `${e}`;
       console.error(error);
-      if ('msg' in retorno) retorno.msg = error
-    }finally{
-      return retorno
+      if ("msg" in retorno) retorno.msg = error;
+    } finally {
+      return retorno;
     }
   }
 
   async delete(id: string, token: string) {
-    let retorno: ResponsePropio = { msg: 'Error desconocido', error: true }
+    let retorno: ResponsePropio = { msg: "Error desconocido", error: true };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -125,16 +137,14 @@ export class CommentDatasourceGQL implements CommentDatasource {
           removeCommentId: Number(id),
         },
       });
-      const resp = data['removeComment']
-      if ('message' in resp) retorno =  { msg: resp['message'], error: !resp }
-      
+      const resp = data["removeComment"];
+      if ("message" in resp) retorno = { msg: resp["message"], error: !resp };
     } catch (e) {
-      const error = `Error => updateCommentGQL -> ${e}`
+      const error = `Error => updateCommentGQL -> ${e}`;
       console.error(error, e);
-      retorno.msg = error
+      retorno.msg = error;
     } finally {
-      return retorno
+      return retorno;
     }
   }
-
 }

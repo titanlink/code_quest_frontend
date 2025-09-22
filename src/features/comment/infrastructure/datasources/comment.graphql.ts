@@ -1,11 +1,11 @@
-import { 
-  categoryGQLFields, 
-  commentGQLFields, 
-  postGQLFields, 
-  subCommentGQLFields, 
-  userGQLFields 
-} from "@/features";
+import { categoryGQLFields } from "@/features/category/domain/entities/category.entity";
+import { postGQLFields } from "@/features/post/domain/entities/post.entity";
+import { userGQLFields } from "@/features/user/domain/entities/user.entity";
 import { gql } from "@apollo/client";
+import {
+  commentGQLFields,
+  subCommentGQLFields,
+} from "../../domain/entities/comment.entity";
 
 export const allCommentGQL = gql`
   query allComment($limit: Int, $offset: Int) {
@@ -63,10 +63,10 @@ export const updateCommentGQL = gql`
 `;
 export const removeCommentGQL = gql`
   mutation RemoveComment($removeCommentId: Int!) {
-  removeComment(id: $removeCommentId) {
-    error
-    message
-    statusCode
+    removeComment(id: $removeCommentId) {
+      error
+      message
+      statusCode
+    }
   }
-}
 `;

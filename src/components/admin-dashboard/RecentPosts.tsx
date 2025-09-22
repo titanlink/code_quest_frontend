@@ -1,7 +1,11 @@
-import { CustomCard, CardHeader, CardTitle, CardDescription, CardContent, Button, Badge } from '@/components'
-import { IPost } from '@/features'
-import { Eye, Link } from 'lucide-react'
+
+import { IPost } from '@/features/post/domain/entities/post.entity'
+import {  Eye, Link } from 'lucide-react'
 import React from 'react'
+import { CustomCard } from '../CustomCard'
+import { Button } from '../ui/button'
+import { CardHeader, CardTitle, CardDescription, CardContent } from '../ui/card'
+import { Badge } from '../ui/badge'
 
 
 interface Props {

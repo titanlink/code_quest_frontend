@@ -8,7 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Search, Filter, X, Star } from "lucide-react"
 import type { PostFilters } from "@/lib/types"
-import { ICategory } from "@/features/category"
+import { ICategory } from "@/features/category/domain/entities/category.entity"
+
 
 interface Props {
   filters: PostFilters

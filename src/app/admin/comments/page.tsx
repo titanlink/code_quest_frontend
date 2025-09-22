@@ -1,9 +1,15 @@
 "use client"
 
+import { AdminFeatureHeader } from "@/components/AdminFeatureHeader"
+import { LoadingPage } from "@/components/LoadingPage"
+import { PaginationManager } from "@/components/PaginationManager"
+import { SearchFilters } from "@/components/SearchFilters"
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable"
+import { CommentsOverTimeChart } from "@/features/comment/presentation/components/CommentsOverTimeChart"
+import { CommentsTable } from "@/features/comment/presentation/components/CommentsTable"
+import { useCommentStore } from "@/features/comment/presentation/providers/comment.store"
+import { useAuth } from "@/lib/auth-context"
 import { useEffect, useState } from "react"
-import {  CommentsOverTimeChart, CommentsTable, useCommentStore } from "@/features"
-import { AdminFeatureHeader, LoadingPage, PaginationManager, ResizableHandle, ResizablePanel, ResizablePanelGroup, SearchFilters } from "@/components"
-import { useAuth } from "@/lib"
 
 export default function AdminCommentsPage() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -16,7 +22,7 @@ export default function AdminCommentsPage() {
   const isLoading = useCommentStore((state) => state.isLoading ?? true);
 
 
-  const [limit,setLimit] = useState(10)
+  const [limit] = useState(10)
   const [page,setPage] = useState(1)
 
   const filteredComments = comments.filter(
@@ -25,7 +31,7 @@ export default function AdminCommentsPage() {
       comment?.author?.name.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
-  const handleDeleteComment = (commentId: string) => {
+  const handleDeleteComment = () => {
     // setComments(comments.filter((p) => p.id !== commentId))
   }
 
@@ -38,7 +44,7 @@ export default function AdminCommentsPage() {
       }
     }
     fetchToken()
-  }, [token, user, limit, page]);
+  }, [token, user, limit, page, getComments, getToken]);
 
   return (
     <div className="space-y-6">

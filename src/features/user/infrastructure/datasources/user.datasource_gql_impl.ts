@@ -1,15 +1,20 @@
-import { UserDatasource, UserMapper, IUser } from "../..";
-import { makeClientGraphql } from "@/lib";
-import { ResponsePropio } from "@/config";
-import { allUserGQL, checkProfileGQL, createUserGQL, dashboardGQL, findUserGQL, removeUserGQL, updateUserGQL } from "./user.graphql";
-
-
+import { ResponsePropio } from "@/config/response-propio";
+import { makeClientGraphql } from "@/lib/client-graphql";
+import { UserDatasource } from "../../domain/datasources/user.datasource";
+import { UserMapper, IUser } from "../../domain/entities/user.entity";
+import {
+  allUserGQL,
+  checkProfileGQL,
+  createUserGQL,
+  dashboardGQL,
+  findUserGQL,
+  removeUserGQL,
+  updateUserGQL,
+} from "./user.graphql";
 
 export class UserDatasourceGQL implements UserDatasource {
-  
-
   async all(page = 0, limit = 50, token: string) {
-    let retorno: ResponsePropio = { msg: 'Error desconocido', error: true}
+    let retorno: ResponsePropio = { msg: "Error desconocido", error: true };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -18,30 +23,33 @@ export class UserDatasourceGQL implements UserDatasource {
         fetchPolicy: "no-cache",
         variables: {
           limit: limit,
-          offset: page
+          offset: page,
         },
       });
-      const resp = data["allUser"]
-      const entities = UserMapper.fromJsonList(resp['items']);
+      const resp = data["allUser"];
+      const entities = UserMapper.fromJsonList(resp["items"]);
       if (entities) {
-        retorno.msg = 'Ok'
-        retorno.error = false
-        retorno.totalRecords = resp['total']
+        retorno.msg = "Ok";
+        retorno.error = false;
+        retorno.totalRecords = resp["total"];
         retorno.data = entities;
       }
     } catch (e) {
       console.error(`Error => allPostGQL -> ${e}`);
       const error = e as Error;
-      if ('error' in retorno){ 
-        retorno.msg = error.message
-        retorno.devMsg = 'Error de conexión'
+      if ("error" in retorno) {
+        retorno.msg = error.message;
+        retorno.devMsg = "Error de conexión";
       }
-    }finally{
-      return retorno
+    } finally {
+      return retorno;
     }
   }
-  async dashboard(token: string){
-    let retorno: IUser | ResponsePropio = { msg: 'Error desconocido', error: true }
+  async dashboard(token: string) {
+    let retorno: IUser | ResponsePropio = {
+      msg: "Error desconocido",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -49,16 +57,19 @@ export class UserDatasourceGQL implements UserDatasource {
         query: dashboardGQL,
         fetchPolicy: "no-cache",
       });
-      const entity = data["totalResponse"]
+      const entity = data["totalResponse"];
       if (entity) retorno = entity;
     } catch (e) {
       console.error(`Error => findUserGQL -> ${e}`);
-    }finally{
-      return retorno
+    } finally {
+      return retorno;
     }
   }
-  async checkProfile(token: string){
-    let retorno: IUser | ResponsePropio = { msg: 'Error desconocido', error: true }
+  async checkProfile(token: string) {
+    let retorno: IUser | ResponsePropio = {
+      msg: "Error desconocido",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -66,17 +77,20 @@ export class UserDatasourceGQL implements UserDatasource {
         query: checkProfileGQL,
         fetchPolicy: "no-cache",
       });
-      const entity = UserMapper.fromJson(data["checkProfile"])
+      const entity = UserMapper.fromJson(data["checkProfile"]);
       if (entity) retorno = entity;
     } catch (e) {
       console.error(`Error => findUserGQL -> ${e}`);
-    }finally{
-      return retorno
+    } finally {
+      return retorno;
     }
   }
 
-  async findById(id: string, token: string){
-    let retorno: IUser | ResponsePropio = { msg: 'Error desconocido', error: true }
+  async findById(id: string, token: string) {
+    let retorno: IUser | ResponsePropio = {
+      msg: "Error desconocido",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -87,17 +101,20 @@ export class UserDatasourceGQL implements UserDatasource {
           userId: Number(id),
         },
       });
-      const entity = UserMapper.fromJson(data["user"])
+      const entity = UserMapper.fromJson(data["user"]);
       if (entity) retorno = entity;
     } catch (e) {
       console.error(`Error => findUserGQL -> ${e}`);
-    }finally{
-      return retorno
+    } finally {
+      return retorno;
     }
   }
 
-  async create ( form: IUser, token: string ) {
-    let retorno: IUser | ResponsePropio = { msg: 'Error desconocido createUserGQL gql_impl', error: true }
+  async create(form: IUser, token: string) {
+    let retorno: IUser | ResponsePropio = {
+      msg: "Error desconocido createUserGQL gql_impl",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -111,18 +128,20 @@ export class UserDatasourceGQL implements UserDatasource {
           },
         },
       });
-      const entity = UserMapper.fromJson(data["createUser"])
-      if (entity) retorno = entity
+      const entity = UserMapper.fromJson(data["createUser"]);
+      if (entity) retorno = entity;
     } catch (e) {
       console.error(`Error => createUserGQL -> ${e}`);
     } finally {
-      return retorno
+      return retorno;
     }
-    
-  };
+  }
 
-  async update(form: IUser, token: string ){
-    let retorno: IUser | ResponsePropio = { msg: 'Error desconocido', error: true }
+  async update(form: IUser, token: string) {
+    let retorno: IUser | ResponsePropio = {
+      msg: "Error desconocido",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -134,8 +153,8 @@ export class UserDatasourceGQL implements UserDatasource {
         twitter_url: form.twitter_url ? form.twitter_url : null,
         instagram_url: form.instagram_url ? form.instagram_url : null,
         role: form.role,
-      }
-      console.log("🚀 ~ UserDatasourceGQL ~ update ~ input:", input)
+      };
+      console.log("🚀 ~ UserDatasourceGQL ~ update ~ input:", input);
 
       const { data } = await peti.mutate<any>({
         mutation: updateUserGQL,
@@ -145,19 +164,19 @@ export class UserDatasourceGQL implements UserDatasource {
         },
       });
       const entity = UserMapper.fromJson(data["updateUser"]);
-      if (entity) retorno = entity
+      if (entity) retorno = entity;
     } catch (e) {
-      const error = `${e}`
-      const parts = error.split(':')
+      const error = `${e}`;
+      const parts = error.split(":");
       console.error(error, e);
-      if ('msg' in retorno) retorno.msg = parts[parts.length-1]
-    }finally{
-      return retorno
+      if ("msg" in retorno) retorno.msg = parts[parts.length - 1];
+    } finally {
+      return retorno;
     }
   }
 
   async delete(id: string, token: string) {
-    let retorno: ResponsePropio = { msg: 'Error desconocido', error: true }
+    let retorno: ResponsePropio = { msg: "Error desconocido", error: true };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -168,22 +187,24 @@ export class UserDatasourceGQL implements UserDatasource {
           removeUserId: Number(id),
         },
       });
-      const resp = data['removeUser']
-      if ('message' in resp) retorno =  { msg: resp['message'], error: !resp }
-      
+      const resp = data["removeUser"];
+      if ("message" in resp) retorno = { msg: resp["message"], error: !resp };
     } catch (e) {
-      const error = `Error => removeUserGQL -> ${e}`
+      const error = `Error => removeUserGQL -> ${e}`;
       console.error(error, e);
-      retorno.msg = error
+      retorno.msg = error;
     } finally {
-      return retorno
+      return retorno;
     }
   }
 
-  async changeRole(form: IUser, token: string ){
-    const newRole = (form.role == 'user') ? 'admin' : 'user'
-    form.role = newRole
-    let retorno: IUser | ResponsePropio = { msg: 'Error desconocido', error: true }
+  async changeRole(form: IUser, token: string) {
+    const newRole = form.role == "user" ? "admin" : "user";
+    form.role = newRole;
+    let retorno: IUser | ResponsePropio = {
+      msg: "Error desconocido",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -193,19 +214,18 @@ export class UserDatasourceGQL implements UserDatasource {
         variables: {
           input: {
             id: Number(form.id),
-            role: form.role
+            role: form.role,
           },
         },
       });
       const entity = UserMapper.fromJson(data["updateUser"]);
-      if (entity) retorno = entity
+      if (entity) retorno = entity;
     } catch (e) {
-      const error = `${e}`
+      const error = `${e}`;
       console.error(error);
-      if ('msg' in retorno) retorno.msg = error
-    }finally{
-      return retorno
+      if ("msg" in retorno) retorno.msg = error;
+    } finally {
+      return retorno;
     }
   }
-
 }

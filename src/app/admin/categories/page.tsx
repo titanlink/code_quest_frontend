@@ -3,12 +3,21 @@
 import { useEffect, useState, useTransition } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { AdminFeatureHeader, LoadingPage, PaginationManager, ResizableHandle, ResizablePanel, ResizablePanelGroup, SearchFilters } from "@/components"
+
 import { Plus } from "lucide-react"
-import { CategoriesTable, CategoryPieChart, useCategoryStore } from "@/features"
+
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { useAuth } from "@/lib"
+import { AdminFeatureHeader } from "@/components/AdminFeatureHeader"
+import { LoadingPage } from "@/components/LoadingPage"
+import { PaginationManager } from "@/components/PaginationManager"
+import { SearchFilters } from "@/components/SearchFilters"
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable"
+import { CategoriesTable } from "@/features/category/presentation/components/CategoriesTable"
+import { CategoryPieChart } from "@/features/category/presentation/components/CategoryPieChart"
+import { useCategoryStore } from "@/features/category/presentation/providers/category.store"
+import { useAuth } from "@/lib/auth-context"
+
 
 export default function AdminCategoriesPage() {
   const { user, getToken } = useAuth()
@@ -16,13 +25,13 @@ export default function AdminCategoriesPage() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("")
   const [isPending, startTransition] = useTransition()
-  // const [categories, setCategories] = useState(mockCategories)
-  
+
   const getCategories = useCategoryStore((state) => state.getData);
   const removeCategory = useCategoryStore((state) => state.deleteOne);
   const categories = useCategoryStore((state) => state.items);
 
-  const [limit,setLimit] = useState(10)
+
+  const [limit] = useState(10)
   const [page,setPage] = useState(1)
 
   const totalRecords: number = useCategoryStore( (state) => state.total );
@@ -43,8 +52,8 @@ export default function AdminCategoriesPage() {
       }
     }
     fetchToken()
-  }, [page, limit, isPending, user]);
-  
+  }, [page, limit, isPending, user,getCategories, getToken, token]);
+
 
   const handleDeleteCategorie = async (categorieId: string) => {
 

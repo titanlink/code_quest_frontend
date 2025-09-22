@@ -1,8 +1,10 @@
 "use client"
 
-import { CustomCard, CardHeader, CardTitle, CardContent } from "@/components"
-import { IUser } from "@/features"
+
+import { CustomCard } from "@/components/CustomCard"
+import { CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
+import { IUser } from "../../domain/entities/user.entity"
 
 interface UserGrowthChartProps {
   users: IUser[]

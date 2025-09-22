@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import Image from "next/image"
 
 interface Props<T extends FieldValues> {
   control: Control<T>
@@ -45,7 +46,9 @@ export function CustomFormFile<T extends FieldValues>({
             />
           </FormControl>
           {preview && (
-            <img
+            <Image
+              width={500}
+              height={500}
               src={preview}
               alt="Vista previa"
               className="mt-2 w-32 h-32 object-cover rounded-md border"

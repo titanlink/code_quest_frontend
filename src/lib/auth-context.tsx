@@ -1,6 +1,5 @@
 "use client"
 
-import type React from "react"
 import { createContext, useContext, useEffect, useState } from "react"
 import {
   type User,
@@ -13,7 +12,9 @@ import {
 } from "firebase/auth"
 import { auth, googleProvider } from "@/lib/firebase"
 import { getAuthToken } from "@/lib/auth-utils"
-import { checkProfileAction, IUser } from "@/features"
+import { IUser } from "@/features/user/domain/entities/user.entity"
+import { checkProfileAction } from "@/features/user/actions/find"
+
 
 interface AuthContextType {
   session: IUser | null
@@ -78,7 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signInWithGoogle = async () => {
     try {
-      const credential = await signInWithPopup(auth, googleProvider)
+      await signInWithPopup(auth, googleProvider)
     } catch (error) {
       throw error
     }

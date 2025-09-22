@@ -1,23 +1,28 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
-import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Save, Eye, X } from "lucide-react"
-import { mockCategories } from "@/lib/mock-data"
-import Link from "next/link"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Save, Eye, X } from "lucide-react";
+
+import Link from "next/link";
 
 export default function NewPostPage() {
-  const router = useRouter()
+  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -28,48 +33,48 @@ export default function NewPostPage() {
     tags: [] as string[],
     published: false,
     featured: false,
-  })
-  const [newTag, setNewTag] = useState("")
+  });
+  const [newTag, setNewTag] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // Here you would normally save to database
-    console.log("Saving post:", formData)
-    router.push("/admin/posts")
-  }
+    console.log("Saving post:", formData);
+    router.push("/admin/posts");
+  };
 
   const generateSlug = (title: string) => {
     return title
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
-      .trim()
-  }
+      .trim();
+  };
 
   const handleTitleChange = (title: string) => {
     setFormData({
       ...formData,
       title,
       slug: generateSlug(title),
-    })
-  }
+    });
+  };
 
   const addTag = () => {
     if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
       setFormData({
         ...formData,
         tags: [...formData.tags, newTag.trim()],
-      })
-      setNewTag("")
+      });
+      setNewTag("");
     }
-  }
+  };
 
   const removeTag = (tagToRemove: string) => {
     setFormData({
       ...formData,
       tags: formData.tags.filter((tag) => tag !== tagToRemove),
-    })
-  }
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -84,7 +89,9 @@ export default function NewPostPage() {
           </Button>
           <div>
             <h1 className="text-3xl font-bold">Nuevo Post</h1>
-            <p className="text-muted-foreground">Crea un nuevo artículo para el blog</p>
+            <p className="text-muted-foreground">
+              Crea un nuevo artículo para el blog
+            </p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -99,7 +106,10 @@ export default function NewPostPage() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+      >
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           <Card>
@@ -123,7 +133,9 @@ export default function NewPostPage() {
                 <Input
                   id="slug"
                   value={formData.slug}
-                  onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, slug: e.target.value })
+                  }
                   placeholder="url-del-articulo"
                   required
                 />
@@ -134,7 +146,9 @@ export default function NewPostPage() {
                 <Textarea
                   id="excerpt"
                   value={formData.excerpt}
-                  onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, excerpt: e.target.value })
+                  }
                   placeholder="Breve descripción del artículo"
                   rows={3}
                   required
@@ -146,7 +160,9 @@ export default function NewPostPage() {
                 <Textarea
                   id="content"
                   value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, content: e.target.value })
+                  }
                   placeholder="Escribe el contenido del artículo en Markdown..."
                   rows={15}
                   className="font-mono"
@@ -170,7 +186,9 @@ export default function NewPostPage() {
                 <Switch
                   id="published"
                   checked={formData.published}
-                  onCheckedChange={(checked) => setFormData({ ...formData, published: checked })}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, published: checked })
+                  }
                 />
               </div>
 
@@ -179,7 +197,9 @@ export default function NewPostPage() {
                 <Switch
                   id="featured"
                   checked={formData.featured}
-                  onCheckedChange={(checked) => setFormData({ ...formData, featured: checked })}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, featured: checked })
+                  }
                 />
               </div>
             </CardContent>
@@ -193,21 +213,14 @@ export default function NewPostPage() {
             <CardContent>
               <Select
                 value={formData.categoryId}
-                onValueChange={(value) => setFormData({ ...formData, categoryId: value })}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, categoryId: value })
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecciona una categoría" />
                 </SelectTrigger>
-                <SelectContent>
-                  {mockCategories.map((category) => (
-                    <SelectItem key={category.id} value={category.id}>
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: category.color }} />
-                        {category.name}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
+                <SelectContent></SelectContent>
               </Select>
             </CardContent>
           </Card>
@@ -220,7 +233,9 @@ export default function NewPostPage() {
             <CardContent>
               <Input
                 value={formData.coverImage}
-                onChange={(e) => setFormData({ ...formData, coverImage: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, coverImage: e.target.value })
+                }
                 placeholder="URL de la imagen"
               />
             </CardContent>
@@ -237,7 +252,9 @@ export default function NewPostPage() {
                   value={newTag}
                   onChange={(e) => setNewTag(e.target.value)}
                   placeholder="Agregar tag"
-                  onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
+                  onKeyPress={(e) =>
+                    e.key === "Enter" && (e.preventDefault(), addTag())
+                  }
                 />
                 <Button type="button" onClick={addTag} size="sm">
                   Agregar
@@ -247,7 +264,11 @@ export default function NewPostPage() {
               {formData.tags.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {formData.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="flex items-center gap-1">
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="flex items-center gap-1"
+                    >
                       {tag}
                       <button
                         type="button"
@@ -265,5 +286,5 @@ export default function NewPostPage() {
         </div>
       </form>
     </div>
-  )
+  );
 }

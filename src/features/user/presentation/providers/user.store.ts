@@ -1,17 +1,10 @@
 import { create } from "zustand";
-
-import {
-  IUser, 
-  UsersState, 
-  allUserAction,
-  createUserAction,
-  dashboardAction,
-  deleteUserAction,
-  findUserAction,
-  updateUserAction 
-} from "../..";
-import { toast } from "sonner";
-
+import { UsersState } from "./user.state";
+import { IUser } from "../../domain/entities/user.entity";
+import { allUserAction } from "../../actions/all";
+import { dashboardAction, findUserAction } from "../../actions/find";
+import { deleteUserAction } from "../../actions/delete";
+import { updateUserAction } from "../../actions/update";
 
 export const useUserStore = create<UsersState>()((set, get) => ({
   isGridView: true,
@@ -22,103 +15,113 @@ export const useUserStore = create<UsersState>()((set, get) => ({
   isLoading: true,
   selected: null,
 
+  setSelected(selected: IUser | null) {
+    set({ selected, isLoading: false });
+  },
 
-  setSelected(selected: IUser | null) { set({selected, isLoading: false}) },
+  setPage(page?: number) {
+    set({ page: page });
+  },
+  setLimit(limit?: number) {
+    set({ limit: limit });
+  },
 
-  setPage(page?: number){ set({page: page}) },
-  setLimit(limit?: number){ set({limit: limit}) },
-
-
-  getData: async(page: number = 0, limit: number = 50, token = 'NO TENGO TOKEN') => {
+  getData: async (
+    page: number = 0,
+    limit: number = 50,
+    token = "NO TENGO TOKEN"
+  ) => {
     try {
       set({ isLoading: true });
-      const resp  = await allUserAction({ page, limit}, token );
-      set({items: resp.data  ?? [], total: resp.totalRecords, isLoading: false})
-    }catch(error) {
-      throw new Error('Users > getData > Unauthorized')
-    }finally {
+      const resp = await allUserAction({ page, limit }, token);
+      set({
+        items: resp.data ?? [],
+        total: resp.totalRecords,
+        isLoading: false,
+      });
+    } catch {
+      throw new Error("Users > getData > Unauthorized");
+    } finally {
       set({ isLoading: false });
     }
   },
 
-  dashboard: async( token:string): Promise<IUser | null> => {
-    let retorno = null
+  dashboard: async (token: string): Promise<IUser | null> => {
+    let retorno = null;
     try {
       set({ isLoading: true });
-      const resp  = await dashboardAction(token);
-      retorno = resp
-      set({selected: resp, isLoading: false})
-    }catch(error) {
-      throw new Error('Users > findOne > Unauthorized')
-    }finally {
+      const resp = await dashboardAction(token);
+      retorno = resp;
+      set({ selected: resp, isLoading: false });
+    } catch {
+      throw new Error("Users > findOne > Unauthorized");
+    } finally {
       set({ isLoading: false });
     }
-    return retorno ?? null
+    return retorno ?? null;
   },
 
-  findOne: async( id: string, token:string): Promise<IUser | null> => {
-    let retorno = null
+  findOne: async (id: string, token: string): Promise<IUser | null> => {
+    let retorno = null;
     try {
       set({ isLoading: true });
-      const resp  = await findUserAction(id, token);
-      retorno = resp
-      set({selected: resp, isLoading: false})
-    }catch(error) {
-      throw new Error('Users > findOne > Unauthorized')
-    }finally {
+      const resp = await findUserAction(id, token);
+      retorno = resp;
+      set({ selected: resp, isLoading: false });
+    } catch {
+      throw new Error("Users > findOne > Unauthorized");
+    } finally {
       set({ isLoading: false });
     }
-    return retorno ?? null
+    return retorno ?? null;
   },
 
-  changeRole: async( entitdad: IUser, token:string) => {
-    let retorno:any = { error: true, msg: "No action taken" };
-    
+  changeRole: async (entitdad: IUser, token: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let retorno: any = { error: true, msg: "No action taken" };
+
     try {
       if (entitdad.id) retorno = await updateUserAction(entitdad, token, true);
-      const usersUpdated = [ retorno, ...get().items.filter((p) => p.id !== retorno.id) ] 
+      const usersUpdated = [
+        retorno,
+        ...get().items.filter((p) => p.id !== retorno.id),
+      ];
       // toast.success('testing')
-      set({selected: retorno?.data, isLoading: false,  items: usersUpdated})
-    }catch(error) {
-      throw new Error('Users > findOne > Unauthorized')
-    }finally {
+      set({ selected: retorno?.data, isLoading: false, items: usersUpdated });
+    } catch {
+      throw new Error("Users > findOne > Unauthorized");
+    } finally {
       set({ isLoading: false });
     }
-    return retorno
-  
+    return retorno;
   },
-  createOrUpdate: async( entitdad: IUser, token:string): Promise<any> => {
-    let retorno:any = { error: true, msg: "No action taken" };
+  createOrUpdate: async (entitdad: IUser, token: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let retorno: any = { error: true, msg: "No action taken" };
     try {
-      if (entitdad.id) retorno = await updateUserAction(entitdad,token);
+      if (entitdad.id) retorno = await updateUserAction(entitdad, token);
       // if (entitdad.id == '0') retorno = await createUserAction(entitdad);
 
-      set({selected: retorno?.data, isLoading: false})
-    }catch(error) {
-      throw new Error('Users > findOne > Unauthorized')
-    }finally {
+      set({ selected: retorno?.data, isLoading: false });
+    } catch {
+      throw new Error("Users > findOne > Unauthorized");
+    } finally {
       set({ isLoading: false });
     }
-    return retorno
-  
+    return retorno;
   },
-  
-  deleteOne: async( id: string, token:string ) : Promise<IUser | null> => {
-    let retorno = null
+
+  deleteOne: async (id: string, token: string): Promise<IUser | null> => {
+    let retorno = null;
     try {
-      const resp  = await deleteUserAction(id, token);
-      retorno = resp
-      set({selected: resp.data, isLoading: false})
-    }catch(error) {
-      throw new Error('Users > findOne > Unauthorized')
-    }finally {
+      const resp = await deleteUserAction(id, token);
+      retorno = resp;
+      set({ selected: resp.data, isLoading: false });
+    } catch {
+      throw new Error("Users > findOne > Unauthorized");
+    } finally {
       set({ isLoading: false });
     }
-    return retorno?.data ?? null
+    return retorno?.data ?? null;
   },
-
-
-
-
-  
 }));

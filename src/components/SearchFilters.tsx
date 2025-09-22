@@ -1,13 +1,20 @@
-import { Card, CardContent, CardHeader, CardTitle, CustomCard, Input } from '@/components'
-import { Search } from 'lucide-react'
-import React, { SetStateAction } from 'react'
+
+import { Search } from "lucide-react";
+import React, { SetStateAction } from "react";
+import { CustomCard } from "./CustomCard";
+import { CardHeader, CardTitle, CardContent } from "./ui/card";
+import { Input } from "./ui/input";
 
 interface Props {
-  placeholder: string
-  searchTerm: string
-  setSearchTerm: (value: SetStateAction<string>) => void
+  placeholder: string;
+  searchTerm: string;
+  setSearchTerm: (value: SetStateAction<string>) => void;
 }
-export const SearchFilters = ({placeholder, searchTerm, setSearchTerm}:Props) => {
+export const SearchFilters = ({
+  placeholder,
+  searchTerm,
+  setSearchTerm,
+}: Props) => {
   return (
     <CustomCard>
       <CardHeader>
@@ -27,5 +34,5 @@ export const SearchFilters = ({placeholder, searchTerm, setSearchTerm}:Props) =>
         </div>
       </CardContent>
     </CustomCard>
-  )
-}
+  );
+};

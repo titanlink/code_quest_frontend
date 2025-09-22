@@ -1,7 +1,9 @@
 import React, { ReactNode } from "react"
-import { Alert, AlertDescription, AlertTitle, ShineBorder } from "."
+
 import { InfoCircledIcon } from "@radix-ui/react-icons"
 import { MessageCircleWarning } from "lucide-react"
+import { ShineBorder } from "./magicui/shine-border"
+import { Alert, AlertTitle, AlertDescription } from "./ui/alert"
 
 interface Props {
   title: string

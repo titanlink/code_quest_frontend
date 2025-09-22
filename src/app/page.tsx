@@ -1,38 +1,36 @@
-'use client'
+"use client";
 
-import { Navbar } from "@/components/navbar"
-import { PostCard } from "@/components/post-card"
-import { FeaturedPost } from "@/components/featured-post"
-import { mockPosts } from "@/lib/mock-data"
-import { Button } from "@/components/ui/button"
-import { ArrowRight, BookOpen, Users, TrendingUp } from "lucide-react"
-import Link from "next/link"
-import { Footer, LoadingPage, Skeleton, TextType } from "@/components"
-import { usePostStore } from "@/features"
-import { useEffect, useState } from "react"
-import { useAuth } from "@/lib"
-import DarkVeil from "@/components/DarkVeil"
+import { Navbar } from "@/components/navbar";
+import { PostCard } from "@/components/post-card";
+import { FeaturedPost } from "@/components/featured-post";
 
-export default  function HomePage() {
+import { Button } from "@/components/ui/button";
+import { ArrowRight, BookOpen, Users, TrendingUp } from "lucide-react";
+import Link from "next/link";
 
+import { useEffect } from "react";
+
+import DarkVeil from "@/components/DarkVeil";
+import { TextType } from "@/components/TextType";
+import { Skeleton } from "@/components/ui/skeleton";
+import { usePostStore } from "@/features/post/presentation/providers/post.store";
+
+export default function HomePage() {
   const getPosts = usePostStore((state) => state.getData);
   const posts = usePostStore((state) => state.items);
   const page: number = 0;
   const limit: number = 20;
   const isLoading = usePostStore((state) => state.isLoading);
 
-  const featuredPosts = posts.filter((post) => post.featured && post.published)
-  const regularPosts = posts.filter((post) => !post.featured && post.published)
+  const featuredPosts = posts.filter((post) => post.featured && post.published);
+  const regularPosts = posts.filter((post) => !post.featured && post.published);
 
-
-  
   useEffect(() => {
     const fetchToken = async () => {
-      getPosts(page, limit, '' );
-    }
-    fetchToken()
-  }, [page, limit])
-
+      getPosts(page, limit, "");
+    };
+    fetchToken();
+  }, [page, limit, getPosts]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -40,40 +38,37 @@ export default  function HomePage() {
 
       {/* Hero Section */}
       <section>
+        <div style={{ width: "100%", height: "600px", position: "relative" }}>
+          <DarkVeil speed={1.8} hueShift={39} />
 
-      
-      <div  style={{ width: '100%', height: '600px', position: 'relative' }}>
-        <DarkVeil speed={1.8} hueShift={39}/>
-
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="container mx-auto max-w-6xl text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              <TextType
-                text={["Descubre el futuro de la tecnología"]}
-                typingSpeed={55}
-                pauseDuration={1500}
-                showCursor={true}
-                cursorCharacter="|"
-                className="text-primary"
-              />
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Artículos, tutoriales y análisis profundos sobre desarrollo web, diseño UX y las últimas tendencias
-              tecnológicas.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
-                <Link href="#posts">
-                  Explorar Artículos
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="container mx-auto max-w-6xl text-center">
+              <h1 className="text-4xl md:text-6xl font-bold mb-6">
+                <TextType
+                  text={["Descubre el futuro de la tecnología"]}
+                  typingSpeed={55}
+                  pauseDuration={1500}
+                  showCursor={true}
+                  cursorCharacter="|"
+                  className="text-primary"
+                />
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+                Artículos, tutoriales y análisis profundos sobre desarrollo web,
+                diseño UX y las últimas tendencias tecnológicas.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" asChild>
+                  <Link href="#posts">
+                    Explorar Artículos
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </section>
-
 
       {/* Stats Section */}
       <section className="bg-gradient-to-l from-sky-700/20 to-accent/10 py-16 px-4 border-b">
@@ -115,7 +110,7 @@ export default  function HomePage() {
               </Button>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {featuredPosts.slice(0,4).map((post) => (
+              {featuredPosts.slice(0, 4).map((post) => (
                 <FeaturedPost key={post.id} post={post} />
               ))}
             </div>
@@ -124,7 +119,10 @@ export default  function HomePage() {
       )}
 
       {/* All Posts */}
-      <section id="posts" className="py-16 px-4 bg-gradient-to-bl from-sky-700/20">
+      <section
+        id="posts"
+        className="py-16 px-4 bg-gradient-to-bl from-sky-700/20"
+      >
         <div className="container mx-auto max-w-6xl">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold">Últimos Artículos</h2>
@@ -133,11 +131,14 @@ export default  function HomePage() {
             </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            { isLoading && [1,2,3,4,5,6].map((_, key) => ( <Skeleton key={key} className="h-96 w-96 " /> ))}
-            {!isLoading && regularPosts.slice(0,3).map((post) => ( 
-              <PostCard key={post.id} post={post} /> 
+            {isLoading &&
+              [1, 2, 3, 4, 5, 6].map((_, key) => (
+                <Skeleton key={key} className="h-96 w-96 " />
               ))}
-            
+            {!isLoading &&
+              regularPosts
+                .slice(0, 3)
+                .map((post) => <PostCard key={post.id} post={post} />)}
           </div>
         </div>
       </section>
@@ -162,5 +163,5 @@ export default  function HomePage() {
 
       {/* Footer */}
     </div>
-  )
+  );
 }

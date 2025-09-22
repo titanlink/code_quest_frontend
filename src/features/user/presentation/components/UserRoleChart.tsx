@@ -1,8 +1,9 @@
 "use client"
 
-import { CustomCard, CardHeader, CardTitle, CardContent } from "@/components"
-import { IUser } from "@/features"
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts"
+import { IUser } from "../../domain/entities/user.entity"
+import { CustomCard } from "@/components/CustomCard"
+import { CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 interface UserRoleChartProps {
   users: IUser[]

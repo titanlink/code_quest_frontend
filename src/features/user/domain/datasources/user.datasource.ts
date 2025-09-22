@@ -1,5 +1,3 @@
-
-
 export interface UserDatasource {
   dashboard(token: string): Promise<any>;
   checkProfile(token: string): Promise<any>;
@@ -7,6 +5,6 @@ export interface UserDatasource {
   create(entity: any, token: string): Promise<any>;
   update(entity: any, token: string): Promise<any>;
   changeRole(entity: any, token: string): Promise<any>;
-  all(page:number, limit:number, token: string): Promise<any>;
+  all(page: number, limit: number, token: string): Promise<any>;
   delete(id: string, token: string): Promise<any>;
 }

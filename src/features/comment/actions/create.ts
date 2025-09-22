@@ -1,12 +1,14 @@
 "use server";
 
-import { ResponsePropio } from "@/config";
-import { IComment } from "..";
+import { ResponsePropio } from "@/config/response-propio";
+import { IComment } from "../domain/entities/comment.entity";
 import { repoConfig } from "./_repo-config";
 
-
-
-export async function createCommentAction(data: IComment, token: string = 'No Token', isSubComment = false) : Promise<IComment | ResponsePropio> {
+export async function createCommentAction(
+  data: IComment,
+  token: string = "No Token",
+  isSubComment = false
+): Promise<IComment | ResponsePropio> {
   const repo = repoConfig(token);
 
   try {

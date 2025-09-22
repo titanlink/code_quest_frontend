@@ -1,15 +1,21 @@
-import { CategoryDatasource, CategoryMapper, ICategory } from "../..";
-import { makeClientGraphql } from "@/lib";
-import { allCategoryGQL, createCategoryGQL, findCategoryGQL, removeCategoryGQL, updateCategoryGQL } from "./category.graphql";
-import { ResponsePropio } from "@/config";
-
-
+import { ResponsePropio } from "@/config/response-propio";
+import { makeClientGraphql } from "@/lib/client-graphql";
+import { CategoryDatasource } from "../../domain/datasources/category.datasource";
+import {
+  CategoryMapper,
+  ICategory,
+} from "../../domain/entities/category.entity";
+import {
+  allCategoryGQL,
+  createCategoryGQL,
+  findCategoryGQL,
+  removeCategoryGQL,
+  updateCategoryGQL,
+} from "./category.graphql";
 
 export class CategoryDatasourceGQL implements CategoryDatasource {
-  
-
   async all(page = 0, limit = 50, token: string) {
-    let retorno: ResponsePropio = { msg: 'Error desconocido', error: true}
+    let retorno: ResponsePropio = { msg: "Error desconocido", error: true };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -18,27 +24,30 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
         fetchPolicy: "no-cache",
         variables: {
           limit: limit,
-          offset: page
+          offset: page,
         },
       });
 
-      const resp = data["allCategory"]
-      const entities = CategoryMapper.fromJsonList(resp['items']);
+      const resp = data["allCategory"];
+      const entities = CategoryMapper.fromJsonList(resp["items"]);
       if (entities) {
-        retorno.msg = 'Ok'
-        retorno.error = false
-        retorno.totalRecords = resp['total']
+        retorno.msg = "Ok";
+        retorno.error = false;
+        retorno.totalRecords = resp["total"];
         retorno.data = entities;
       }
     } catch (e) {
       console.error(`Error => allCategoryGQL -> ${page} // ${e}`);
-      throw e
-    }finally{
-      return retorno
+      throw e;
+    } finally {
+      return retorno;
     }
   }
-  async findById(id: string, token: string){
-    let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido', error: true }
+  async findById(id: string, token: string) {
+    let retorno: ICategory | ResponsePropio = {
+      msg: "Error desconocido",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -49,18 +58,20 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
           categoryId: Number(id),
         },
       });
-      const entity = CategoryMapper.fromJson(data["category"])
-      if (entity) retorno = entity
+      const entity = CategoryMapper.fromJson(data["category"]);
+      if (entity) retorno = entity;
     } catch (e) {
       console.error(`Error => findCategoryGQL -> ${e}`);
-    }finally{
-      return retorno
+    } finally {
+      return retorno;
     }
-  
   }
 
-  async create ( form: ICategory, token: string ) {
-    let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido createCategoryGQL gql_impl', error: true }
+  async create(form: ICategory, token: string) {
+    let retorno: ICategory | ResponsePropio = {
+      msg: "Error desconocido createCategoryGQL gql_impl",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -77,18 +88,20 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
         },
       });
 
-      const entity =  CategoryMapper.fromJson(data["createCategory"]);
-      if (entity) retorno = entity
+      const entity = CategoryMapper.fromJson(data["createCategory"]);
+      if (entity) retorno = entity;
     } catch (e) {
       console.error(`Error => createCategoryGQL -> ${e}`);
     } finally {
-      return retorno
+      return retorno;
     }
-    
-  };
+  }
 
-  async update(form: ICategory, token: string){
-    let retorno: ICategory | ResponsePropio = { msg: 'Error desconocido', error: true }
+  async update(form: ICategory, token: string) {
+    let retorno: ICategory | ResponsePropio = {
+      msg: "Error desconocido",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -106,18 +119,18 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
         },
       });
       const entity = CategoryMapper.fromJson(data["updateCategory"]);
-      if (entity) retorno = entity
+      if (entity) retorno = entity;
     } catch (e) {
-      const error = `${e}`
+      const error = `${e}`;
       console.error(error);
-      if ('msg' in retorno) retorno.msg = error
-    }finally{
-      return retorno
+      if ("msg" in retorno) retorno.msg = error;
+    } finally {
+      return retorno;
     }
   }
 
   async delete(id: string, token: string) {
-    let retorno: ResponsePropio = { msg: 'Error desconocido', error: true }
+    let retorno: ResponsePropio = { msg: "Error desconocido", error: true };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -128,17 +141,15 @@ export class CategoryDatasourceGQL implements CategoryDatasource {
           removeCategoryId: Number(id),
         },
       });
-      const resp = data['removeCategory']
-      if ('message' in resp) retorno =  { msg: resp['message'], error: !resp }
-      
+      const resp = data["removeCategory"];
+      if ("message" in resp) retorno = { msg: resp["message"], error: !resp };
     } catch (e) {
-      const error = `${e}`
-      const parts = error.split(':')
+      const error = `${e}`;
+      const parts = error.split(":");
       console.error(error, e);
-      retorno.msg = parts[parts.length-1]
+      retorno.msg = parts[parts.length - 1];
     } finally {
-      return retorno
+      return retorno;
     }
   }
-
 }

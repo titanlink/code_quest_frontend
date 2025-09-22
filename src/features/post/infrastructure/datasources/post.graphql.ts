@@ -1,5 +1,8 @@
+import { categoryGQLFields } from "@/features/category/domain/entities/category.entity";
+import { userGQLFields } from "@/features/user/domain/entities/user.entity";
 import { gql } from "@apollo/client";
-import { bookMarkGQLFields, categoryGQLFields, postGQLFields, userGQLFields } from "@/features";
+import { bookMarkGQLFields } from "../../domain/entities/bookmark.entity";
+import { postGQLFields } from "../../domain/entities/post.entity";
 
 export const allPostGQL = gql`
     query AllPost($idCategory: Int, $limit: Int, $offset: Int) {
@@ -91,10 +94,10 @@ export const updatePostGQL = gql`
 `;
 export const removePostGQL = gql`
   mutation RemovePost($removePostId: Int!) {
-  removePost(id: $removePostId) {
-    error
-    message
-    statusCode
+    removePost(id: $removePostId) {
+      error
+      message
+      statusCode
+    }
   }
-}
 `;

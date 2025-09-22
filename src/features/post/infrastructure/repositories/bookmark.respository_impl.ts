@@ -1,13 +1,14 @@
-import { BookMarkDatasource, BookMarkRepository } from "../..";
-
-
-
+import { BookMarkDatasource } from "../../domain/datasources/bookmark.datasource";
+import { BookMarkRepository } from "../../domain/repositories/bookmark.repository";
 
 export class BookMarkRepositoryImpl extends BookMarkRepository {
-  constructor(private readonly datasource: BookMarkDatasource, private token: string = '') {
+  constructor(
+    private readonly datasource: BookMarkDatasource,
+    private token: string = ""
+  ) {
     super();
   }
-  
+
   async findById(id: string) {
     return this.datasource.findById(id, this.token);
   }
@@ -24,4 +25,3 @@ export class BookMarkRepositoryImpl extends BookMarkRepository {
     return this.datasource.delete(id, this.token);
   }
 }
-

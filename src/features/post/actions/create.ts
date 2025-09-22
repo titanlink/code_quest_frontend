@@ -1,12 +1,15 @@
 "use server";
 
-import { ResponsePropio } from "@/config";
-import { IPost, ILike, IBookMark, } from "..";
+import { ResponsePropio } from "@/config/response-propio";
 import { repoConfig, repoConfigBook, repoConfigLike } from "./_repo-config";
+import { IPost } from "../domain/entities/post.entity";
+import { ILike } from "../domain/entities/like.entity";
+import { IBookMark } from "../domain/entities/bookmark.entity";
 
-
-
-export async function createPostAction(data: IPost, token: string) : Promise<IPost | ResponsePropio> {
+export async function createPostAction(
+  data: IPost,
+  token: string
+): Promise<IPost | ResponsePropio> {
   const repo = repoConfig(token);
 
   try {
@@ -17,7 +20,10 @@ export async function createPostAction(data: IPost, token: string) : Promise<IPo
   }
 }
 
-export async function createLikePostAction(data: ILike, token: string) : Promise<ILike | ResponsePropio> {
+export async function createLikePostAction(
+  data: ILike,
+  token: string
+): Promise<ILike | ResponsePropio> {
   const repo = repoConfigLike(token);
   try {
     return await repo.create(data);
@@ -27,7 +33,10 @@ export async function createLikePostAction(data: ILike, token: string) : Promise
   }
 }
 
-export async function createBookMarkAction(data: IBookMark, token: string) : Promise<IBookMark | ResponsePropio> {
+export async function createBookMarkAction(
+  data: IBookMark,
+  token: string
+): Promise<IBookMark | ResponsePropio> {
   const repo = repoConfigBook(token);
 
   try {

@@ -1,6 +1,7 @@
 import { ShieldX } from 'lucide-react'
 import React from 'react'
-import { Ripple } from '.'
+import { Ripple } from './magicui/ripple'
+
 
 export const NotAuthorized = () => {
   return (

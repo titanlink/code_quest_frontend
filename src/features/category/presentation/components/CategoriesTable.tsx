@@ -1,27 +1,51 @@
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge, ConfirmDelete, CustomCard } from '@/components'
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Edit, Eye, MoreHorizontal, Trash2 } from "lucide-react"
-import React from 'react'
-import { ICategory } from '../..'
-import Link from 'next/link'
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge, Edit, MoreHorizontal, Trash2 } from "lucide-react";
+import React from "react";
+
+import Link from "next/link";
+import { CustomCard } from "@/components/CustomCard";
+
+import { ConfirmDelete } from "@/components/ConfirmDelete";
+import { Button } from "@/components/ui/button";
+import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { ICategory } from "../../domain/entities/category.entity";
 
 interface Props {
-  filteredCategories:ICategory[],
-  handleDeleteCategory: (categoryId: string) => void
-  isPending?: boolean
-  totalRecords?: number
+  filteredCategories: ICategory[];
+  handleDeleteCategory: (categoryId: string) => void;
+  isPending?: boolean;
+  totalRecords?: number;
 }
 
-export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPending = false, totalRecords}: Props) => {
+export const CategoriesTable = ({
+  filteredCategories,
+  handleDeleteCategory,
+  isPending = false,
+  totalRecords,
+}: Props) => {
   return (
     <CustomCard>
       <CardHeader>
         <CardTitle>
-          <div className='grid grid-cols-2'>
-            <div className='flex flex-row w-full'>Filtrados ({filteredCategories.length})</div>
-            <div className='flex flex-row w-full  justify-end'> 
-              {totalRecords && ( <>Total de Registros ({totalRecords}) </> )} 
+          <div className="grid grid-cols-2">
+            <div className="flex flex-row w-full">
+              Filtrados ({filteredCategories.length})
+            </div>
+            <div className="flex flex-row w-full  justify-end">
+              {totalRecords && <>Total de Registros ({totalRecords}) </>}
             </div>
           </div>
         </CardTitle>
@@ -40,27 +64,29 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPen
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredCategories.map((category,indx) => (
+            {filteredCategories.map((category, indx) => (
               <TableRow key={category.id}>
-                
-                <TableCell>{indx+1}</TableCell>
+                <TableCell>{indx + 1}</TableCell>
                 <TableCell>
                   <div className="space-y-1">
                     <p className="font-medium truncate w-30">{category.name}</p>
                   </div>
                 </TableCell>
                 <TableCell>
-                    <p className="text-sm text-muted-foreground line-clamp-1 truncate w-64">{category.description}</p>
+                  <p className="text-sm text-muted-foreground line-clamp-1 truncate w-64">
+                    {category.description}
+                  </p>
                 </TableCell>
                 <TableCell>{category.slug}</TableCell>
                 <TableCell>
-                  <Badge style={{ backgroundColor: category?.color}} className="text-black/75 font-bold">
+                  <Badge
+                    style={{ backgroundColor: category?.color }}
+                    className="text-black/75 font-bold"
+                  >
                     {category?.color}
                   </Badge>
                 </TableCell>
-                <TableCell>
-                    {category?.postCount}
-                </TableCell>
+                <TableCell>{category?.postCount}</TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -69,7 +95,6 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPen
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      
                       {/* <DropdownMenuItem asChild>
                         <Link href={`/categories/${category.slug}`}>
                           <Eye className="mr-2 h-4 w-4" />
@@ -82,13 +107,21 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPen
                           Editar
                         </Link>
                       </DropdownMenuItem>
-                      <ConfirmDelete onDelete={() => handleDeleteCategory(category?.id ?? '')}>
-                        <Button variant="destructive" size="sm" className='w-full flex flex-row justify-between'  disabled={isPending}>
+                      <ConfirmDelete
+                        onDelete={() =>
+                          handleDeleteCategory(category?.id ?? "")
+                        }
+                      >
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="w-full flex flex-row justify-between"
+                          disabled={isPending}
+                        >
                           <Trash2 className="h-4 w-4" />
                           Eliminar
                         </Button>
                       </ConfirmDelete>
-
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
@@ -99,5 +132,5 @@ export const CategoriesTable = ({filteredCategories, handleDeleteCategory, isPen
       </CardContent>
       {/* <pre><b>{JSON.stringify(filteredCategories, null, 2) } </b> </pre>  */}
     </CustomCard>
-  )
-}
+  );
+};

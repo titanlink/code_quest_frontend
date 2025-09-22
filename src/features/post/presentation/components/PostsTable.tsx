@@ -1,10 +1,19 @@
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge, CustomCard, Tooltip, TooltipTrigger, TooltipContent } from '@/components'
+"use client"
+
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { MoreHorizontal, Edit, Trash2, Eye, Heart, MessageCircle } from "lucide-react"
+import { MoreHorizontal, Edit, Trash2, Eye, Heart, MessageCircle, } from "lucide-react"
 import React from 'react'
-import { IPost } from '../..'
+
 import Link from 'next/link'
+import { CustomCard } from '@/components/CustomCard'
+import { Button } from '@/components/ui/button'
+import { CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { TooltipTrigger, TooltipContent } from '@radix-ui/react-tooltip'
+
+import { IPost } from '../../domain/entities/post.entity'
+import { Badge } from '@/components/ui/badge'
+import { Tooltip } from '@/components/ui/tooltip'
 
 interface Props {
   totalRecords?:number,

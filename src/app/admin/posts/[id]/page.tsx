@@ -2,10 +2,13 @@
 
 import React, { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { PostForm, findPostAction, IPost, usePostStore } from "@/features"
-import { useAuth } from "@/lib"
-import { LoadingPage } from "@/components"
-import NotFound from "@/app/posts/[slug]/not-found"
+import NotFound from "@/app/not-found";
+import { LoadingPage } from "@/components/LoadingPage";
+import { IPost } from "@/features/post/domain/entities/post.entity";
+import { PostForm } from "@/features/post/presentation/components/PostForm";
+import { usePostStore } from "@/features/post/presentation/providers/post.store";
+import { useAuth } from "@/lib/auth-context";
+
 
 export default function Page() {
   const findOne = usePostStore((state) => state.findOne);
@@ -37,11 +40,11 @@ export default function Page() {
     }
 
     fetchData()
-  }, [id, isNew, getToken, router, user])
+  }, [id, isNew, getToken, router, user, findOne])
 
   if (loading) return <LoadingPage />
   if (!loading && !isNew && !entity) return <NotFound />
-  
+
 
   return (
     <div className="space-y-6">

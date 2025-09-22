@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { categoryGQLFields } from "../..";
+import { categoryGQLFields } from "../../domain/entities/category.entity";
 
 export const allCategoryGQL = gql`
   query allCategories($limit: Int, $offset: Int) {
@@ -37,10 +37,10 @@ export const updateCategoryGQL = gql`
 `;
 export const removeCategoryGQL = gql`
   mutation RemoveCategory($removeCategoryId: Int!) {
-  removeCategory(id: $removeCategoryId) {
-    error
-    message
-    statusCode
+    removeCategory(id: $removeCategoryId) {
+      error
+      message
+      statusCode
+    }
   }
-}
 `;

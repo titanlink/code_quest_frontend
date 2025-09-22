@@ -5,8 +5,10 @@ import { InertiaPlugin } from 'gsap/InertiaPlugin';
 
 gsap.registerPlugin(InertiaPlugin);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const throttle = (func: (...args: any[]) => void, limit: number) => {
   let lastCall = 0;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return function (this: any, ...args: any[]) {
     const now = performance.now();
     if (now - lastCall >= limit) {
@@ -180,6 +182,7 @@ export const DotGrid: React.FC<DotGridProps> = ({
     let ro: ResizeObserver | null = null;
     if ('ResizeObserver' in window) {
       ro = new ResizeObserver(buildGrid);
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       wrapperRef.current && ro.observe(wrapperRef.current);
     } else {
       (window as Window).addEventListener('resize', buildGrid);

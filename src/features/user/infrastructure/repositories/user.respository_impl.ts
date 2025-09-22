@@ -1,13 +1,14 @@
-import { UserDatasource, UserRepository } from "../..";
-
-
-
+import { UserDatasource } from "../../domain/datasources/user.datasource";
+import { UserRepository } from "../../domain/repositories/user.repository";
 
 export class UserRepositoryImpl extends UserRepository {
-  constructor(private readonly datasource: UserDatasource, private token: string = '') {
+  constructor(
+    private readonly datasource: UserDatasource,
+    private token: string = ""
+  ) {
     super();
   }
-  
+
   async dashboard(): Promise<any> {
     return this.datasource.dashboard(this.token);
   }
@@ -32,6 +33,4 @@ export class UserRepositoryImpl extends UserRepository {
   async delete(id: string): Promise<any> {
     return this.datasource.delete(id, this.token);
   }
-  
 }
-

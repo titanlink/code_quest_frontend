@@ -1,12 +1,19 @@
-import { BookMarkDatasource, BookMarkMapper, IBookMark } from "../..";
-import { makeClientGraphql } from "@/lib";
-import { allBookMarkGQL, createBookMarkGQL, findBookMarkGQL, removeBookMarkPostGQL, updateBookMarkGQL } from "./bookmark.graphql";
-import { ResponsePropio } from "@/config";
-
-
+import { makeClientGraphql } from "@/lib/client-graphql";
+import { BookMarkDatasource } from "../../domain/datasources/bookmark.datasource";
+import {
+  allBookMarkGQL,
+  createBookMarkGQL,
+  findBookMarkGQL,
+  removeBookMarkPostGQL,
+  updateBookMarkGQL,
+} from "./bookmark.graphql";
+import { ResponsePropio } from "@/config/response-propio";
+import {
+  BookMarkMapper,
+  IBookMark,
+} from "../../domain/entities/bookmark.entity";
 
 export class BookMarkDatasourceGQL implements BookMarkDatasource {
-  
   async all(page = 0, limit = 50, token: string) {
     try {
       const peti = await makeClientGraphql(token);
@@ -16,11 +23,11 @@ export class BookMarkDatasourceGQL implements BookMarkDatasource {
         fetchPolicy: "no-cache",
         variables: {
           limit: limit,
-          offset: page
+          offset: page,
         },
       });
 
-      return BookMarkMapper.fromJsonList(data["allBookMark"]['items']);
+      return BookMarkMapper.fromJsonList(data["allBookMark"]["items"]);
     } catch (e) {
       console.error(`Error => allBookMarkGQL -> ${e}`);
       // throw e
@@ -28,7 +35,10 @@ export class BookMarkDatasourceGQL implements BookMarkDatasource {
     }
   }
   async findById(id: string, token: string) {
-    let retorno: IBookMark | ResponsePropio = { msg: 'Error desconocido', error: true }
+    let retorno: IBookMark | ResponsePropio = {
+      msg: "Error desconocido",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -41,24 +51,25 @@ export class BookMarkDatasourceGQL implements BookMarkDatasource {
       });
 
       const entity = BookMarkMapper.fromJson(data["book"]);
-      if (entity) retorno = entity
+      if (entity) retorno = entity;
     } catch (e) {
       console.error(`Error => findBookMarkGQL -> ${e}`);
-    }finally{
-      return retorno
+    } finally {
+      return retorno;
     }
-  
   }
 
-
-  async create ( form: IBookMark, token: string ) {
-    let retorno: IBookMark | ResponsePropio = { msg: 'Error desconocido > BookMarkDatasourceGQL > create', error: true }
+  async create(form: IBookMark, token: string) {
+    let retorno: IBookMark | ResponsePropio = {
+      msg: "Error desconocido > BookMarkDatasourceGQL > create",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
       const input = {
         id_post: Number(form.post?.id ?? 0),
-      }
+      };
 
       const { data } = await peti.mutate<any>({
         mutation: createBookMarkGQL,
@@ -70,23 +81,25 @@ export class BookMarkDatasourceGQL implements BookMarkDatasource {
 
       // console.log("🚀 ~ BookMarkDatasourceGQL ~ create ~ data:", data)
       const entity = BookMarkMapper.fromJson(data["createBookmark"]);
-      if (entity) retorno = entity
+      if (entity) retorno = entity;
     } catch (e) {
       console.error(`Error => createBookMarkGQL -> ${e}`);
     } finally {
-      return retorno
+      return retorno;
     }
-    
-  };
+  }
 
   async update(form: IBookMark, token: string) {
-    let retorno: IBookMark | ResponsePropio = { msg: 'Error desconocido, gql impl', error: true }
+    let retorno: IBookMark | ResponsePropio = {
+      msg: "Error desconocido, gql impl",
+      error: true,
+    };
     try {
       const peti = await makeClientGraphql(token);
 
       const input = {
         id: Number(form.id),
-      }
+      };
 
       const { data } = await peti.mutate<any>({
         mutation: updateBookMarkGQL,
@@ -96,18 +109,18 @@ export class BookMarkDatasourceGQL implements BookMarkDatasource {
         },
       });
       const entity = BookMarkMapper.fromJson(data["updateBookMark"]);
-      if (entity) retorno = entity
+      if (entity) retorno = entity;
     } catch (e) {
-      const error = `${e}`
+      const error = `${e}`;
       console.error(error);
-      if ('msg' in retorno) retorno.msg = error
-    }finally{
-      return retorno
+      if ("msg" in retorno) retorno.msg = error;
+    } finally {
+      return retorno;
     }
   }
 
   async delete(id: string, token: string) {
-    let retorno: ResponsePropio = { msg: 'Error desconocido', error: true }
+    let retorno: ResponsePropio = { msg: "Error desconocido", error: true };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -118,16 +131,14 @@ export class BookMarkDatasourceGQL implements BookMarkDatasource {
           removeBookmarkId: Number(id),
         },
       });
-      const resp = data['removeBookmark']
-      if ('message' in resp) retorno =  { msg: resp['message'], error: !resp }
-      
+      const resp = data["removeBookmark"];
+      if ("message" in resp) retorno = { msg: resp["message"], error: !resp };
     } catch (e) {
-      const error = `Error => removeBookMarkPostGQL -> [id:${id}] ${e}`
+      const error = `Error => removeBookMarkPostGQL -> [id:${id}] ${e}`;
       console.error(error, e);
-      retorno.msg = error
+      retorno.msg = error;
     } finally {
-      return retorno
+      return retorno;
     }
   }
-
 }

@@ -9,11 +9,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { Heart, MessageCircle, Calendar, Clock, ArrowLeft, Bookmark, Eye } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
-import { createBookMarkAction, createLikePostAction, deleteBookMarkAction, deleteLikeAction, IBookMark, ILike, IPost } from "@/features"
-import { getImageUrl } from "@/lib"
+
 import { motion } from "motion/react"
 import { Pointer } from "@/components/ui/pointer"
-import { RainbowButton } from "@/components"
+import { RainbowButton } from "@/components/ui/rainbow-button"
+import { getImageUrl } from "@/lib/utils"
+import { createLikePostAction, createBookMarkAction } from "../../actions/create"
+import { deleteLikeAction, deleteBookMarkAction } from "../../actions/delete"
+import { IBookMark } from "../../domain/entities/bookmark.entity"
+import { ILike } from "../../domain/entities/like.entity"
+import { IPost } from "../../domain/entities/post.entity"
+
 // import { SocialShare } from "@/components/social-share"
 
 interface Props {

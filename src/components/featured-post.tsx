@@ -1,11 +1,12 @@
 import Link from "next/link"
-import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Calendar, Heart, MessageCircle, Eye, Star } from "lucide-react"
-import { IPost } from "@/features"
-import { getImageUrl } from "@/lib"
+
+import Image from "next/image"
+import { IPost } from "@/features/post/domain/entities/post.entity"
+import { getImageUrl } from "@/lib/utils"
 
 interface FeaturedPostProps {
   post: IPost
@@ -17,7 +18,9 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
       <CardContent className="p-0">
         <Link href={`/posts/${post.slug}`}>
           <div className="relative aspect-[16/10] overflow-hidden">
-            <img
+            <Image
+              width={500}
+              height={500}
               src={getImageUrl(post?.coverImage) }
               alt={post.title}
               className="object-cover group-hover:scale-105 transition-transform duration-300"

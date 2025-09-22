@@ -1,6 +1,6 @@
 "use client"
 
-import { useAuth } from "@/lib"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,10 +10,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Bell, Settings, LogOut, Home } from "lucide-react"
+import { useAuth } from "@/lib/auth-context"
+import {  Settings, LogOut, Home } from "lucide-react"
 import Link from "next/link"
-import { AnimatedThemeToggler, AuroraText, DotsGrid } from "."
+
 import { useRouter } from "next/navigation"
+import { DotsGrid } from "./DotsGrid"
+import { AnimatedThemeToggler } from "./magicui/animated-theme-toggler"
+import { AuroraText } from "./magicui/aurora-text"
 
 export function AdminHeader() {
   const { user, logout } = useAuth()

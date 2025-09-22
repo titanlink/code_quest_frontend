@@ -1,16 +1,12 @@
+import { ResponsePropio } from "@/config/response-propio";
 import { create } from "zustand";
-
-import {
-  ICategory, 
-  CategorysState, 
-  allCategoryAction,
-  createCategoryAction,
-  deleteCategoryAction,
-  findCategoryAction,
-  updateCategoryAction 
-} from "../..";
-import { ResponsePropio } from "@/config";
-
+import { allCategoryAction } from "../../actions/all";
+import { createCategoryAction } from "../../actions/create";
+import { deleteCategoryAction } from "../../actions/delete";
+import { findCategoryAction } from "../../actions/find";
+import { updateCategoryAction } from "../../actions/update";
+import { ICategory } from "../../domain/entities/category.entity";
+import { CategorysState } from "./category.state";
 
 export const useCategoryStore = create<CategorysState>()((set, get) => ({
   isGridView: true,
@@ -21,72 +17,89 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
   isLoading: true,
   selected: undefined,
 
+  setSelected(selected: ICategory | undefined) {
+    set({ selected, isLoading: false });
+  },
 
-  setSelected(selected: ICategory | undefined) { set({selected, isLoading: false}) },
+  setPage(page?: number) {
+    set({ page: page });
+  },
+  setLimit(limit?: number) {
+    set({ limit: limit });
+  },
 
-  setPage(page?: number){ set({page: page}) },
-  setLimit(limit?: number){ set({limit: limit}) },
-
-
-  getData: async(page: number = 0, limit: number = 50, token = 'NO TENGO TOKEN') => {
+  getData: async (
+    page: number = 0,
+    limit: number = 50,
+    token = "NO TENGO TOKEN"
+  ) => {
     try {
       set({ isLoading: true });
-      const resp  = await allCategoryAction({ page, limit}, token );
-      set({items: resp.data  ?? [], total: resp.totalRecords})
-    }catch(error) {
+      const resp = await allCategoryAction({ page, limit }, token);
+      set({ items: resp.data ?? [], total: resp.totalRecords });
+    } catch (error) {
       set({ isLoading: false });
-      throw new Error('Categorys > getData > Unauthorized')
-    }finally {
+      throw new Error("Categorys > getData > Unauthorized");
+    } finally {
       set({ isLoading: false });
     }
   },
 
-  findOne: async( id: string, token = 'NO TENGO TOKEN'): Promise<ICategory | ResponsePropio> => {
-    let retorno: ICategory | ResponsePropio = { error: true, msg: "Error desconocido" };
+  findOne: async (
+    id: string,
+    token = "NO TENGO TOKEN"
+  ): Promise<ICategory | ResponsePropio> => {
+    let retorno: ICategory | ResponsePropio = {
+      error: true,
+      msg: "Error desconocido",
+    };
     try {
-      set({isLoading: true})
-      retorno  = await findCategoryAction(id, token);
-      if ('id' in retorno) set({selected: retorno})
-        set({ isLoading: false });
-    }catch(error) {
-      throw new Error('Categorys > findOne > Unauthorized')
-    }finally {
+      set({ isLoading: true });
+      retorno = await findCategoryAction(id, token);
+      if ("id" in retorno) set({ selected: retorno });
+      set({ isLoading: false });
+    } catch (error) {
+      throw new Error("Categorys > findOne > Unauthorized");
+    } finally {
       set({ isLoading: false });
     }
-    return retorno
+    return retorno;
   },
 
-  createOrUpdate: async( entitdad: ICategory, token = 'NO TENGO TOKEN'): Promise<ICategory | ResponsePropio> => {
-    let retorno: ICategory | ResponsePropio = { error: true, msg: "Error desconocido" };
+  createOrUpdate: async (
+    entitdad: ICategory,
+    token = "NO TENGO TOKEN"
+  ): Promise<ICategory | ResponsePropio> => {
+    let retorno: ICategory | ResponsePropio = {
+      error: true,
+      msg: "Error desconocido",
+    };
     try {
       if (entitdad.id) retorno = await updateCategoryAction(entitdad, token);
       if (!entitdad.id) retorno = await createCategoryAction(entitdad, token);
-      
-      if ('data' in retorno) set({selected: retorno?.data, isLoading: false})
-    }catch(error) {
-      throw new Error('Categorys > createOrUpdate > Unauthorized')
-    }finally {
+
+      if ("data" in retorno) set({ selected: retorno?.data, isLoading: false });
+    } catch (error) {
+      throw new Error("Categorys > createOrUpdate > Unauthorized");
+    } finally {
       set({ isLoading: false });
-      return retorno
+      return retorno;
     }
-  
   },
-  
-  deleteOne: async( id: string, token = 'NO TENGO TOKEN' ) : Promise<ResponsePropio> => {
-    let retorno: ResponsePropio = { msg:'Error desconocido', error: true}
+
+  deleteOne: async (
+    id: string,
+    token = "NO TENGO TOKEN"
+  ): Promise<ResponsePropio> => {
+    let retorno: ResponsePropio = { msg: "Error desconocido", error: true };
     try {
-      const resp  = await deleteCategoryAction(id, token);
-      retorno = resp
-    }catch(error) {
-      throw new Error('Categorys > findOne > Unauthorized')
-    }finally {
+      const resp = await deleteCategoryAction(id, token);
+      retorno = resp;
+    } catch (error) {
+      throw new Error("Categorys > findOne > Unauthorized");
+    } finally {
       set({ isLoading: false });
     }
-    return retorno
+    return retorno;
   },
-
-
-
-
-  
 }));

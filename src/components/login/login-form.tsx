@@ -10,39 +10,28 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2, Mail, Lock, User, Chrome } from "lucide-react"
-import { useAuth } from "@/lib"
+import { Loader2, Mail, Lock, Chrome } from "lucide-react"
+import { useAuth } from "@/lib/auth-context"
 
-export default function RegisterForm() {
+
+export default function LoginForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [displayName, setDisplayName] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
-  const { signUp, signInWithGoogle, user } = useAuth()
+  const { signIn, signInWithGoogle, user } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
     if (user) {
-      router.push("/dashboard")
+      router.push("/")
     }
   }, [user, router])
 
-  const handleEmailRegister = async (e: React.FormEvent) => {
+  const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email || !password || !confirmPassword || !displayName) {
+    if (!email || !password) {
       setError("Por favor completa todos los campos")
-      return
-    }
-
-    if (password !== confirmPassword) {
-      setError("Las contraseñas no coinciden")
-      return
-    }
-
-    if (password.length < 6) {
-      setError("La contraseña debe tener al menos 6 caracteres")
       return
     }
 
@@ -50,24 +39,26 @@ export default function RegisterForm() {
     setError("")
 
     try {
-      await signUp(email, password, displayName)
+      await signIn(email, password)
       router.push("/")
-    } catch (error: any) {
-      setError(error.message || "Error al crear la cuenta")
+    } catch (error) {
+      console.log(error);
+      setError("Error al iniciar sesión")
     } finally {
       setLoading(false)
     }
   }
 
-  const handleGoogleRegister = async () => {
+  const handleGoogleLogin = async () => {
     setLoading(true)
     setError("")
 
     try {
       await signInWithGoogle()
       router.push("/")
-    } catch (error: any) {
-      setError(error.message || "Error al registrarse con Google")
+    } catch (error) {
+      console.log(error);
+      setError( "Error al iniciar sesión con Google")
     } finally {
       setLoading(false)
     }
@@ -76,8 +67,8 @@ export default function RegisterForm() {
   return (
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Crear Cuenta</CardTitle>
-          <CardDescription className="text-center">Regístrate para comenzar</CardDescription>
+          <CardTitle className="text-2xl font-bold text-center">Iniciar Sesión</CardTitle>
+          <CardDescription className="text-center">Ingresa a tu cuenta para continuar</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {error && (
@@ -86,23 +77,7 @@ export default function RegisterForm() {
             </Alert>
           )}
 
-          <form onSubmit={handleEmailRegister} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="displayName">Nombre completo</Label>
-              <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="displayName"
-                  type="text"
-                  placeholder="Tu nombre"
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  className="pl-10"
-                  disabled={loading}
-                />
-              </div>
-            </div>
-
+          <form onSubmit={handleEmailLogin} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Correo electrónico</Label>
               <div className="relative">
@@ -135,30 +110,14 @@ export default function RegisterForm() {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirmar contraseña</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="••••••••"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="pl-10"
-                  disabled={loading}
-                />
-              </div>
-            </div>
-
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Creando cuenta...
+                  Iniciando sesión...
                 </>
               ) : (
-                "Crear Cuenta"
+                "Iniciar Sesión"
               )}
             </Button>
           </form>
@@ -176,7 +135,7 @@ export default function RegisterForm() {
             type="button"
             variant="outline"
             className="w-full bg-transparent"
-            onClick={handleGoogleRegister}
+            onClick={handleGoogleLogin}
             disabled={loading}
           >
             <Chrome className="mr-2 h-4 w-4" />
@@ -184,9 +143,9 @@ export default function RegisterForm() {
           </Button>
 
           <div className="text-center text-sm">
-            <span className="text-muted-foreground">¿Ya tienes una cuenta? </span>
-            <Link href="/login" className="text-primary hover:underline">
-              Inicia sesión
+            <span className="text-muted-foreground">¿No tienes una cuenta? </span>
+            <Link href="/register" className="text-primary hover:underline">
+              Regístrate
             </Link>
           </div>
         </CardContent>

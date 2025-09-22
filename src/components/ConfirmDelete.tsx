@@ -1,6 +1,8 @@
-import { Button, ConfirmAlert } from '@/components'
+
 import { X } from 'lucide-react'
 import React, { ReactNode } from 'react'
+import { ConfirmAlert } from './ConfirmAlert'
+import { Button } from './ui/button'
 
 interface Props {
   title?: string

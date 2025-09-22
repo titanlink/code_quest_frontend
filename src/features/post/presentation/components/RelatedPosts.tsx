@@ -1,6 +1,7 @@
 'use client'
-import { IPost } from "@/features"
-import { PostCard } from "@/components"
+
+import { PostCard } from "@/components/post-card"
+import { IPost } from "../../domain/entities/post.entity"
 
 interface RelatedPostsProps {
   posts: IPost[]

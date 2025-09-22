@@ -1,9 +1,13 @@
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge, CustomCard } from '@/components'
+
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal, Trash2 } from "lucide-react"
 import React from 'react'
-import { IComment } from '../..'
+import { IComment } from '../../domain/entities/comment.entity'
+import { CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { CustomCard } from '@/components/CustomCard'
+import { Button } from '@/components/ui/button'
+
 
 interface Props {
   totalRecords?:number,

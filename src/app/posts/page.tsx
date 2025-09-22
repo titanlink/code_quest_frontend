@@ -1,15 +1,17 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState } from "react"
 import { Navbar } from "@/components/navbar"
 
 import type { PostFilters } from "@/lib/types"
-import { PostGrid, ResultsSummary, usePostStore } from "@/features"
+import { PostGrid } from "@/features/post/presentation/components/PostGrid";
+import { usePostStore } from "@/features/post/presentation/providers/post.store";
+
 
 export default function PostsPage() {
   const isLoading = usePostStore((state) => state.isLoading);
 
-  const [filters, setFilters] = useState<PostFilters>({
+  const [, setFilters] = useState<PostFilters>({
     search: "",
     category: "",
     featured: false,

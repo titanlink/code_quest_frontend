@@ -1,30 +1,31 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { useAuth } from "@/lib/auth-context"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import Link from "next/link";
+import { useAuth } from "@/lib/auth-context";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { LogOut, Settings, User } from "lucide-react"
-import { AnimatedThemeToggler, AuroraText, DotGrid, DotsGrid } from "."
-import { useRouter } from "next/navigation"
+} from "@/components/ui/dropdown-menu";
+import { LogOut, User } from "lucide-react";
 
+import { useRouter } from "next/navigation";
+import { DotsGrid } from "./DotsGrid";
+import { AnimatedThemeToggler } from "./magicui/animated-theme-toggler";
+import { AuroraText } from "./magicui/aurora-text";
 
 export function Navbar() {
-  const { user, logout, session } = useAuth()
-  const router = useRouter()
-
+  const { user, logout, session } = useAuth();
+  const router = useRouter();
 
   const logOut = () => {
-    logout()
-    router.push("/")
-  }
+    logout();
+    router.push("/");
+  };
 
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -34,7 +35,6 @@ export function Navbar() {
         </Link>
 
         <DotsGrid />
-        
 
         <div className="flex items-center gap-4">
           {user ? (
@@ -50,10 +50,18 @@ export function Navbar() {
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Button
+                    variant="ghost"
+                    className="relative h-8 w-8 rounded-full"
+                  >
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={user?.photoURL || "/placeholder.svg"} alt={user?.displayName ?? ''} />
-                      <AvatarFallback>{user?.displayName?.charAt(0).toUpperCase()}</AvatarFallback>
+                      <AvatarImage
+                        src={user?.photoURL || "/placeholder.svg"}
+                        alt={user?.displayName ?? ""}
+                      />
+                      <AvatarFallback>
+                        {user?.displayName?.charAt(0).toUpperCase()}
+                      </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
@@ -61,7 +69,9 @@ export function Navbar() {
                   <div className="flex items-center justify-start gap-2 p-2">
                     <div className="flex flex-col space-y-1 leading-none">
                       <p className="font-medium">{user?.displayName}</p>
-                      <p className="w-[200px] truncate text-sm text-muted-foreground">{user.email}</p>
+                      <p className="w-[200px] truncate text-sm text-muted-foreground">
+                        {user.email}
+                      </p>
                     </div>
                   </div>
                   <DropdownMenuSeparator />
@@ -100,5 +110,5 @@ export function Navbar() {
         </div>
       </div>
     </nav>
-  )
+  );
 }

@@ -8,9 +8,10 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { LogOut, User, Mail, Calendar, Key, Copy, Check } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Button } from "@/components"
-import { useAuth } from "@/lib"
+
 import LoginPage from "../login/page"
+import { Button } from "@/components/ui/button"
+import { useAuth } from "@/lib/auth-context"
 
 export default function DashboardPage() {
   const { user, logout, getToken } = useAuth()
@@ -128,7 +129,7 @@ export default function DashboardPage() {
                   <Badge variant={user.emailVerified ? "default" : "secondary"}>
                     {user.emailVerified ? "Email Verificado" : "Email No Verificado"}
                   </Badge>
-                  {user.providerData.map((provider:any, index:number) => (
+                  {user.providerData.map((provider, index:number) => (
                     <Badge key={index} variant="outline">
                       {provider.providerId === "google.com" ? "Google" : provider.providerId}
                     </Badge>

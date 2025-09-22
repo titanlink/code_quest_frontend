@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ColorPicker, useColor } from "react-color-palette"
+import { ColorPicker, IColor, useColor } from "react-color-palette"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -17,7 +17,7 @@ export interface ColorInputProps {
 }
 
 const ColorInput = React.forwardRef<HTMLButtonElement, ColorInputProps>(
-  ({ value = "#000000", onChange, onBlur, disabled, className, placeholder = "Seleccionar color" }, ref) => {
+  ({ value = "#000000", onChange, onBlur, disabled, className }, ref) => {
     const [color, setColor] = useColor(value)
     const [open, setOpen] = React.useState(false)
 
@@ -25,9 +25,9 @@ const ColorInput = React.forwardRef<HTMLButtonElement, ColorInputProps>(
       if (value !== color.hex) {
         setColor({ ...color, hex: value })
       }
-    }, [value])
+    }, [color, setColor, value])
 
-    const handleColorChange = (newColor: any) => {
+    const handleColorChange = (newColor: IColor) => {
       setColor(newColor)
       onChange?.(newColor.hex)
     }

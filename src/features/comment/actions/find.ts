@@ -2,9 +2,8 @@
 
 import { repoConfig } from "./_repo-config";
 
-
 export async function findCommentAction(id: string, token: string) {
- const repo = repoConfig(token);
+  const repo = repoConfig(token);
   try {
     const response = await repo.findById(id);
     return response;
@@ -13,4 +12,3 @@ export async function findCommentAction(id: string, token: string) {
     return { success: false, error: "No se pudo obtener el asset" };
   }
 }
-  

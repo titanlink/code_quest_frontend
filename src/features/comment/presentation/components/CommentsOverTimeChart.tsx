@@ -1,8 +1,10 @@
 "use client"
 
-import { CustomCard, CardHeader, CardTitle, CardContent } from "@/components"
-import { IComment } from "@/features"
+
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
+import { IComment } from "../../domain/entities/comment.entity"
+import { CustomCard } from "@/components/CustomCard"
+import { CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 
 interface CommentsOverTimeProps {
   comments: IComment[]

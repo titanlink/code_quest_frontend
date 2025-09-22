@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card"
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
 import { X, Upload, ImageIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 
 interface ImageUploadProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -167,7 +168,9 @@ export function ImageUpload<
 
                   <Card className="relative group overflow-hidden max-w-sm">
                     <div className="aspect-square relative">
-                      <img
+                      <Image
+                        width={500}
+                        height={500}
                         src={image.preview || "/placeholder.svg"}
                         alt={image.file.name}
                         className="w-full h-full object-cover"

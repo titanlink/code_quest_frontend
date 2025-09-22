@@ -1,5 +1,5 @@
 import { PostFilters } from "@/lib/types"
-import { IPost } from "../.."
+import { IPost } from "../../domain/entities/post.entity"
 
 interface Props {
   filteredPosts:IPost[],

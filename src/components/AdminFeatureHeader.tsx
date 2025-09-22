@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
-import { TextEffect } from '.';
+import { TextEffect } from './motion-primitives/text-effect';
+
 
 interface Props {
   title: string;

@@ -1,46 +1,47 @@
-import { CategoryMapper, CommentMapper, ICategory, IComment, ILike, IPost, IUser, LikeMapper, postGQLFields, PostMapper, userGQLFields, UserMapper } from "@/features"
+import { IUser, UserMapper } from "@/features/user/domain/entities/user.entity";
+import { IPost, PostMapper } from "./post.entity";
 
 export interface IBookMark {
-  id?: string
+  id?: string;
   post?: IPost;
-  user?:  IUser;
-  createdAt?: Date
-  updatedAt?: Date
+  user?: IUser;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export class BookMarkMapper {
-  static fromJson( json: Record<string, any>): IBookMark | undefined {
-    let retorno: IBookMark | undefined
-    if (!json) return
+  static fromJson(json: Record<string, any>): IBookMark | undefined {
+    let retorno: IBookMark | undefined;
+    if (!json) return;
     try {
-      const user = UserMapper.fromJson(json['user'])
-      const post = PostMapper.fromJson(json['post'])
+      const user = UserMapper.fromJson(json["user"]);
+      const post = PostMapper.fromJson(json["post"]);
       retorno = {
-        id: json['id'],
+        id: json["id"],
         user: user,
         post: post,
-        createdAt: new Date(json['createAt']),
-        updatedAt: new Date(json['updateAt']),
-      }
-    } catch (e){
-      retorno = undefined
+        createdAt: new Date(json["createAt"]),
+        updatedAt: new Date(json["updateAt"]),
+      };
+    } catch (e) {
+      retorno = undefined;
     } finally {
-      return retorno
+      return retorno;
     }
   }
 
-  static fromJsonList( data: any ) : IBookMark[] {
+  static fromJsonList(data: any): IBookMark[] {
     const entities: IBookMark[] = [];
-    if (!data) return entities
+    if (!data) return entities;
     for (const json of data) {
       const entidad = BookMarkMapper.fromJson(json);
-      if(entidad) entities.push(entidad);
+      if (entidad) entities.push(entidad);
     }
     return entities;
   }
 }
 
-export const bookMarkGQLFields =`
+export const bookMarkGQLFields = `
 id
 createAt
 updateAt
