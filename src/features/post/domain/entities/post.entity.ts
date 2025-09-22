@@ -29,6 +29,7 @@ export interface IPost {
   bookMarkCount?: number;
   commentsCount?: number;
   coverImage?: string | File;
+  id_image?: number;
   image?: IImage | null;
   authorId?: string;
   author?: IUser;
@@ -87,7 +88,7 @@ export class PostMapper {
         isLiked: isLiked ?? false,
         isBookMarked: isBookMarked ?? false,
       };
-    } catch (e) {
+    } catch {
       retorno = undefined;
     } finally {
       return retorno;

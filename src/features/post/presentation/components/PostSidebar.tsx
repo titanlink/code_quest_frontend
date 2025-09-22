@@ -11,6 +11,7 @@ import { IPost } from "../../domain/entities/post.entity";
 import { CustomCard } from "@/components/CustomCard";
 import { ICategory } from "@/features/category/domain/entities/category.entity";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 interface Props {
   post: IPost;
@@ -18,7 +19,7 @@ interface Props {
   categories?: ICategory[];
 }
 
-export function PostSidebar({ post, categories, relateds }: Props) {
+export function PostSidebar({ post, categories }: Props) {
   return (
     <div className="space-y-6">
       {/* Author Card */}
@@ -76,9 +77,11 @@ export function PostSidebar({ post, categories, relateds }: Props) {
               </Button>
             )}
             {post?.author?.instagram_url && (
-              <Button variant="outline" size="sm">
-                <InstagramLogoIcon className="h-4 w-4" />
-              </Button>
+              <Link href={post?.author?.instagram_url}>
+                <Button variant="outline" size="sm">
+                  <InstagramLogoIcon className="h-4 w-4" />
+                </Button>
+              </Link>
             )}
             {/* <Button variant="outline" size="sm">
               <LinkIcon className="h-4 w-4" />
@@ -97,7 +100,7 @@ export function PostSidebar({ post, categories, relateds }: Props) {
             <Badge
               key={category.id}
               style={{ backgroundColor: category?.color }}
-              className="text-white"
+              className="text-white m-1"
             >
               {category?.name}
             </Badge>

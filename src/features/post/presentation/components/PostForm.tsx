@@ -1,6 +1,6 @@
 "use client"
 
-import { FormField, FormItem, FormLabel, FormDescription, FormMessage, Form, FormControl } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Form } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -22,9 +22,9 @@ import { TagsInput } from "@/components/ui/tags-input";
 import { useCategoryStore } from "@/features/category/presentation/providers/category.store";
 import { useAuth } from "@/lib/auth-context";
 import { getImageUrl } from "@/lib/utils";
-
 import { IPost } from "../../domain/entities/post.entity";
 import { usePostStore } from "../providers/post.store";
+import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 
@@ -36,7 +36,10 @@ interface Props {
 const formSchema = z.object({
   id: z.string().optional(),
   title: z.string(inputErrors.required).min(2,inputErrors.minLength(2)),
-  slug: z.string(inputErrors.required).min(2,inputErrors.minLength(2)).max(60, inputErrors.minLength(60)),
+  slug: z.string(inputErrors.required).min(2,inputErrors.minLength(2)).max(60, inputErrors.minLength(60)).regex(
+  /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+  "Slug inválido. Usa solo minúsculas, números y guiones."
+),
   excerpt: z.string(inputErrors.required).min(2,inputErrors.minLength(2)),
   content: z.string(inputErrors.required).min(2,inputErrors.minLength(2)),
   categoryId: z.string(),
@@ -87,7 +90,7 @@ export const PostForm = ({entity}:Props) => {
       }
     }
     fetchToken()
-  }, [user, token])
+  }, [user, token, getToken, getCategories])
 
   async function onSubmit(values: z.infer < typeof formSchema > ) {
     // toast.info( <pre><b>{JSON.stringify(values, null, 2) } </b> </pre>)
@@ -96,7 +99,7 @@ export const PostForm = ({entity}:Props) => {
     startTransition(async () => {
       try {
         const resp = await createOrUpdate(values, token)
-        console.log('resp',resp);
+        // console.log('resp',resp);
         if ("error" in resp && resp['error']){ toast.error(resp.msg); return }
         if ("id" in resp) isCreated = true 
         if (!isCreated) return
@@ -290,7 +293,7 @@ export const PostForm = ({entity}:Props) => {
                 name="categoryId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Categoría</FormLabel>
+                    <FormLabel>Categoria</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
@@ -341,14 +344,15 @@ export const PostForm = ({entity}:Props) => {
                               const file = e.target.files?.[0]
                               field.onChange(file)
                               if (file) {
-                                console.log("🚀 ~ ...file:", file)
                                 setPreview(URL.createObjectURL(file)) 
                               }
                             }}
                           />
                         </FormControl>
                         {preview && (
-                          <img
+                          <Image
+                            width={500}
+                            height={500}
                             src={preview}
                             alt="Vista previa"
                             className="mt-2 w-32 h-32 object-cover rounded-md border"

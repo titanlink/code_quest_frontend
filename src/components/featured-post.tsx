@@ -19,34 +19,44 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
         <Link href={`/posts/${post.slug}`}>
           <div className="relative aspect-[16/10] overflow-hidden">
             <Image
-              width={500}
+              width={700}
               height={500}
-              src={getImageUrl(post?.coverImage) }
+              src={getImageUrl(post?.coverImage)}
               alt={post.title}
               className="object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            />
+            {/* Overlay uniforme para oscurecer toda la imagen */}
+            <div className="absolute inset-0 bg-black/80" />
             <div className="absolute top-4 left-4 flex gap-2">
               <Badge className="bg-primary text-primary-foreground">
                 <Star className="h-3 w-3 mr-1" />
                 Destacado
-                
               </Badge>
-              <Badge style={{ backgroundColor: post?.category?.color }} className="text-white">
+              <Badge
+                style={{ backgroundColor: post?.category?.color }}
+                className="text-white"
+              >
                 {post?.category?.name}
               </Badge>
             </div>
             <div className="absolute bottom-6 left-6 right-6 text-white">
-              <h3 className="text-2xl font-bold mb-2 group-hover:text-primary-foreground transition-colors">
+              <h3 className="text-2xl font-bold mb-2 group-hover:text-amber-50 transition-colors">
                 {post.title}
               </h3>
-              <p className="text-white/90 text-sm mb-4 line-clamp-2 truncate w-[90%]">{post.excerpt}</p>
+              <p className="text-white/90 text-sm mb-4 line-clamp-2 truncate w-[90%]">
+                {post.excerpt}
+              </p>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-8 w-8 border-2 border-white/20">
-                    <AvatarImage src={post?.author?.avatar || "/placeholder.svg"} alt={post?.author?.name} />
-                    <AvatarFallback>{post?.author?.name.charAt(0)}</AvatarFallback>
+                    <AvatarImage
+                      src={post?.author?.avatar || "/placeholder.svg"}
+                      alt={post?.author?.name}
+                    />
+                    <AvatarFallback>
+                      {post?.author?.name.charAt(0)}
+                    </AvatarFallback>
                   </Avatar>
                   <div>
                     <p className="text-sm font-medium">{post?.author?.name}</p>
@@ -77,5 +87,5 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
         </Link>
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -23,7 +23,7 @@ export class BookMarkMapper {
         createdAt: new Date(json["createAt"]),
         updatedAt: new Date(json["updateAt"]),
       };
-    } catch (e) {
+    } catch {
       retorno = undefined;
     } finally {
       return retorno;

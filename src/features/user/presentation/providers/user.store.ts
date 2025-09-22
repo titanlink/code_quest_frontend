@@ -77,7 +77,6 @@ export const useUserStore = create<UsersState>()((set, get) => ({
   },
 
   changeRole: async (entitdad: IUser, token: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let retorno: any = { error: true, msg: "No action taken" };
 
     try {
@@ -96,11 +95,9 @@ export const useUserStore = create<UsersState>()((set, get) => ({
     return retorno;
   },
   createOrUpdate: async (entitdad: IUser, token: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let retorno: any = { error: true, msg: "No action taken" };
     try {
       if (entitdad.id) retorno = await updateUserAction(entitdad, token);
-      // if (entitdad.id == '0') retorno = await createUserAction(entitdad);
 
       set({ selected: retorno?.data, isLoading: false });
     } catch {

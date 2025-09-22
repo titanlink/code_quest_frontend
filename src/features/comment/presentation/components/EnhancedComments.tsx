@@ -26,9 +26,10 @@ import { CustomCard } from "@/components/CustomCard";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import { IPost } from "@/features/post/domain/entities/post.entity";
 import { IUser } from "@/features/user/domain/entities/user.entity";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { createCommentAction } from "../../actions/create";
-import { IComment } from "../../domain/entities/comment.entity";
+import { IComment, ISubComment, SubCommentMapper } from "../../domain/entities/comment.entity";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { toast } from "sonner";
 
 
 
@@ -39,7 +40,7 @@ interface Props {
 }
 
 export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
-  const { user, getToken } = useAuth();
+  const { user, getToken, session } = useAuth();
   const [newComment, setNewComment] = useState("");
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState("");
@@ -58,12 +59,17 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
     fetchToken();
   }, [user, token, newComment, getToken]);
 
-  const currentUser: IUser = {
-    id: post.author?.id ?? "",
-    email: user?.email ?? "",
-    name: user?.displayName ?? "",
-    role: "user",
-  };
+
+  const getCurrenUser = (): IUser => {
+    return  {
+      id: post.author?.id ?? "",
+      email: user?.email ?? "",
+      name: user?.displayName ?? "",
+      role: "user",
+      avatar: session?.avatar
+    }
+  }
+
 
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,8 +80,8 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
       id: Date.now().toString(),
       content: newComment,
       postId,
-      authorId: currentUser.id,
-      author: currentUser,
+      authorId: getCurrenUser().id,
+      author: getCurrenUser(),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -92,22 +98,28 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
     const isSubComment = true;
     if (!user || !replyContent.trim()) return;
 
-    const reply: IComment = {
+    const reply: IComment | ISubComment = {
       id: Date.now().toString(),
       content: replyContent,
       postId,
       parentId,
-      authorId: currentUser.id,
-      author: currentUser,
+      authorId: getCurrenUser().id,
+      author: getCurrenUser(),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
     // console.log("🚀 ~ handleSubmitReply ~ reply:", reply)
 
     const resp = await createCommentAction(reply, token ?? "", isSubComment);
+    const subComment = SubCommentMapper.fromJson(resp)
     if ("error" in resp) return;
-
-    setComments([reply, ...comments]);
+    const mapeado = comments.map((comment)=> {
+      if (comment.id == parentId){
+        if (subComment) comment.sub_comment?.push(subComment)
+      }
+      return comment
+    })
+    setComments(mapeado);
     setReplyContent("");
     setReplyTo(null);
   };
@@ -210,7 +222,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
       )}
 
       {/* Comments List */}
-      <ScrollArea className="h-200 w-full rounded-md border p-4">
+      <ScrollArea className={`${comments.length > 0 ? 'h-200' : 'h-60' } w-full rounded-md border p-4`}>
         <div className="space-y-6 mt-4">
           {comments.length > 0 ? (
             comments.map((comment) => {
@@ -252,7 +264,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={()=> { toast.warning("Todo: No Implementado")}}>
                               <Flag className="mr-2 h-4 w-4" />
                               Reportar
                             </DropdownMenuItem>
@@ -265,7 +277,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                       </p>
 
                       <div className="flex items-center gap-4 text-sm">
-                        <Button
+                        {/* <Button
                           variant="ghost"
                           size="sm"
                           className={`h-auto p-0 ${
@@ -279,7 +291,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                             }`}
                           />
                           Me gusta
-                        </Button>
+                        </Button> */}
                         <Button
                           variant="ghost"
                           size="sm"
@@ -381,7 +393,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                               </p>
 
                               <div className="flex items-center gap-4 text-xs">
-                                <Button
+                                {/* <Button
                                   variant="ghost"
                                   size="sm"
                                   className={`h-auto p-0 ${
@@ -399,7 +411,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                                     }`}
                                   />
                                   Me gusta
-                                </Button>
+                                </Button> */}
                               </div>
                             </div>
                           </div>
@@ -409,7 +421,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                   )}
 
                   {comment.id !==
-                    topLevelComments[topLevelComments.length - 1].id && (
+                    topLevelComments[topLevelComments.length - 1]?.id && (
                     <Separator />
                   )}
                 </div>

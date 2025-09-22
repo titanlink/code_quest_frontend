@@ -50,7 +50,7 @@ export function PostContent({ post }: Props) {
       }
     }
     fetchToken()
-  }, [user, token, post])
+  }, [user, token, post, getToken])
 
   const handleLike = async () => {
     if (!user) {
@@ -209,7 +209,7 @@ export function PostContent({ post }: Props) {
                 size="sm"
                 onClick={handleBookmark}
                 className="flex items-center gap-2"
-              >
+              > 
                 <Bookmark className={`h-4 w-4 ${isBookMarked ? "fill-current" : ""}`} />
               </Button>
 

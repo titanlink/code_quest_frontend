@@ -14,7 +14,7 @@ import {
 
 export class UserDatasourceGQL implements UserDatasource {
   async all(page = 0, limit = 50, token: string) {
-    let retorno: ResponsePropio = { msg: "Error desconocido", error: true };
+    const retorno: ResponsePropio = { msg: "Error desconocido", error: true };
     try {
       const peti = await makeClientGraphql(token);
 
@@ -77,7 +77,6 @@ export class UserDatasourceGQL implements UserDatasource {
         query: checkProfileGQL,
         fetchPolicy: "no-cache",
       });
-      console.log("🚀 ~ UserDatasourceGQL ~ checkProfile ~ data:", data)
       const entity = UserMapper.fromJson(data["checkProfile"]);
       if (entity) retorno = entity;
     } catch (e) {
@@ -155,7 +154,6 @@ export class UserDatasourceGQL implements UserDatasource {
         instagram_url: form.instagram_url ? form.instagram_url : null,
         role: form.role,
       };
-      console.log("🚀 ~ UserDatasourceGQL ~ update ~ input:", input);
 
       const { data } = await peti.mutate<any>({
         mutation: updateUserGQL,

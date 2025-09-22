@@ -12,9 +12,9 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, Mail, Lock, Chrome } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
-import { RainbowButton } from "../ui/rainbow-button"
 import { CustomCard } from "../CustomCard"
 import { TextEffect } from "../motion-primitives/text-effect"
+import { RainbowButton } from "../ui/rainbow-button"
 
 
 export default function LoginForm() {
@@ -71,12 +71,11 @@ export default function LoginForm() {
       <CustomCard className="w-100 max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
-            <TextEffect per='word' as='h3' preset='blur' delay={0.5} >
-            Iniciar Sesión
-            </TextEffect></CardTitle>
+            <TextEffect per='word' as='h3' preset='blur' delay={0.5} >Iniciar Sesión</TextEffect>
+          </CardTitle>
           <CardDescription className="text-center">
             <TextEffect per='word' as='h3' preset='blur' delay={0.75} >
-            Ingresa a tu cuenta para continuar
+              Ingresa a tu cuenta para continuar
             </TextEffect>
           </CardDescription>
         </CardHeader>
@@ -140,15 +139,14 @@ export default function LoginForm() {
               <span className="bg-background px-2 text-muted-foreground">O continúa con</span>
             </div>
           </div>
-
-           <RainbowButton
-              variant={"outline"}
-              size="lg"
-              onClick={handleGoogleLogin}
-              className="flex flex-row w-full items-center gap-2"
-            >
-            <Chrome className="mr-2 h-4 w-4" />
-            Google
+          <RainbowButton
+                variant={"outline"}
+                size="lg"
+                onClick={handleGoogleLogin}
+                className="flex flex-row w-full items-center gap-2"
+              >
+              <Chrome className="mr-2 h-4 w-4" />
+              Google
           </RainbowButton>
 
           <div className="text-center text-sm">

@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/lib/auth-context"
-import {  Settings, LogOut, Home } from "lucide-react"
+import {  Settings, LogOut, Home, User } from "lucide-react"
 import Link from "next/link"
 
 import { useRouter } from "next/navigation"
@@ -73,10 +73,12 @@ export function AdminHeader() {
                 </div>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                Configuración
-              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                  <Link href="/profile">
+                    <User className="mr-2 h-4 w-4" />
+                    Perfil
+                  </Link>
+                </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={logOut}>
                 <LogOut className="mr-2 h-4 w-4" />

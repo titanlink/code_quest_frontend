@@ -1,28 +1,41 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import {  CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { LogOut, User, Mail, Calendar, Key, Copy, Check, ArrowLeft } from "lucide-react"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import {
+  LogOut,
+  User,
+  Mail,
+  Calendar,
+  Key,
+  Copy,
+  Check,
+  ArrowLeft,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
-import LoginPage from "../login/page"
-import Link from "next/link"
-import BookMarks from "@/features/post/presentation/components/BookMarks"
-import { useAuth } from "@/lib/auth-context"
-import { CustomCard } from "@/components/CustomCard"
+import LoginPage from "../login/page";
+import Link from "next/link";
+import BookMarks from "@/features/post/presentation/components/BookMarks";
+import { useAuth } from "@/lib/auth-context";
+import { CustomCard } from "@/components/CustomCard";
 
 export default function DashboardPage() {
-  const { user, logout, getToken, session } = useAuth()
-  const [token, setToken] = useState<string | null>(null)
-  const [tokenCopied, setTokenCopied] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const router = useRouter()
+  const { user, logout, getToken, session } = useAuth();
+  const [token, setToken] = useState<string | null>(null);
+  const [tokenCopied, setTokenCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   // useEffect(() => {
   //   console.log("🚀 ~ DashboardPage ~ user:", user)
@@ -34,42 +47,35 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchToken = async () => {
       if (user) {
-        const authToken = await getToken()
-        setToken(authToken)
+        const authToken = await getToken();
+        setToken(authToken);
       }
-    }
-    fetchToken()
-  }, [user, getToken])
+    };
+    fetchToken();
+  }, [user, getToken]);
 
   const handleLogout = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      await logout()
-      router.push("/login")
+      await logout();
+      router.push("/login");
     } catch (error) {
-      console.error("Error al cerrar sesión:", error)
+      console.error("Error al cerrar sesión:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const copyToken = async () => {
     if (token) {
-      await navigator.clipboard.writeText(token)
-      setTokenCopied(true)
-      setTimeout(() => setTokenCopied(false), 2000)
+      await navigator.clipboard.writeText(token);
+      setTokenCopied(true);
+      setTimeout(() => setTokenCopied(false), 2000);
     }
-  }
-
-  const refreshToken = async () => {
-    const newToken = await getToken()
-    setToken(newToken)
-  }
+  };
 
   if (!user) {
-    return (
-      <LoginPage />
-    )
+    return <LoginPage />;
   }
 
   const getInitials = (name: string) => {
@@ -78,8 +84,8 @@ export default function DashboardPage() {
       .map((word) => word[0])
       .join("")
       .toUpperCase()
-      .slice(0, 2)
-  }
+      .slice(0, 2);
+  };
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString("es-ES", {
@@ -88,8 +94,8 @@ export default function DashboardPage() {
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    })
-  }
+    });
+  };
 
   return (
     <div className="min-h-screen">
@@ -98,7 +104,9 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold ">Dashboard</h1>
-            <p className="">Bienvenido de vuelta, {user.displayName || "Usuario"}</p>
+            <p className="">
+              Bienvenido de vuelta, {user.displayName || "Usuario"}
+            </p>
           </div>
           <div className="flex flex-row justify-around gap-2">
             <Button variant="ghost" asChild>
@@ -114,9 +122,8 @@ export default function DashboardPage() {
           </div>
         </div>
 
-
         {/* User Profile Card */}
-        <CustomCard withOpacity>
+        <CustomCard withOpacity withGlowEffect>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <User className="h-5 w-5" />
@@ -127,24 +134,35 @@ export default function DashboardPage() {
           <CardContent className="space-y-6">
             <div className="flex items-center space-x-4">
               <Avatar className="h-20 w-20">
-                <AvatarImage src={user.photoURL || ""} alt={user.displayName || "Usuario"} />
+                <AvatarImage
+                  src={user.photoURL || ""}
+                  alt={user.displayName || "Usuario"}
+                />
                 <AvatarFallback className="text-lg">
                   {getInitials(user.displayName || user.email || "U")}
                 </AvatarFallback>
               </Avatar>
               <div className="space-y-2">
-                <h3 className="text-xl font-semibold">{user.displayName || "Sin nombre"}</h3>
+                <h3 className="text-xl font-semibold">
+                  {user.displayName || "Sin nombre"}
+                </h3>
                 <div className="flex items-center gap-2">
                   <Mail className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">{user.email}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {user.email}
+                  </span>
                 </div>
                 <div className="flex gap-2">
                   <Badge variant={user.emailVerified ? "default" : "secondary"}>
-                    {user.emailVerified ? "Email Verificado" : "Email No Verificado"}
+                    {user.emailVerified
+                      ? "Email Verificado"
+                      : "Email No Verificado"}
                   </Badge>
-                  {user.providerData.map((provider, index:number) => (
+                  {user.providerData.map((provider, index: number) => (
                     <Badge key={index} variant="outline">
-                      {provider.providerId === "google.com" ? "Google" : provider.providerId}
+                      {provider.providerId === "google.com"
+                        ? "Google"
+                        : provider.providerId}
                     </Badge>
                   ))}
                 </div>
@@ -159,40 +177,55 @@ export default function DashboardPage() {
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm font-medium">Cuenta creada</span>
                 </div>
-                <p className="text-sm text-muted-foreground">{formatDate(user.metadata.creationTime || "")}</p>
+                <p className="text-sm text-muted-foreground">
+                  {formatDate(user.metadata.creationTime || "")}
+                </p>
               </div>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm font-medium">Último acceso</span>
                 </div>
-                <p className="text-sm text-muted-foreground">{formatDate(user.metadata.lastSignInTime || "")}</p>
+                <p className="text-sm text-muted-foreground">
+                  {formatDate(user.metadata.lastSignInTime || "")}
+                </p>
               </div>
             </div>
           </CardContent>
         </CustomCard>
 
-        <CustomCard  withOpacity withGlowEffect>
-          <BookMarks bookMarks={session?.bookMarks ?? []}/>
+        <CustomCard withOpacity>
+          <BookMarks bookMarks={session?.bookMarks ?? []} />
         </CustomCard>
 
         {/* Token Management Card */}
-        <CustomCard withOpacity withBlur>
+        {
+          /*
+          <CustomCard withOpacity withBlur>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Key className="h-5 w-5" />
               Token de Autenticación
             </CardTitle>
-            <CardDescription>Token JWT para usar en tus actions y API calls</CardDescription>
+            <CardDescription>
+              TODO: 
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {token ? (
               <div className="space-y-3">
                 <div className="p-3 bg-muted rounded-lg">
-                  <p className="text-xs font-mono break-all text-muted-foreground">{token.substring(0, 50)}...</p>
+                  <p className="text-xs font-mono break-all text-muted-foreground">
+                    {token.substring(0, 50)}...
+                  </p>
                 </div>
                 <div className="flex gap-2">
-                  <Button onClick={copyToken} variant="outline" size="sm" className="flex-1 bg-transparent">
+                  <Button
+                    onClick={copyToken}
+                    variant="outline"
+                    size="sm"
+                    className="flex-1 bg-transparent"
+                  >
                     {tokenCopied ? (
                       <>
                         <Check className="mr-2 h-4 w-4" />
@@ -205,26 +238,22 @@ export default function DashboardPage() {
                       </>
                     )}
                   </Button>
-                  <Button onClick={refreshToken} variant="outline" size="sm" className="flex-1 bg-transparent">
-                    Actualizar Token
-                  </Button>
+
                 </div>
-                <Alert>
-                  <AlertDescription>
-                    Este token se actualiza automáticamente. Úsalo en tus server actions para autenticar las peticiones.
-                  </AlertDescription>
-                </Alert>
+
               </div>
             ) : (
               <div className="text-center py-4">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                <p className="text-sm text-muted-foreground mt-2">Cargando token...</p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Cargando token...
+                </p>
               </div>
             )}
           </CardContent>
-        </CustomCard>
-
+        </CustomCard> */
+        }
       </div>
     </div>
-  )
+  );
 }

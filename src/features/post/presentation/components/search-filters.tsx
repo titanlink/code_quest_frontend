@@ -18,7 +18,7 @@ interface Props {
   onClearFilters: () => void
 }
 
-export function SearchFilters({ filters, onFiltersChange, onClearFilters, categories }: Props) {
+export function SearchFilters({ filters, onFiltersChange, categories }: Props) {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   const handleSearchChange = (value: string) => {
@@ -138,7 +138,7 @@ export function SearchFilters({ filters, onFiltersChange, onClearFilters, catego
         <div className="flex flex-wrap gap-2">
           {filters.search && (
             <Badge variant="secondary" className="flex items-center gap-1">
-              Búsqueda: "{filters.search}"
+              Búsqueda: &quot;{filters.search}&quot;
               <button
                 onClick={() => handleSearchChange("")}
                 className="ml-1 hover:bg-muted-foreground/20 rounded-full p-0.5"

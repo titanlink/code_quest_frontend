@@ -7,6 +7,7 @@ import { deletePostAction } from "../../actions/delete";
 import { findPostAction, findPostBySlugAction } from "../../actions/find";
 import { updatePostAction } from "../../actions/update";
 import { IPost } from "../../domain/entities/post.entity";
+import { saveAsset } from "@/lib/server-utils";
 
 //import { saveAsset, useAuth } from "@/lib";
 
@@ -45,7 +46,7 @@ export const usePostStore = create<PostsState>()((set) => ({
         categoriId
       );
       set({ items: resp.data ?? [], total: resp.totalRecords });
-    } catch (error) {
+    } catch {
       throw new Error("Posts > getData > Unauthorized");
     } finally {
       set({ isLoading: false });
@@ -64,7 +65,7 @@ export const usePostStore = create<PostsState>()((set) => ({
       set({ isLoading: true });
       retorno = await findPostAction(id, token);
       if ("id" in retorno) set({ selected: retorno });
-    } catch (error) {
+    } catch {
       throw new Error("Posts > findOne > Unauthorized");
     } finally {
       set({ isLoading: false });
@@ -84,7 +85,7 @@ export const usePostStore = create<PostsState>()((set) => ({
       set({ isLoading: notLoading ?? true });
       retorno = await findPostBySlugAction(slug, token);
       if ("id" in retorno) set({ selected: retorno });
-    } catch (error) {
+    } catch {
       throw new Error("Posts > findOne > Unauthorized");
     } finally {
       set({ isLoading: false });
@@ -98,12 +99,12 @@ export const usePostStore = create<PostsState>()((set) => ({
   ): Promise<IPost | ResponsePropio> => {
     let retorno: IPost | ResponsePropio = {
       error: true,
-      msg: "Error desconocido, createOrUpdate",
+      msg: "Error desconocido, usePostStore > createOrUpdate",
     };
     try {
       if (entitdad.coverImage) {
-        //TODO const coverImage = await saveAsset(entitdad.coverImage)
-        //TODO entitdad.coverImage = coverImage
+        const cloudImageId = await saveAsset(entitdad.coverImage, token)
+        entitdad.id_image = cloudImageId
       }
       if (entitdad.id) retorno = await updatePostAction(entitdad, token);
       if (!entitdad.id) retorno = await createPostAction(entitdad, token);
@@ -126,7 +127,7 @@ export const usePostStore = create<PostsState>()((set) => ({
     try {
       const resp = await deletePostAction(id, token);
       retorno = resp;
-    } catch (error) {
+    } catch {
       throw new Error("Posts > findOne > Unauthorized");
     } finally {
       set({ isLoading: false });

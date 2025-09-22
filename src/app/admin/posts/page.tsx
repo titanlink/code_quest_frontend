@@ -1,23 +1,27 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
-import { Plus } from "lucide-react"
-import { AdminFeatureHeader } from "@/components/AdminFeatureHeader"
-import { LoadingPage } from "@/components/LoadingPage"
-import { PaginationManager } from "@/components/PaginationManager"
-import { SearchFilters } from "@/components/SearchFilters"
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable"
-import { PostsTable } from "@/features/post/presentation/components/PostsTable"
-import { PostViewsChart } from "@/features/post/presentation/components/PostViewsChart"
-import { usePostStore } from "@/features/post/presentation/providers/post.store"
-import { useAuth } from "@/lib/auth-context"
-
+import { Plus } from "lucide-react";
+import { AdminFeatureHeader } from "@/components/AdminFeatureHeader";
+import { LoadingPage } from "@/components/LoadingPage";
+import { PaginationManager } from "@/components/PaginationManager";
+import { SearchFilters } from "@/components/SearchFilters";
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "@/components/ui/resizable";
+import { PostsTable } from "@/features/post/presentation/components/PostsTable";
+import { PostViewsChart } from "@/features/post/presentation/components/PostViewsChart";
+import { usePostStore } from "@/features/post/presentation/providers/post.store";
+import { useAuth } from "@/lib/auth-context";
+import { toast } from "sonner";
 
 export default function AdminPostsPage() {
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState("");
 
   const getPosts = usePostStore((state) => state.getData);
   const posts = usePostStore((state) => state.items);
@@ -26,40 +30,39 @@ export default function AdminPostsPage() {
   // const page: number = usePostStore( (state) => state.page ?? 1  );
   // const limit: number = usePostStore( (state) => state.limit ?? 50  );
 
-  const [limit] = useState(10)
-  const [page,setPage] = useState(1)
-  
+  const [limit] = useState(10);
+  const [page, setPage] = useState(1);
+
   const isLoading = usePostStore((state) => state.isLoading);
 
-  const { user, getToken } = useAuth()
-  const [token, setToken] = useState<string | null>(null)
+  const { user, getToken } = useAuth();
+  const [token, setToken] = useState<string | null>(null);
 
   const filteredPosts = posts.filter(
-    (post) =>
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) 
+    (post) => post.title.toLowerCase().includes(searchTerm.toLowerCase())
     // || post.author.name.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+  );
 
   const handleDeletePost = () => {
-    // setPosts(posts.filter((p) => p.id !== postId))
-  }
+    toast.warning("TODO falta por implementar")
+    //TODO falta // setPosts(posts.filter((p) => p.id !== postId))
+  };
 
   useEffect(() => {
     const fetchToken = async () => {
       if (user) {
-        const authToken = await getToken() ?? ''
-        setToken(token)
-        getPosts(page-1, limit, authToken );
+        const authToken = (await getToken()) ?? "";
+        setToken(token);
+        getPosts(page - 1, limit, authToken);
       }
-    }
-    fetchToken()
-  }, [user, token, page, getPosts, getToken, limit])
-
+    };
+    fetchToken();
+  }, [user, token, page, getPosts, getToken, limit]);
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <AdminFeatureHeader title="Posts" subTitle="Gestiona todos los artículos" >
+      <AdminFeatureHeader title="Posts" subTitle="Gestiona todos los artículos">
         <Button asChild>
           <Link href="/admin/posts/new">
             <Plus className="mr-2 h-4 w-4" />
@@ -68,28 +71,36 @@ export default function AdminPostsPage() {
         </Button>
       </AdminFeatureHeader>
 
-      { isLoading ? ( 
-        <LoadingPage /> 
+      {isLoading ? (
+        <LoadingPage />
       ) : (
         <ResizablePanelGroup direction="horizontal" className=" gap-4">
           <ResizablePanel defaultSize={70}>
             <div className="flex flex-col gap-4 w-full">
-              <SearchFilters placeholder="Buscar posts..." searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-              
-              <div className='flex flex-row'>
+              <SearchFilters
+                placeholder="Buscar posts..."
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+              />
+
+              <div className="flex flex-row">
                 <PaginationManager
                   totalItems={totalRecords}
                   itemsPerPage={limit}
                   currentPage={page}
                   onPageChange={async (pag) => {
-                    if (page == pag) return
-                    setPage(pag)
+                    if (page == pag) return;
+                    setPage(pag);
                   }}
                   maxVisiblePages={2}
                 />
               </div>
 
-              <PostsTable filteredPosts={filteredPosts} handleDeletePost={handleDeletePost} totalRecords={totalRecords} />
+              <PostsTable
+                filteredPosts={filteredPosts}
+                handleDeletePost={handleDeletePost}
+                totalRecords={totalRecords}
+              />
             </div>
           </ResizablePanel>
 
@@ -101,7 +112,7 @@ export default function AdminPostsPage() {
             </div>
           </ResizablePanel>
         </ResizablePanelGroup>
-      ) }
+      )}
     </div>
-  )
+  );
 }

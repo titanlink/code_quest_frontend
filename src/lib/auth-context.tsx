@@ -39,7 +39,7 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
-  const [role, setRole] = useState<'admin' | 'user'>('user')
+  const [, setRole] = useState<'admin' | 'user'>('user')
   const [loading, setLoading] = useState(true)
   const [session, setSession] = useState<IUser | null>(null)
 

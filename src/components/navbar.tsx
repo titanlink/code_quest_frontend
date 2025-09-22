@@ -37,6 +37,7 @@ export function Navbar() {
         <DotsGrid />
 
         <div className="flex items-center gap-4">
+          <AnimatedThemeToggler />
           {user ? (
             <>
               {/* {user && ( */}
@@ -46,7 +47,6 @@ export function Navbar() {
                 </Button>
               )}
 
-              <AnimatedThemeToggler />
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

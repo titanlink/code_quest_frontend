@@ -17,8 +17,7 @@ export async function updateUserAction(
   try {
     if (!changeRole) retorno = await repo.update(entity);
     if (changeRole) retorno = await repo.changeRole(entity);
-  } catch (e) {
-    console.error("Error en createUserAction:", e);
+  } catch {
     if ("error" in retorno) retorno.msg = "No se pudo crear el entity";
   } finally {
     return retorno;
