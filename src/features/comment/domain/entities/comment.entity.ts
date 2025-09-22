@@ -50,8 +50,8 @@ export class CommentMapper {
       postId: json["postId"],
       sub_comment: SubCommentMapper.fromJsonList(json["sub_comment"] ?? []),
       author: UserMapper.fromJson(json["user"]) ?? json["user"],
-      createdAt: new Date(json["createAt"]),
-      updatedAt: new Date(json["updateAt"]),
+      createdAt: json["createAt"] ? new Date(json["createAt"]) : new Date(),
+      updatedAt: json["updateAt"] ? new Date(json["updateAt"]) : new Date(),
     };
   }
 
@@ -79,8 +79,8 @@ export class SubCommentMapper {
       commentId: parentComment?.id?.toString(),
       author: author,
       authorId: author?.id?.toString(),
-      createdAt: new Date(json["createAt"]),
-      updatedAt: new Date(json["updateAt"]),
+      createdAt: json["createAt"] ? new Date(json["createAt"]) : new Date(),
+      updatedAt: json["updateAt"] ? new Date(json["updateAt"]) : new Date(),
     };
   }
 

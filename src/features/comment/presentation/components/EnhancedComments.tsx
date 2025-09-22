@@ -27,7 +27,7 @@ import { ShineBorder } from "@/components/magicui/shine-border";
 import { IPost } from "@/features/post/domain/entities/post.entity";
 import { IUser } from "@/features/user/domain/entities/user.entity";
 import { createCommentAction } from "../../actions/create";
-import { IComment } from "../../domain/entities/comment.entity";
+import { IComment, ISubComment, SubCommentMapper } from "../../domain/entities/comment.entity";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 
@@ -93,7 +93,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
     const isSubComment = true;
     if (!user || !replyContent.trim()) return;
 
-    const reply: IComment = {
+    const reply: IComment | ISubComment = {
       id: Date.now().toString(),
       content: replyContent,
       postId,
@@ -106,11 +106,17 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
     // console.log("🚀 ~ handleSubmitReply ~ reply:", reply)
 
     const resp = await createCommentAction(reply, token ?? "", isSubComment);
-    console.log("🚀 ~ handleSubmitReply ~ resp:", resp)
-    toast.info(<pre><b>{JSON.stringify(resp,null,2)}</b></pre>)
+    const subComment = SubCommentMapper.fromJson(resp)
+    console.log("🚀 ~ handleSubmitReply ~ resp:", subComment)
+    toast.info(<pre><b>{JSON.stringify(subComment,null,2)}</b></pre>)
     if ("error" in resp) return;
-    
-    // setComments([reply, ...comments]);
+    const mapeado = comments.map((comment)=> {
+      if (comment.id == parentId){
+        if (subComment) comment.sub_comment?.push(subComment)
+      }
+      return comment
+    })
+    setComments(mapeado);
     setReplyContent("");
     setReplyTo(null);
   };
