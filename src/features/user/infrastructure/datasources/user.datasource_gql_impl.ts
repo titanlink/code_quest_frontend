@@ -154,7 +154,6 @@ export class UserDatasourceGQL implements UserDatasource {
         instagram_url: form.instagram_url ? form.instagram_url : null,
         role: form.role,
       };
-      console.log("🚀 ~ UserDatasourceGQL ~ update ~ input:", input);
 
       const { data } = await peti.mutate<any>({
         mutation: updateUserGQL,

@@ -88,7 +88,6 @@ export const CategoryForm = ({ entity }: Props) => {
     startTransition(async () => {
       try {
         const resp = await createOrUpdate(values, token);
-        console.log("resp", resp);
         if ("error" in resp && resp["error"]) {
           toast.error(resp.msg);
           return;

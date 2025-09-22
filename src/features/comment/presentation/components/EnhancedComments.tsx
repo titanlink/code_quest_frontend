@@ -112,7 +112,6 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
 
     const resp = await createCommentAction(reply, token ?? "", isSubComment);
     const subComment = SubCommentMapper.fromJson(resp)
-    console.log("🚀 ~ handleSubmitReply ~ resp:", subComment)
     if ("error" in resp) return;
     const mapeado = comments.map((comment)=> {
       if (comment.id == parentId){

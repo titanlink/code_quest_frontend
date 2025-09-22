@@ -96,7 +96,7 @@ export const PostForm = ({entity}:Props) => {
     startTransition(async () => {
       try {
         const resp = await createOrUpdate(values, token)
-        console.log('resp',resp);
+        // console.log('resp',resp);
         if ("error" in resp && resp['error']){ toast.error(resp.msg); return }
         if ("id" in resp) isCreated = true 
         if (!isCreated) return
@@ -341,7 +341,6 @@ export const PostForm = ({entity}:Props) => {
                               const file = e.target.files?.[0]
                               field.onChange(file)
                               if (file) {
-                                console.log("🚀 ~ ...file:", file)
                                 setPreview(URL.createObjectURL(file)) 
                               }
                             }}
