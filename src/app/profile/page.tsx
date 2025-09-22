@@ -21,7 +21,6 @@ import {
   Check,
   ArrowLeft,
 } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 
 import { Button } from "@/components/ui/button";
 
@@ -73,11 +72,6 @@ export default function DashboardPage() {
       setTokenCopied(true);
       setTimeout(() => setTokenCopied(false), 2000);
     }
-  };
-
-  const refreshToken = async () => {
-    const newToken = await getToken();
-    setToken(newToken);
   };
 
   if (!user) {
@@ -205,14 +199,16 @@ export default function DashboardPage() {
         </CustomCard>
 
         {/* Token Management Card */}
-        <CustomCard withOpacity withBlur>
+        {
+          /*
+          <CustomCard withOpacity withBlur>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Key className="h-5 w-5" />
               Token de Autenticación
             </CardTitle>
             <CardDescription>
-              Token JWT para usar en tus actions y API calls
+              TODO: 
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -242,21 +238,9 @@ export default function DashboardPage() {
                       </>
                     )}
                   </Button>
-                  <Button
-                    onClick={refreshToken}
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 bg-transparent"
-                  >
-                    Actualizar Token
-                  </Button>
+
                 </div>
-                <Alert>
-                  <AlertDescription>
-                    Este token se actualiza automáticamente. Úsalo en tus server
-                    actions para autenticar las peticiones.
-                  </AlertDescription>
-                </Alert>
+
               </div>
             ) : (
               <div className="text-center py-4">
@@ -267,7 +251,8 @@ export default function DashboardPage() {
               </div>
             )}
           </CardContent>
-        </CustomCard>
+        </CustomCard> */
+        }
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
         <Link href={`/posts/${post.slug}`}>
           <div className="relative aspect-[16/10] overflow-hidden">
             <Image
-              width={500}
+              width={700}
               height={500}
               src={getImageUrl(post?.coverImage) }
               alt={post.title}

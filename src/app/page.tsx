@@ -18,6 +18,7 @@ import { usePostStore } from "@/features/post/presentation/providers/post.store"
 export default function HomePage() {
   const getPosts = usePostStore((state) => state.getData);
   const posts = usePostStore((state) => state.items);
+  const total = usePostStore((state) => state.total);
   const page: number = 0;
   const limit: number = 20;
   const isLoading = usePostStore((state) => state.isLoading);
@@ -78,7 +79,7 @@ export default function HomePage() {
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <BookOpen className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-2xl font-bold mb-2">{posts.length}+</h3>
+              <h3 className="text-2xl font-bold mb-2">{total}+</h3>
               <p className="text-muted-foreground">Artículos Publicados</p>
             </div>
             <div className="flex flex-col items-center">
