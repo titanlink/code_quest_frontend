@@ -129,7 +129,7 @@ export default function DashboardPage() {
         </div>
 
         {/* User Profile Card */}
-        <CustomCard withOpacity>
+        <CustomCard withOpacity withGlowEffect>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <User className="h-5 w-5" />
@@ -200,7 +200,7 @@ export default function DashboardPage() {
           </CardContent>
         </CustomCard>
 
-        <CustomCard withOpacity withGlowEffect>
+        <CustomCard withOpacity>
           <BookMarks bookMarks={session?.bookMarks ?? []} />
         </CustomCard>
 
