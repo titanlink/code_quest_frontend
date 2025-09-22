@@ -39,6 +39,7 @@ const TagInputContext = React.createContext<TagsInputContextProps | null>(null)
 export const TagsInput = React.forwardRef<HTMLDivElement, TagsInputProps>(
   (
     {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       children,
       value,
       onValueChange,

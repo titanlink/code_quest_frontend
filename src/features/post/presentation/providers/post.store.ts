@@ -45,7 +45,7 @@ export const usePostStore = create<PostsState>()((set) => ({
         categoriId
       );
       set({ items: resp.data ?? [], total: resp.totalRecords });
-    } catch (error) {
+    } catch {
       throw new Error("Posts > getData > Unauthorized");
     } finally {
       set({ isLoading: false });
@@ -64,7 +64,7 @@ export const usePostStore = create<PostsState>()((set) => ({
       set({ isLoading: true });
       retorno = await findPostAction(id, token);
       if ("id" in retorno) set({ selected: retorno });
-    } catch (error) {
+    } catch {
       throw new Error("Posts > findOne > Unauthorized");
     } finally {
       set({ isLoading: false });
@@ -84,7 +84,7 @@ export const usePostStore = create<PostsState>()((set) => ({
       set({ isLoading: notLoading ?? true });
       retorno = await findPostBySlugAction(slug, token);
       if ("id" in retorno) set({ selected: retorno });
-    } catch (error) {
+    } catch {
       throw new Error("Posts > findOne > Unauthorized");
     } finally {
       set({ isLoading: false });
@@ -126,7 +126,7 @@ export const usePostStore = create<PostsState>()((set) => ({
     try {
       const resp = await deletePostAction(id, token);
       retorno = resp;
-    } catch (error) {
+    } catch {
       throw new Error("Posts > findOne > Unauthorized");
     } finally {
       set({ isLoading: false });

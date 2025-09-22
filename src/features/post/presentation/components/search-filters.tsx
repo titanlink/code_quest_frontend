@@ -18,7 +18,7 @@ interface Props {
   onClearFilters: () => void
 }
 
-export function SearchFilters({ filters, onFiltersChange, onClearFilters, categories }: Props) {
+export function SearchFilters({ filters, onFiltersChange, categories }: Props) {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   const handleSearchChange = (value: string) => {

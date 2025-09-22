@@ -30,6 +30,5 @@ export interface UsersState {
     token: string
   ) => Promise<IUser | ResponsePropio>;
   deleteOne: (id: string, token: string) => Promise<IUser | null>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dashboard: (token: string) => Promise<any>;
 }

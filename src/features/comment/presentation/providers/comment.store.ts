@@ -8,7 +8,7 @@ import { updateCommentAction } from "../../actions/update";
 import { IComment } from "../../domain/entities/comment.entity";
 import { CommentsState } from "./comment.state";
 
-export const useCommentStore = create<CommentsState>()((set, get) => ({
+export const useCommentStore = create<CommentsState>()((set, _get) => ({
   isLoading: true,
   isGridView: true,
   page: 0,
@@ -37,7 +37,7 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
       set({ isLoading: true });
       const resp = await allCommentAction({ page, limit }, token);
       set({ items: resp.data ?? [], total: resp.totalRecords });
-    } catch (error) {
+    } catch {
       throw new Error("Comments > getData > Unauthorized");
     } finally {
       set({ isLoading: false });
@@ -57,7 +57,7 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
       set({ isLoading: true });
       retorno = await findCommentAction(id, token);
       if ("data" in retorno) set({ selected: retorno.data });
-    } catch (error) {
+    } catch {
       throw new Error("Comments > findOne > Unauthorized");
     } finally {
       set({ isLoading: false });
@@ -78,7 +78,7 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
       if (!entitdad.id) retorno = await createCommentAction(entitdad, token);
 
       if ("data" in retorno) set({ selected: retorno?.data });
-    } catch (error) {
+    } catch {
       throw new Error("Comments > createOrUpdate > Unauthorized");
     } finally {
       set({ isLoading: false });
@@ -91,7 +91,7 @@ export const useCommentStore = create<CommentsState>()((set, get) => ({
     try {
       const resp = await deleteCommentAction(id, token);
       retorno = resp;
-    } catch (error) {
+    } catch {
       throw new Error("Comments > findOne > Unauthorized");
     } finally {
       set({ isLoading: false });

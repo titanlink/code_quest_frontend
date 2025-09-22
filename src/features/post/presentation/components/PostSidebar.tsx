@@ -18,7 +18,7 @@ interface Props {
   categories?: ICategory[];
 }
 
-export function PostSidebar({ post, categories, relateds }: Props) {
+export function PostSidebar({ post, categories }: Props) {
   return (
     <div className="space-y-6">
       {/* Author Card */}

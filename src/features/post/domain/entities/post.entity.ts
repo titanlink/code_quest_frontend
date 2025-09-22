@@ -87,7 +87,7 @@ export class PostMapper {
         isLiked: isLiked ?? false,
         isBookMarked: isBookMarked ?? false,
       };
-    } catch (e) {
+    } catch {
       retorno = undefined;
     } finally {
       return retorno;

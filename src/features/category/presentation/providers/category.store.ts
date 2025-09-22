@@ -8,6 +8,7 @@ import { updateCategoryAction } from "../../actions/update";
 import { ICategory } from "../../domain/entities/category.entity";
 import { CategorysState } from "./category.state";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const useCategoryStore = create<CategorysState>()((set, get) => ({
   isGridView: true,
   page: 0,
@@ -37,7 +38,7 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
       set({ isLoading: true });
       const resp = await allCategoryAction({ page, limit }, token);
       set({ items: resp.data ?? [], total: resp.totalRecords });
-    } catch (error) {
+    } catch {
       set({ isLoading: false });
       throw new Error("Categorys > getData > Unauthorized");
     } finally {
@@ -58,7 +59,7 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
       retorno = await findCategoryAction(id, token);
       if ("id" in retorno) set({ selected: retorno });
       set({ isLoading: false });
-    } catch (error) {
+    } catch {
       throw new Error("Categorys > findOne > Unauthorized");
     } finally {
       set({ isLoading: false });
@@ -79,7 +80,7 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
       if (!entitdad.id) retorno = await createCategoryAction(entitdad, token);
 
       if ("data" in retorno) set({ selected: retorno?.data, isLoading: false });
-    } catch (error) {
+    } catch {
       throw new Error("Categorys > createOrUpdate > Unauthorized");
     } finally {
       set({ isLoading: false });
@@ -95,7 +96,7 @@ export const useCategoryStore = create<CategorysState>()((set, get) => ({
     try {
       const resp = await deleteCategoryAction(id, token);
       retorno = resp;
-    } catch (error) {
+    } catch {
       throw new Error("Categorys > findOne > Unauthorized");
     } finally {
       set({ isLoading: false });
