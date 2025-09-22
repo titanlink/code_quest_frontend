@@ -40,7 +40,7 @@ interface Props {
 }
 
 export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
-  const { user, getToken } = useAuth();
+  const { user, getToken, session } = useAuth();
   const [newComment, setNewComment] = useState("");
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState("");
@@ -59,12 +59,17 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
     fetchToken();
   }, [user, token, newComment, getToken]);
 
-  const currentUser: IUser = {
-    id: post.author?.id ?? "",
-    email: user?.email ?? "",
-    name: user?.displayName ?? "",
-    role: "user",
-  };
+
+  const getCurrenUser = (): IUser => {
+    return  {
+      id: post.author?.id ?? "",
+      email: user?.email ?? "",
+      name: user?.displayName ?? "",
+      role: "user",
+      avatar: session?.avatar
+    }
+  }
+
 
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,8 +80,8 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
       id: Date.now().toString(),
       content: newComment,
       postId,
-      authorId: currentUser.id,
-      author: currentUser,
+      authorId: getCurrenUser().id,
+      author: getCurrenUser(),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -98,8 +103,8 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
       content: replyContent,
       postId,
       parentId,
-      authorId: currentUser.id,
-      author: currentUser,
+      authorId: getCurrenUser().id,
+      author: getCurrenUser(),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -108,7 +113,6 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
     const resp = await createCommentAction(reply, token ?? "", isSubComment);
     const subComment = SubCommentMapper.fromJson(resp)
     console.log("🚀 ~ handleSubmitReply ~ resp:", subComment)
-    toast.info(<pre><b>{JSON.stringify(subComment,null,2)}</b></pre>)
     if ("error" in resp) return;
     const mapeado = comments.map((comment)=> {
       if (comment.id == parentId){
@@ -261,7 +265,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={()=> { toast.warning("Todo: No Implementado")}}>
                               <Flag className="mr-2 h-4 w-4" />
                               Reportar
                             </DropdownMenuItem>
