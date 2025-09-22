@@ -6,14 +6,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { LogOut, User, Mail, Calendar, Key, Copy, Check } from "lucide-react"
+import { LogOut, User, Mail, Calendar, Key, Copy, Check, ArrowLeft } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Button } from "@/components"
-import { useAuth } from "@/lib"
+import { Button, CustomCard } from "@/components"
 import LoginPage from "../login/page"
+import Link from "next/link"
+import BookMarks from "@/features/post/presentation/components/BookMarks"
+import { useAuth } from "@/lib/auth-context"
 
 export default function DashboardPage() {
-  const { user, logout, getToken } = useAuth()
+  const { user, logout, getToken, session } = useAuth()
   const [token, setToken] = useState<string | null>(null)
   const [tokenCopied, setTokenCopied] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -87,22 +89,32 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100 p-4">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="min-h-screen">
+      <div className="max-w-4xl mx-auto space-y-6 py-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-            <p className="text-gray-600">Bienvenido de vuelta, {user.displayName || "Usuario"}</p>
+            <h1 className="text-3xl font-bold ">Dashboard</h1>
+            <p className="">Bienvenido de vuelta, {user.displayName || "Usuario"}</p>
           </div>
-          <Button onClick={handleLogout} variant="outline" disabled={loading}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Cerrar Sesión
-          </Button>
+          <div className="flex flex-row justify-around gap-2">
+            <Button variant="ghost" asChild>
+              <Link href="/">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Volver
+              </Link>
+            </Button>
+            <Button onClick={handleLogout} variant="outline" disabled={loading}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Cerrar Sesión
+            </Button>
+          </div>
         </div>
 
+        {/* <pre className="text-xs"><b>{JSON.stringify(session?.bookMarks,null,2)}</b></pre> */}
+
         {/* User Profile Card */}
-        <Card>
+        <CustomCard withOpacity>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <User className="h-5 w-5" />
@@ -156,10 +168,14 @@ export default function DashboardPage() {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </CustomCard>
+
+        {/* <CustomCard  withOpacity withGlowEffect>
+          <BookMarks bookMarks={session?.bookMarks ?? []}/>
+        </CustomCard> */}
 
         {/* Token Management Card */}
-        <Card>
+        <CustomCard withOpacity withBlur>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Key className="h-5 w-5" />
@@ -204,7 +220,8 @@ export default function DashboardPage() {
               </div>
             )}
           </CardContent>
-        </Card>
+        </CustomCard>
+
       </div>
     </div>
   )

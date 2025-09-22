@@ -10,7 +10,7 @@ interface CommentsByPostProps {
 
 export function CommentsByPostChart({ comments }: CommentsByPostProps) {
   const grouped = comments.reduce((acc, c) => {
-    acc[c.postId] = (acc[c.postId] ?? 0) + 1
+    acc[String(c.postId)] = (acc[String(c.postId)] ?? 0) + 1
     return acc
   }, {} as Record<string, number>)
 

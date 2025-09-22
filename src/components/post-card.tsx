@@ -16,10 +16,11 @@ import { getImageUrl } from "@/lib"
 import { useState } from "react"
 
 interface Props {
-  post: IPost
+  post: IPost | undefined
 }
 
 export function PostCard({ post }: Props) {
+  if (!post) return
   const [src, setSrc] = useState("/no_image_available.jpg")
   return (
     <CustomCard withHover withOpacity>
