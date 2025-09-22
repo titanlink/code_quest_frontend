@@ -26,9 +26,9 @@ import { CustomCard } from "@/components/CustomCard";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import { IPost } from "@/features/post/domain/entities/post.entity";
 import { IUser } from "@/features/user/domain/entities/user.entity";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { createCommentAction } from "../../actions/create";
 import { IComment } from "../../domain/entities/comment.entity";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 
