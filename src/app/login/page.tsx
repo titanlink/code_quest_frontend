@@ -3,7 +3,7 @@
 import DarkVeil from "@/components/DarkVeil"
 import LoginForm from "@/components/login/login-form"
 import { Meteors } from "@/components/ui/meteors"
-import type React from "react"
+
 
 
 export default function LoginPage() {
