@@ -99,7 +99,7 @@ export function PostSidebar({ post, categories }: Props) {
               style={{ backgroundColor: category?.color }}
               className="text-white"
             >
-              {category?.name} - {category.id}
+              {category?.name}
             </Badge>
           ))}
         </CardContent>

@@ -1,8 +1,22 @@
 import {
   IUser,
-  userGQLFields,
   UserMapper,
 } from "@/features/user/domain/entities/user.entity";
+
+const userFields = `
+id
+provider
+providerId
+about
+twitter_url
+instagram_url
+role
+avatar
+name
+email
+createAt
+updateAt
+`
 
 export interface IComment {
   id?: string;
@@ -87,7 +101,7 @@ export const subCommentGQLFields = `
   likesCount
   createAt
   updateAt
-  user { ${userGQLFields} }
+  user { ${userFields} }
   comment {
     id
     content
@@ -101,6 +115,6 @@ export const commentGQLFields = `
   content
   createAt
   updateAt
-  user { ${userGQLFields} }
+  user { ${userFields} }
   sub_comment { ${subCommentGQLFields} }
 `;

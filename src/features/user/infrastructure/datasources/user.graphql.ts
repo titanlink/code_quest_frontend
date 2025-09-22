@@ -1,5 +1,8 @@
 import { gql } from "@apollo/client";
 import { userGQLFields } from "../../domain/entities/user.entity";
+import { bookMarkGQLFields } from "@/features/post/domain/entities/bookmark.entity";
+import { postGQLFields } from "@/features/post/domain/entities/post.entity";
+import { categoryGQLFields } from "@/features/category/domain/entities/category.entity";
 
 export const allUserGQL = gql`
   query allUsers($limit: Int, $offset: Int) {
@@ -32,9 +35,12 @@ export const checkProfileGQL = gql`
     checkProfile {
       ${userGQLFields}
       bookmark_post {
-        id
-        createAt
-        updateAt
+        ${bookMarkGQLFields}
+        user { ${userGQLFields} }
+        post { 
+          ${postGQLFields} 
+          category { ${categoryGQLFields} }
+        }
       }
 
     }
