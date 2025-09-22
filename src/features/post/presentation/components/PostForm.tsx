@@ -36,7 +36,10 @@ interface Props {
 const formSchema = z.object({
   id: z.string().optional(),
   title: z.string(inputErrors.required).min(2,inputErrors.minLength(2)),
-  slug: z.string(inputErrors.required).min(2,inputErrors.minLength(2)).max(60, inputErrors.minLength(60)),
+  slug: z.string(inputErrors.required).min(2,inputErrors.minLength(2)).max(60, inputErrors.minLength(60)).regex(
+  /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+  "Slug inválido. Usa solo minúsculas, números y guiones."
+),
   excerpt: z.string(inputErrors.required).min(2,inputErrors.minLength(2)),
   content: z.string(inputErrors.required).min(2,inputErrors.minLength(2)),
   categoryId: z.string(),

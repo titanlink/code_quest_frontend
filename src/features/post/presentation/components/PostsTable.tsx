@@ -28,11 +28,10 @@ import Link from "next/link";
 import { CustomCard } from "@/components/CustomCard";
 import { Button } from "@/components/ui/button";
 import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { TooltipTrigger, TooltipContent } from "@radix-ui/react-tooltip";
 
 import { IPost } from "../../domain/entities/post.entity";
 import { Badge } from "@/components/ui/badge";
-import { Tooltip } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Props {
   totalRecords?: number;
