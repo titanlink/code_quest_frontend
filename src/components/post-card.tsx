@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Calendar, Heart, MessageCircle, Eye, Badge } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-
 import { useState } from "react";
 import { IPost } from "@/features/post/domain/entities/post.entity";
 import { getImageUrl } from "@/lib/utils";
@@ -12,20 +11,14 @@ import { CustomCard } from "./CustomCard";
 import { CardHeader, CardContent, CardFooter } from "./ui/card";
 
 interface Props {
-<<<<<<< HEAD
-  post: IPost;
+  post: IPost | undefined;
 }
 
 export function PostCard({ post }: Props) {
   const [src, setSrc] = useState("/no_image_available.jpg");
-=======
-  post: IPost | undefined
-}
 
-export function PostCard({ post }: Props) {
-  if (!post) return
-  const [src, setSrc] = useState("/no_image_available.jpg")
->>>>>>> main
+  if (!post) return <div></div>;
+
   return (
     <CustomCard withHover withOpacity>
       <CardHeader className="p-0">

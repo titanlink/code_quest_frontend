@@ -1,8 +1,9 @@
-import { Button, PostCard } from '@/components'
-import { IBookMark } from '@/features'
+
 import { Bookmark } from 'lucide-react'
-import Link from 'next/link'
+
 import React from 'react'
+import { IBookMark } from '../../domain/entities/bookmark.entity'
+import { PostCard } from '@/components/post-card'
 
 interface Props {
   bookMarks: IBookMark[]
