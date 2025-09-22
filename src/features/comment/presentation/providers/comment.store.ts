@@ -4,10 +4,10 @@ import { allCommentAction } from "../../actions/all";
 import { createCommentAction } from "../../actions/create";
 import { deleteCommentAction } from "../../actions/delete";
 import { findCommentAction } from "../../actions/find";
-import { updateCommentAction } from "../../actions/update";
 import { IComment } from "../../domain/entities/comment.entity";
 import { CommentsState } from "./comment.state";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const useCommentStore = create<CommentsState>()((set, _get) => ({
   isLoading: true,
   isGridView: true,
@@ -74,7 +74,6 @@ export const useCommentStore = create<CommentsState>()((set, _get) => ({
       msg: "Error desconocido, createOrUpdate",
     };
     try {
-      if (entitdad.id) retorno = await updateCommentAction(entitdad, token);
       if (!entitdad.id) retorno = await createCommentAction(entitdad, token);
 
       if ("data" in retorno) set({ selected: retorno?.data });
