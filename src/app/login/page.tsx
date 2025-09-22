@@ -7,7 +7,7 @@ import type React from "react"
 export default function LoginPage() {
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sky-700/20 to-accent/10 px-4">
       <LoginForm />
     </div>
   )
