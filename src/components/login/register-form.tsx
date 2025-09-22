@@ -10,8 +10,11 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2, Mail, Lock, User, Cake } from "lucide-react"
+import { Loader2, Mail, Lock, User, Cake, Chrome } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
+import { CustomCard } from "../CustomCard"
+import { TextEffect } from "../motion-primitives/text-effect"
+import { RainbowButton } from "../ui/rainbow-button"
 
 
 export default function RegisterForm() {
@@ -77,10 +80,18 @@ export default function RegisterForm() {
   }
 
   return (
-      <Card className="w-full max-w-md">
+      <CustomCard className="w-100 max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Crear Cuenta</CardTitle>
-          <CardDescription className="text-center">Regístrate para comenzar</CardDescription>
+          <CardTitle className="text-2xl font-bold text-center">
+            <TextEffect per='word' as='h3' preset='blur' delay={0.5} >
+              Crear Cuenta
+            </TextEffect>
+            </CardTitle>
+          <CardDescription className="text-center">
+            <TextEffect per='word' as='h3' preset='blur' delay={0.75} >
+              Regístrate para comenzar
+            </TextEffect>
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {error && (
@@ -175,16 +186,15 @@ export default function RegisterForm() {
             </div>
           </div>
 
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full bg-transparent"
-            onClick={handleGoogleRegister}
-            disabled={loading}
-          >
-            <Cake className="mr-2 h-4 w-4" />
+          <RainbowButton
+              variant={"outline"}
+              size="lg"
+              onClick={handleGoogleRegister}
+              className="flex flex-row w-full items-center gap-2"
+            >
+            <Chrome className="mr-2 h-4 w-4" />
             Google
-          </Button>
+          </RainbowButton>
 
           <div className="text-center text-sm">
             <span className="text-muted-foreground">¿Ya tienes una cuenta? </span>
@@ -193,6 +203,6 @@ export default function RegisterForm() {
             </Link>
           </div>
         </CardContent>
-      </Card>
+      </CustomCard>
   )
 }

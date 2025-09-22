@@ -33,6 +33,9 @@ import { toast } from "sonner";
 
 interface Props {
   entity?: IUser;
+  withOpacity?: boolean
+  withBlur?: boolean
+  backUrl?:string
 }
 
 const formSchema = z.object({
@@ -45,7 +48,7 @@ const formSchema = z.object({
   role: z.any(),
 });
 
-export const UserForm = ({ entity }: Props) => {
+export const UserForm = ({ entity, withOpacity, withBlur, backUrl = '/admin/users' }: Props) => {
   const isNew = entity ? false : true;
   const actionTitle = isNew ? "Nueva" : "Editar";
   const { user, getToken, session } = useAuth();
@@ -53,6 +56,8 @@ export const UserForm = ({ entity }: Props) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const createOrUpdate = useUserStore((state) => state.createOrUpdate);
+
+  if (user?.email != entity?.email) return <NotAuthorized />;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -88,7 +93,7 @@ export const UserForm = ({ entity }: Props) => {
         if ("id" in resp) isCreated = true
         if (!isCreated) return
         toast.success(`${actioned} Correctamente!`);
-        router.push(`/admin/users`);
+        router.push(backUrl);
       } catch (error) {
         console.error("Form submission error", error);
         toast.error("Failed to submit the form. Please try again.");
@@ -96,7 +101,6 @@ export const UserForm = ({ entity }: Props) => {
     });
   }
 
-  if (user?.email != entity?.email) return <NotAuthorized />;
 
   return (
     <Form {...form}>
@@ -110,7 +114,7 @@ export const UserForm = ({ entity }: Props) => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <Button variant="ghost" asChild>
-                    <Link href="/admin/users">
+                    <Link href={backUrl}>
                       <ArrowLeft className="mr-2 h-4 w-4" />
                       Volver
                     </Link>
@@ -148,7 +152,7 @@ export const UserForm = ({ entity }: Props) => {
                 </div>
               </div>
 
-              <CustomCard>
+              <CustomCard withOpacity={withOpacity} withBlur={withBlur}>
                 <CardHeader>
                   <CardTitle>Contenido Principal</CardTitle>
                 </CardHeader>

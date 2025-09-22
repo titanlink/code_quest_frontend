@@ -12,6 +12,9 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, Mail, Lock, Chrome } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
+import { RainbowButton } from "../ui/rainbow-button"
+import { CustomCard } from "../CustomCard"
+import { TextEffect } from "../motion-primitives/text-effect"
 
 
 export default function LoginForm() {
@@ -65,10 +68,17 @@ export default function LoginForm() {
   }
 
   return (
-      <Card className="w-full max-w-md">
+      <CustomCard className="w-100 max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Iniciar Sesión</CardTitle>
-          <CardDescription className="text-center">Ingresa a tu cuenta para continuar</CardDescription>
+          <CardTitle className="text-2xl font-bold text-center">
+            <TextEffect per='word' as='h3' preset='blur' delay={0.5} >
+            Iniciar Sesión
+            </TextEffect></CardTitle>
+          <CardDescription className="text-center">
+            <TextEffect per='word' as='h3' preset='blur' delay={0.75} >
+            Ingresa a tu cuenta para continuar
+            </TextEffect>
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {error && (
@@ -131,16 +141,15 @@ export default function LoginForm() {
             </div>
           </div>
 
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full bg-transparent"
-            onClick={handleGoogleLogin}
-            disabled={loading}
-          >
+           <RainbowButton
+              variant={"outline"}
+              size="lg"
+              onClick={handleGoogleLogin}
+              className="flex flex-row w-full items-center gap-2"
+            >
             <Chrome className="mr-2 h-4 w-4" />
             Google
-          </Button>
+          </RainbowButton>
 
           <div className="text-center text-sm">
             <span className="text-muted-foreground">¿No tienes una cuenta? </span>
@@ -149,6 +158,6 @@ export default function LoginForm() {
             </Link>
           </div>
         </CardContent>
-      </Card>
+      </CustomCard>
   )
 }
