@@ -10,7 +10,6 @@ export interface ICategory {
 }
 
 export class CategoryMapper {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static fromJson(json: Record<string, any>): ICategory | undefined {
     if (!json) return;
     return {
@@ -25,7 +24,6 @@ export class CategoryMapper {
     };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static fromJsonList(data: any): ICategory[] {
     const entities: ICategory[] = [];
     if (!data) return entities;

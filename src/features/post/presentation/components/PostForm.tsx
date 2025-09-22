@@ -26,6 +26,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { Switch } from "@radix-ui/react-switch";
 import { IPost } from "../../domain/entities/post.entity";
 import { usePostStore } from "../providers/post.store";
+import Image from "next/image";
 
 
 interface Props {
@@ -347,7 +348,9 @@ export const PostForm = ({entity}:Props) => {
                           />
                         </FormControl>
                         {preview && (
-                          <img
+                          <Image
+                            width={500}
+                            height={500}
                             src={preview}
                             alt="Vista previa"
                             className="mt-2 w-32 h-32 object-cover rounded-md border"

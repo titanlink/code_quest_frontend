@@ -15,7 +15,7 @@ import {
 
 export class CategoryDatasourceGQL implements CategoryDatasource {
   async all(page = 0, limit = 50, token: string) {
-    let retorno: ResponsePropio = { msg: "Error desconocido", error: true };
+    const retorno: ResponsePropio = { msg: "Error desconocido", error: true };
     try {
       const peti = await makeClientGraphql(token);
 
