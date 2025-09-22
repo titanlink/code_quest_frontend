@@ -1,6 +1,6 @@
 "use client"
 
-import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Form } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormDescription, FormMessage, Form, FormControl } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -22,10 +22,11 @@ import { TagsInput } from "@/components/ui/tags-input";
 import { useCategoryStore } from "@/features/category/presentation/providers/category.store";
 import { useAuth } from "@/lib/auth-context";
 import { getImageUrl } from "@/lib/utils";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@radix-ui/react-select";
-import { Switch } from "@radix-ui/react-switch";
+
 import { IPost } from "../../domain/entities/post.entity";
 import { usePostStore } from "../providers/post.store";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 
 interface Props {
@@ -289,7 +290,7 @@ export const PostForm = ({entity}:Props) => {
                 name="categoryId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Categoria</FormLabel>
+                    <FormLabel>Categoría</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>

@@ -35,11 +35,7 @@ export const CommentsTable = ({filteredComments, handleDeleteComment, totalRecor
               <TableHead>#</TableHead>
               <TableHead>Título</TableHead>
               <TableHead>Autor</TableHead>
-              {/* <TableHead>Categoría</TableHead>
-              <TableHead>Estado</TableHead> */}
               <TableHead>Fecha</TableHead>
-              {/* <TableHead>Estadísticas</TableHead> */}
-              <TableHead className="w-[70px]">Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -54,21 +50,7 @@ export const CommentsTable = ({filteredComments, handleDeleteComment, totalRecor
                 </TableCell>
                 <TableCell>{comment?.author?.name}</TableCell>
                 <TableCell>{comment?.createdAt?.toLocaleDateString()}</TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteComment(comment?.id ?? '')}>
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        Eliminar
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
+                
               </TableRow>
             ))}
           </TableBody>

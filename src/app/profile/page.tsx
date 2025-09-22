@@ -114,7 +114,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* <pre className="text-xs"><b>{JSON.stringify(session?.bookMarks,null,2)}</b></pre> */}
 
         {/* User Profile Card */}
         <CustomCard withOpacity>
@@ -173,9 +172,9 @@ export default function DashboardPage() {
           </CardContent>
         </CustomCard>
 
-        {/* <CustomCard  withOpacity withGlowEffect>
+        <CustomCard  withOpacity withGlowEffect>
           <BookMarks bookMarks={session?.bookMarks ?? []}/>
-        </CustomCard> */}
+        </CustomCard>
 
         {/* Token Management Card */}
         <CustomCard withOpacity withBlur>

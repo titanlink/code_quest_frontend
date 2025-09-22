@@ -1,3 +1,4 @@
+import { BookMarkMapper, IBookMark } from "@/features/post/domain/entities/bookmark.entity"
 
 export interface IUser {
   id: string
@@ -7,6 +8,7 @@ export interface IUser {
   about?: string
   twitter_url?: string
   instagram_url?: string
+  bookMarks?: IBookMark[]
   avatar?: string
   provider?: string
   discordId?: string
@@ -24,6 +26,7 @@ export class UserMapper {
       role: json['role'],
       about: json['about'],
       twitter_url: json['twitter_url'],
+      bookMarks: BookMarkMapper.fromJsonList(json['bookmark_post']),
       instagram_url: json['instagram_url'],
       avatar: json['avatar'],
       provider: json['provider'],

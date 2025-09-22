@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge, Edit, MoreHorizontal, Trash2 } from "lucide-react";
+import {  Edit, MoreHorizontal, Trash2 } from "lucide-react";
 import React from "react";
 
 import Link from "next/link";
@@ -22,6 +22,7 @@ import { ConfirmDelete } from "@/components/ConfirmDelete";
 import { Button } from "@/components/ui/button";
 import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ICategory } from "../../domain/entities/category.entity";
+import { Badge } from "@/components/ui/badge";
 
 interface Props {
   filteredCategories: ICategory[];

@@ -37,16 +37,6 @@ const navigation = [
     href: "/admin/comments",
     icon: MessageSquare,
   },
-  {
-    name: "Estadísticas",
-    href: "/admin/analytics",
-    icon: BarChart3,
-  },
-  {
-    name: "Configuración",
-    href: "/admin/settings",
-    icon: Settings,
-  },
 ]
 
 export function AdminSidebar() {
