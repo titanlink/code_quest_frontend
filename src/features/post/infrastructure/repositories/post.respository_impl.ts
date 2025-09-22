@@ -9,8 +9,8 @@ export class PostRepositoryImpl extends PostRepository {
     super();
   }
 
-  async findBySlugId(slug: string) {
-    return this.datasource.findBySlugId(slug, this.token);
+  async findBySlugId(slug: string, _token?:string) {
+    return this.datasource.findBySlugId(slug, _token ?? this.token);
   }
 
   async findById(id: string) {

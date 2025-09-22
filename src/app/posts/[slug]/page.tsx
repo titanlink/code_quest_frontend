@@ -41,7 +41,8 @@ export default function PostPage() {
         await getPosts(0, 4, "", Number(resp?.category?.id), false);
       }
     };
-    if (selected?.slug != slug) fetchData();
+    // if (selected?.slug != slug) 
+    fetchData();
   }, [findOneBySlug, getCategories, getPosts, getToken, selected?.slug, slug, user]);
 
   return (

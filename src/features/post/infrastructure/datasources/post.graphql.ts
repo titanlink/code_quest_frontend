@@ -29,6 +29,7 @@ export const findPostGQL = gql`
 export const findPostBySlugGQL = gql`
   query Post($slug: String!) {
     postBySlug(slug: $slug) {
+      is_like
       item {
         ${postGQLFields}
 
@@ -69,7 +70,6 @@ export const findPostBySlugGQL = gql`
           }
         }
       }
-      is_like
       is_bookmark
     }
   }

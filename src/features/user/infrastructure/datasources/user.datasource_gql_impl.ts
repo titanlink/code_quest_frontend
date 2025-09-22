@@ -77,7 +77,6 @@ export class UserDatasourceGQL implements UserDatasource {
         query: checkProfileGQL,
         fetchPolicy: "no-cache",
       });
-      console.log("🚀 ~ UserDatasourceGQL ~ checkProfile ~ data:", data)
       const entity = UserMapper.fromJson(data["checkProfile"]);
       if (entity) retorno = entity;
     } catch (e) {

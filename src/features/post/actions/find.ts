@@ -32,7 +32,7 @@ export async function findPostBySlugAction(
   };
   const repo = repoConfig(token);
   try {
-    retorno = await repo.findBySlugId(slug);
+    retorno = await repo.findBySlugId(slug, token);
   } catch (e) {
     console.error("Error en findPostAction:", e);
   } finally {
