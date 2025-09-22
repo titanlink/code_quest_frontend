@@ -222,7 +222,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
       )}
 
       {/* Comments List */}
-      <ScrollArea className="h-200 w-full rounded-md border p-4">
+      <ScrollArea className={`${comments.length > 0 ? 'h-200' : 'h-60' } w-full rounded-md border p-4`}>
         <div className="space-y-6 mt-4">
           {comments.length > 0 ? (
             comments.map((comment) => {
