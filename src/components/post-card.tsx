@@ -12,11 +12,20 @@ import { CustomCard } from "./CustomCard";
 import { CardHeader, CardContent, CardFooter } from "./ui/card";
 
 interface Props {
+<<<<<<< HEAD
   post: IPost;
 }
 
 export function PostCard({ post }: Props) {
   const [src, setSrc] = useState("/no_image_available.jpg");
+=======
+  post: IPost | undefined
+}
+
+export function PostCard({ post }: Props) {
+  if (!post) return
+  const [src, setSrc] = useState("/no_image_available.jpg")
+>>>>>>> main
   return (
     <CustomCard withHover withOpacity>
       <CardHeader className="p-0">
