@@ -13,7 +13,6 @@ export async function createPostAction(
   const repo = repoConfig(token);
 
   try {
-    console.log("🚀 ~ createPostAction ~ data:..........", data)
     return await repo.create(data);
   } catch (e) {
     console.error("Error en createPostAction:", e);

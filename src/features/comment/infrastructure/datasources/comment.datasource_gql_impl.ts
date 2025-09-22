@@ -1,7 +1,7 @@
 import { ResponsePropio } from "@/config/response-propio";
 import { makeClientGraphql } from "@/lib/client-graphql";
 import { CommentDatasource } from "../../domain/datasources/comment.datasource";
-import { CommentMapper, IComment } from "../../domain/entities/comment.entity";
+import { CommentMapper, IComment, SubCommentMapper } from "../../domain/entities/comment.entity";
 import {
   allCommentGQL,
   findCommentGQL,
@@ -81,8 +81,8 @@ export class CommentDatasourceGQL implements CommentDatasource {
         fetchPolicy: "no-cache",
         variables: { input: input },
       });
-
-      const entity = CommentMapper.fromJson(data["createComment"]);
+      const key = isSubComment ? 'createSubComment' :'createComment'
+      const entity = isSubComment ? SubCommentMapper.fromJson(data[key]) : CommentMapper.fromJson(data[key]);
       if (entity && "id" in entity) retorno = entity;
     } catch (e) {
       console.error(`Error => createCommentGQL -> ${e}`);

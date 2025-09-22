@@ -27,7 +27,7 @@ import { ShineBorder } from "@/components/magicui/shine-border";
 import { IPost } from "@/features/post/domain/entities/post.entity";
 import { IUser } from "@/features/user/domain/entities/user.entity";
 import { createCommentAction } from "../../actions/create";
-import { IComment } from "../../domain/entities/comment.entity";
+import { IComment, ISubComment, SubCommentMapper } from "../../domain/entities/comment.entity";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 
@@ -40,7 +40,7 @@ interface Props {
 }
 
 export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
-  const { user, getToken } = useAuth();
+  const { user, getToken, session } = useAuth();
   const [newComment, setNewComment] = useState("");
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState("");
@@ -59,12 +59,17 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
     fetchToken();
   }, [user, token, newComment, getToken]);
 
-  const currentUser: IUser = {
-    id: post.author?.id ?? "",
-    email: user?.email ?? "",
-    name: user?.displayName ?? "",
-    role: "user",
-  };
+
+  const getCurrenUser = (): IUser => {
+    return  {
+      id: post.author?.id ?? "",
+      email: user?.email ?? "",
+      name: user?.displayName ?? "",
+      role: "user",
+      avatar: session?.avatar
+    }
+  }
+
 
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,8 +80,8 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
       id: Date.now().toString(),
       content: newComment,
       postId,
-      authorId: currentUser.id,
-      author: currentUser,
+      authorId: getCurrenUser().id,
+      author: getCurrenUser(),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -93,24 +98,29 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
     const isSubComment = true;
     if (!user || !replyContent.trim()) return;
 
-    const reply: IComment = {
+    const reply: IComment | ISubComment = {
       id: Date.now().toString(),
       content: replyContent,
       postId,
       parentId,
-      authorId: currentUser.id,
-      author: currentUser,
+      authorId: getCurrenUser().id,
+      author: getCurrenUser(),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
     // console.log("🚀 ~ handleSubmitReply ~ reply:", reply)
 
     const resp = await createCommentAction(reply, token ?? "", isSubComment);
-    console.log("🚀 ~ handleSubmitReply ~ resp:", resp)
-    toast.info(<pre><b>{JSON.stringify(resp,null,2)}</b></pre>)
+    const subComment = SubCommentMapper.fromJson(resp)
+    console.log("🚀 ~ handleSubmitReply ~ resp:", subComment)
     if ("error" in resp) return;
-    
-    // setComments([reply, ...comments]);
+    const mapeado = comments.map((comment)=> {
+      if (comment.id == parentId){
+        if (subComment) comment.sub_comment?.push(subComment)
+      }
+      return comment
+    })
+    setComments(mapeado);
     setReplyContent("");
     setReplyTo(null);
   };
@@ -255,7 +265,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={()=> { toast.warning("Todo: No Implementado")}}>
                               <Flag className="mr-2 h-4 w-4" />
                               Reportar
                             </DropdownMenuItem>
