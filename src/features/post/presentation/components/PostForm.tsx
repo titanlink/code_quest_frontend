@@ -22,11 +22,11 @@ import { TagsInput } from "@/components/ui/tags-input";
 import { useCategoryStore } from "@/features/category/presentation/providers/category.store";
 import { useAuth } from "@/lib/auth-context";
 import { getImageUrl } from "@/lib/utils";
-import { Switch } from "@radix-ui/react-switch";
 import { IPost } from "../../domain/entities/post.entity";
 import { usePostStore } from "../providers/post.store";
 import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 
 interface Props {
