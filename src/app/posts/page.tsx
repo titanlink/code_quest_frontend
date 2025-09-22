@@ -6,6 +6,7 @@ import { Navbar } from "@/components/navbar"
 import type { PostFilters } from "@/lib/types"
 import { PostGrid } from "@/features/post/presentation/components/PostGrid";
 import { usePostStore } from "@/features/post/presentation/providers/post.store";
+import { Meteors } from "@/components/ui/meteors";
 
 
 export default function PostsPage() {
@@ -28,9 +29,10 @@ export default function PostsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-700/20">
+    <div className="relative min-h-screen bg-gradient-to-b from-sky-700/20">
+      <Meteors />
       <Navbar />
-      <div className="relative inset-0 container mx-auto max-w-7xl px-4 py-8">
+      <div className="container mx-auto max-w-7xl px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-4">Todos los Artículos</h1>
           <p className="text-xl text-muted-foreground">
