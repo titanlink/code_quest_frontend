@@ -17,12 +17,12 @@ interface Props {
 export const PostGrid = ({ clearFilters, isLoading }: Props) => {
   const [filters, setFilters] = useState<PostFilters>({ search: "" });
 
-  const [limit, setLimit] = useState(8);
+  const [limit,] = useState(8);
   const [page, setPage] = useState(1);
 
   const getCategories = useCategoryStore((state) => state.getData);
   const categories = useCategoryStore((state) => state.items);
-  const isLoadingCat = useCategoryStore((state) => state.isLoading);
+
 
   const getPosts = usePostStore((state) => state.getData);
   const items = usePostStore((state) => state.items);
