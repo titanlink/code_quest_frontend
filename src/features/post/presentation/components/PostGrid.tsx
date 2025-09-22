@@ -30,11 +30,11 @@ export const PostGrid = ({ clearFilters, isLoading }: Props) => {
 
   useEffect(() => {
     getPosts(page - 1, limit, "");
-  }, [page, limit]);
+  }, [page, limit, getPosts]);
 
   useEffect(() => {
     getCategories(0, 100, "");
-  }, []);
+  }, [getCategories]);
 
   const handleFiltersChange = (newFilters: PostFilters) => {
     setFilters(newFilters);

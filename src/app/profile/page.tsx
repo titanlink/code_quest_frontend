@@ -18,7 +18,7 @@ import { useAuth } from "@/lib/auth-context"
 import { CustomCard } from "@/components/CustomCard"
 
 export default function DashboardPage() {
-  const { user, logout, getToken, session } = useAuth()
+  const { user, logout, getToken } = useAuth()
   const [token, setToken] = useState<string | null>(null)
   const [tokenCopied, setTokenCopied] = useState(false)
   const [loading, setLoading] = useState(false)

@@ -23,9 +23,6 @@ const eslintConfig = [
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
       "@typescript-eslint/no-empty-object-type": "off",
-      "react-hooks/exhaustive-deps": "off",
-      "prefer-const": "warn",
-      "react/no-unescaped-entities": "off",
     },
   },
 ];
