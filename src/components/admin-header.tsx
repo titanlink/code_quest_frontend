@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/lib/auth-context"
-import {  Settings, LogOut, Home, User } from "lucide-react"
+import {  LogOut, Home, User } from "lucide-react"
 import Link from "next/link"
 
 import { useRouter } from "next/navigation"

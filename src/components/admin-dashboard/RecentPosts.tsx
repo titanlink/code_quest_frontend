@@ -1,9 +1,9 @@
 
 import { IPost } from '@/features/post/domain/entities/post.entity'
-import {  Eye, Link } from 'lucide-react'
+import {  Eye } from 'lucide-react'
 import React from 'react'
 import { CustomCard } from '../CustomCard'
-import { Button } from '../ui/button'
+
 import { CardHeader, CardTitle, CardDescription, CardContent } from '../ui/card'
 import { Badge } from '../ui/badge'
 

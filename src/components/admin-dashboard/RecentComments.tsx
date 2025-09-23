@@ -1,10 +1,10 @@
 
 import { IComment } from "@/features/comment/domain/entities/comment.entity";
 import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import { Link } from "lucide-react";
+
 import React from "react";
 import { CustomCard } from "../CustomCard";
-import { Button } from "../ui/button";
+
 import { CardHeader, CardTitle, CardDescription, CardContent } from "../ui/card";
 
 
