@@ -82,3 +82,6 @@ yarn dev
 - Build automático al hacer push a main/master
 
 ---
+
+## Licencia
+Este proyecto está bajo la [Licencia MIT](./LICENSE).
