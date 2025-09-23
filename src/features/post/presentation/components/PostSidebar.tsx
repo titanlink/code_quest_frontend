@@ -10,7 +10,7 @@ import { InstagramLogoIcon } from "@radix-ui/react-icons";
 import { IPost } from "../../domain/entities/post.entity";
 import { CustomCard } from "@/components/CustomCard";
 import { ICategory } from "@/features/category/domain/entities/category.entity";
-import { Badge } from "@/components/ui/badge";
+//import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
 interface Props {
@@ -19,7 +19,7 @@ interface Props {
   categories?: ICategory[];
 }
 
-export function PostSidebar({ post, categories }: Props) {
+export function PostSidebar({ post }: Props) {
   return (
     <div className="space-y-6">
       {/* Author Card */}
@@ -91,7 +91,9 @@ export function PostSidebar({ post, categories }: Props) {
       </CustomCard>
 
       {/* Newsletter Signup */}
-      <CustomCard className="bg-primary/5">
+      {
+        /**
+         * <CustomCard className="bg-primary/5">
         <CardHeader>
           <CardTitle className="text-lg">Categorias</CardTitle>
         </CardHeader>
@@ -107,6 +109,8 @@ export function PostSidebar({ post, categories }: Props) {
           ))}
         </CardContent>
       </CustomCard>
+         */
+      }
     </div>
   );
 }
