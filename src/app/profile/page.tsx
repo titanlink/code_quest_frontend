@@ -16,9 +16,7 @@ import {
   User,
   Mail,
   Calendar,
-  Key,
-  Copy,
-  Check,
+
   ArrowLeft,
   Edit,
 } from "lucide-react";

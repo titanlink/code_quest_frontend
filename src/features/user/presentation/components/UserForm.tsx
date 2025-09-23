@@ -57,7 +57,6 @@ export const UserForm = ({ entity, withOpacity, withBlur, backUrl = '/admin/user
   const router = useRouter();
   const createOrUpdate = useUserStore((state) => state.createOrUpdate);
 
-  if (user?.email != entity?.email) return <NotAuthorized />;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -100,6 +99,9 @@ export const UserForm = ({ entity, withOpacity, withBlur, backUrl = '/admin/user
       }
     });
   }
+
+
+  if (user?.email != entity?.email) return <NotAuthorized />;
 
 
   return (

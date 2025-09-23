@@ -11,7 +11,6 @@ import { Separator } from "@/components/ui/separator";
 import {
   MessageCircle,
   Reply,
-  Heart,
   MoreHorizontal,
   Flag,
 } from "lucide-react";
@@ -45,7 +44,6 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
   const [replyTo, setReplyTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState("");
   const [comments, setComments] = useState(postComments);
-  const [likedComments, setLikedComments] = useState<Set<string>>(new Set());
 
   const [token, setToken] = useState<string | null>(null);
 
@@ -124,17 +122,6 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
     setReplyTo(null);
   };
 
-  const handleLikeComment = (commentId: string) => {
-    if (!user) return;
-
-    const newLikedComments = new Set(likedComments);
-    if (likedComments.has(commentId)) {
-      newLikedComments.delete(commentId);
-    } else {
-      newLikedComments.add(commentId);
-    }
-    setLikedComments(newLikedComments);
-  };
 
   const topLevelComments = comments
     .sort((b, a) => {
@@ -226,9 +213,7 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
         <div className="space-y-6 mt-4">
           {comments.length > 0 ? (
             comments.map((comment) => {
-              const sub_comment: IComment[] = comment.sub_comment ?? []; //getsub_comment(comment?.id ?? '')
-              const isLiked = likedComments.has(comment?.id ?? "");
-
+              const sub_comment: IComment[] = comment.sub_comment ?? []; //
               return (
                 <div key={comment.id} className="space-y-4">
                   <div className="flex gap-4">
@@ -362,7 +347,6 @@ export function EnhancedCommentsSection({ postId, postComments, post }: Props) {
                   {sub_comment.length > 0 && (
                     <div className="ml-14 space-y-4 border-l-2 border-muted pl-4">
                       {sub_comment.map((reply) => {
-                        const isReplyLiked = likedComments.has(reply?.id ?? "");
 
                         return (
                           <div key={reply.id} className="flex gap-3">
