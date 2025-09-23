@@ -20,6 +20,7 @@ import {
   Copy,
   Check,
   ArrowLeft,
+  Edit,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -125,9 +126,16 @@ export default function DashboardPage() {
         {/* User Profile Card */}
         <CustomCard withOpacity withGlowEffect>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5" />
-              Información del Usuario
+            <CardTitle className="flex justify-between gap-2">
+              <div className="flex  gap-2">
+                <User className="h-5 w-5" />
+                Información del Usuario
+              </div>
+              <div>
+                <Link href={`/profile/${session?.id}`}>
+                  <Edit className="mr-2 h-5 w-5" />
+                </Link>
+              </div>
             </CardTitle>
             <CardDescription>Detalles de tu cuenta y perfil</CardDescription>
           </CardHeader>
